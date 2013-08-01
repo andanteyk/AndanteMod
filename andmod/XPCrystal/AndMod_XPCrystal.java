@@ -169,7 +169,7 @@ public class AndMod_XPCrystal {
 					" c ",
 					"cbc",
 					" c ",
-					'c', new ItemStack( Block.blockNetherQuartz ),
+					'c', new ItemStack( Block.blockNetherQuartz, 1, fm ),
 					'b', new ItemStack( Item.enchantedBook, 1, fm ) );
 		}
 
@@ -193,7 +193,7 @@ public class AndMod_XPCrystal {
 					" c ",
 					"cbc",
 					" c ",
-					'c', new ItemStack( Block.blockNetherQuartz ),
+					'c', new ItemStack( Block.blockNetherQuartz, 1, fm ),
 					'b', new ItemStack( Item.expBottle ) );
 		}
 
@@ -214,7 +214,7 @@ public class AndMod_XPCrystal {
 					" c ",
 					"cbc",
 					" c ",
-					'c', new ItemStack( Block.blockNetherQuartz ),
+					'c', new ItemStack( Block.blockNetherQuartz, 1, fm ),
 					'b', new ItemStack( Item.netherStar ) );
 		}
 
