@@ -22,6 +22,7 @@ import andmod.AndCore.Event_Arrow;
 import andmod.AndCore.Event_DispenserArrow;
 import andmod.AndCore.Event_MobEquipment;
 import andmod.AndCore.Handler_Fuel;
+import andmod.AndCore.Item_Armor;
 import andmod.AndCore.Item_Arrow;
 import andmod.AndCore.Item_Axe;
 import andmod.AndCore.Item_Base;
@@ -101,6 +102,9 @@ public class AndMod_ExTools {
 		atypename[id] = "Glass";
 		aitemIDdefault[id] = 23571;
 		id ++;
+		atypename[id] = "Ancient";
+		aitemIDdefault[id] = 23620;
+		id ++;
 		atypename[id] = "Slime";
 		aitemIDdefault[id] = 23812;
 
@@ -162,6 +166,60 @@ public class AndMod_ExTools {
 		aitemname[id][0] = "GlassArrow";
 		aitemname[id][1] = "Glass Arrow";
 		aitemname[id][2] = "ガラスの矢";
+		
+		id = id / 16 * 16 + 15;
+		id++;
+		aitemname[id][0] = "StoneStick";
+		aitemname[id][1] = "Stone Stick";
+		aitemname[id][2] = "石の棒";
+		id++;
+		aitemname[id][0] = "AncientSword";
+		aitemname[id][1] = "Ancient Sword";
+		aitemname[id][2] = "古代の剣";
+		id++;
+		aitemname[id][0] = "AncientShovel";
+		aitemname[id][1] = "Ancient Shovel";
+		aitemname[id][2] = "古代のショベル";
+		id++;
+		aitemname[id][0] = "AncientPickaxe";
+		aitemname[id][1] = "Ancient Pickaxe";
+		aitemname[id][2] = "古代のツルハシ";
+		id++;
+		aitemname[id][0] = "AncientAxe";
+		aitemname[id][1] = "Ancient Axe";
+		aitemname[id][2] = "古代の斧";
+		id++;
+		aitemname[id][0] = "AncientHoe";
+		aitemname[id][1] = "Ancient Hoe";
+		aitemname[id][2] = "古代のクワ";
+		id++;
+		aitemname[id][0] = "AncientHammer";
+		aitemname[id][1] = "Ancient Hammer";
+		aitemname[id][2] = "古代のハンマー";
+		id++;
+		aitemname[id][0] = "AncientHelmet";
+		aitemname[id][1] = "Ancient Helmet";
+		aitemname[id][2] = "古代のヘルメット";
+		id++;
+		aitemname[id][0] = "AncientChestplate";
+		aitemname[id][1] = "Ancient Chestplate";
+		aitemname[id][2] = "古代のチェストプレート";
+		id++;
+		aitemname[id][0] = "AncientLeggings";
+		aitemname[id][1] = "Ancient Leggings";
+		aitemname[id][2] = "古代のレギンス";
+		id++;
+		aitemname[id][0] = "AncientBoots";
+		aitemname[id][1] = "Ancient Boots";
+		aitemname[id][2] = "古代のブーツ";
+		id++;
+		aitemname[id][0] = "AncientBow";
+		aitemname[id][1] = "Ancient Bow";
+		aitemname[id][2] = "古代の弓";
+		id++;
+		aitemname[id][0] = "AncientArrow";
+		aitemname[id][1] = "Ancient Arrow";
+		aitemname[id][2] = "古代の矢";
 		
 		id = id / 16 * 16 + 15;
 		id++;
@@ -251,6 +309,9 @@ public class AndMod_ExTools {
 		ArmorTexture[id][0] = ObjectHeader.toLowerCase() + "textures/armor/glass_1.png";
 		ArmorTexture[id][1] = ObjectHeader.toLowerCase() + "textures/armor/glass_2.png";
 		id ++;
+		ArmorTexture[id][0] = ObjectHeader.toLowerCase() + "textures/armor/ancient_1.png";
+		ArmorTexture[id][1] = ObjectHeader.toLowerCase() + "textures/armor/ancient_2.png";
+		id ++;
 		ArmorTexture[id][0] = ObjectHeader.toLowerCase() + "textures/armor/slime_1.png";
 		ArmorTexture[id][1] = ObjectHeader.toLowerCase() + "textures/armor/slime_2.png";
 
@@ -267,7 +328,6 @@ public class AndMod_ExTools {
 				if ( atypename[i] == null ) continue;
 
 				Property prop = cfg.get( "ToolType", atypename[i] + "Tools", aitemIDdefault[i] );
-				//prop.comment = atypename[i] + " Tools" ;
 				aitemIDdefault[i] = prop.getInt();
 			}
 
@@ -307,7 +367,7 @@ public class AndMod_ExTools {
 
 
 	@Mod.EventHandler
-	public void init(FMLInitializationEvent event) {
+	public void init( FMLInitializationEvent event ) {
 
 		Handler_Fuel fuelh = new Handler_Fuel();
 		Event_MobEquipment eequip = new Event_MobEquipment();
@@ -432,6 +492,8 @@ public class AndMod_ExTools {
 
 
 
+		
+		
 		id = -1;
 		
 		//Glass Tools
@@ -772,6 +834,283 @@ public class AndMod_ExTools {
 		} else id += 16;
 
 		
+		//point: Ancient Tools
+		if ( isEnabled( "Ancient" ) ) {
+			
+			//Ancient Stick
+			id ++;
+
+			aitem[id] = new Item_Base( aitemID[id], 64 ).setCreativeTab( CreativeTabs.tabMaterials )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+			
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					"g",
+					"g",
+					'g', new ItemStack( Block.stoneBrick, 1, fm ) );
+
+			
+			
+
+			EnumToolMaterial TMAncient = EnumHelper.addToolMaterial( "ANCIENT", 1, 198, 4.2F, 1.2F, 15 );
+			TMAncient.customCraftingMaterial = new ItemStack( Block.stoneBrick, 1, fm ).getItem();
+			
+			
+			//Ancient Sword
+			id ++;
+
+			aitem[id] = new Item_SpecialSword( aitemID[id], TMAncient ).addEffect( Potion.moveSlowdown.id, 0, 20 * 20, 0.05F )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_SWORDMAN, 0.15 );
+			
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					"e",
+					"e",
+					"s",
+					'e', new ItemStack( Block.stoneBrick, 1, fm ),
+					's', new ItemStack( getItemIDforCraft( "StoneStick" ), 1, 0 ) );
+
+			
+
+			//Ancient Shovel
+			id ++;
+
+			aitem[id] = new Item_Spade( aitemID[id], TMAncient )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					"e",
+					"s",
+					"s",
+					'e', new ItemStack( Block.stoneBrick, 1, fm ),
+					's', new ItemStack( getItemIDforCraft( "StoneStick" ), 1, 0 ) );
+
+			
+
+			//Ancient Pickaxe
+			id ++;
+
+			aitem[id] = new Item_Pickaxe( aitemID[id], TMAncient )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					"eee",
+					" s ",
+					" s ",
+					'e', new ItemStack( Block.stoneBrick, 1, fm ),
+					's', new ItemStack( getItemIDforCraft( "StoneStick" ), 1, 0 ) );
+
+			
+
+			//Ancient Axe
+			id ++;
+
+			aitem[id] = new Item_Axe( aitemID[id], TMAncient )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					"ee",
+					"es",
+					" s",
+					'e', new ItemStack( Block.stoneBrick, 1, fm ),
+					's', new ItemStack( getItemIDforCraft( "StoneStick" ), 1, 0 ) );
+
+
+			
+			//Ancient Hoe
+			id ++;
+
+			aitem[id] = new Item_Hoe( aitemID[id], TMAncient )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					"ee",
+					"s ",
+					"s ",
+					'e', new ItemStack( Block.stoneBrick, 1, fm ),
+					's', new ItemStack( getItemIDforCraft( "StoneStick" ), 1, 0 ) );
+
+
+			
+			//Ancient Hammer
+			id ++;
+
+			aitem[id] = new Item_Hammer( aitemID[id], TMAncient ).setMaxDamage( (int)( 64 * 3 ) - 1 )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					" s ",
+					"eee",
+					" s ",
+					'e', new ItemStack( Block.stoneBrick, 1, fm ),
+					's', new ItemStack( getItemIDforCraft( "StoneStick" ), 1, 0 ) );
+
+
+
+
+			armorid ++;
+			EnumArmorMaterial AMAncient = EnumHelper.addArmorMaterial( "ANCIENT", 5, new int[] { 2, 5, 3, 1 }, 15 );
+			AMAncient.customCraftingMaterial = new ItemStack( Block.stoneBrick, 1, 0 ).getItem();
+			eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
+					Event_MobEquipment.FLAG_ALLMOB, 0.15 );
+			
+			
+			//Ancient Helmet
+			id ++;
+
+			aitem[id] = new Item_Armor( aitemID[id], ArmorTexture[armorid], AMAncient, 0 )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					"sss",
+					"s s",
+					's', new ItemStack( Block.stoneBrick, 1, fm ) );
+
+
+
+			//Ancient Chestplate
+			id ++;
+
+			aitem[id] = new Item_Armor( aitemID[id], ArmorTexture[armorid], AMAncient, 1 )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					"s s",
+					"sss",
+					"sss",
+					's', new ItemStack( Block.stoneBrick, 1, fm ) );
+
+
+			
+			//Ancient Leggings
+			id ++;
+
+			aitem[id] = new Item_Armor( aitemID[id], ArmorTexture[armorid], AMAncient, 2 )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			GameRegistry.addRecipe(new ItemStack( aitem[id], 1 ),
+					"sss",
+					"s s",
+					"s s",
+					's', new ItemStack( Block.stoneBrick, 1, fm ) );
+
+
+			//Ancient Boots
+			id ++;
+
+			aitem[id] = new Item_Armor( aitemID[id], ArmorTexture[armorid], AMAncient, 3 )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					"s s",
+					"s s",
+					's', new ItemStack( Block.stoneBrick, 1, fm ) );
+
+
+
+			//Ancient Bow
+			id ++;
+			
+			aitem[id] = new Item_Bow( aitemID[id], TMAncient ).setParameters( 0.6F, 1.0F, 0.4F, 0.0F ).setCraftingMaterial( getItemIDforCraft( "StoneStick" ) )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					" st",
+					"s t",
+					" st",
+					's', new ItemStack ( getItemIDforCraft( "StoneStick" ), 1, 0 ),
+					't', Item.silk );
+
+
+
+			//Ancient Arrow
+			id ++;
+			
+			aitem[id] = new Item_Arrow( aitemID[id], 64 ).setParameters( 0.7, 2.0, 0.0, 0.08, ObjectHeader.toLowerCase() + "textures/entity/" + aitemname[id][0].substring( ObjectHeader.length() ) + ".png" )
+			.addEffect( Potion.moveSlowdown.id, 2, 6 * 20, 0.2F )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			BlockDispenser.dispenseBehaviorRegistry.putObject( aitem[id], new Event_DispenserArrow() );
+			
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 4 ),
+					"h",
+					"s",
+					"f",
+					'h', new ItemStack ( Block.stoneBrick, 1, fm ),
+					's', new ItemStack ( getItemIDforCraft( "StoneStick" ), 1, 0 ),
+					'f', Item.feather );
+
+			
+			id = id / 16 * 16 + 15;
+		} else id += 16;
+
+
+		
 		
 		//point: Slime Tools
 		if ( isEnabled( "Slime" ) ) {
@@ -924,7 +1263,7 @@ public class AndMod_ExTools {
 			id ++;
 
 			aitem[id] = new Item_SpecialArmor( aitemID[id], ArmorTexture[armorid], AMSlime, 0 ).setIsDisposable( true ).addEffect( Item_SpecialArmor.EFFECT_COUNTERSTATUS + Potion.weakness.id, ( ( 10 * 20 ) << Item_SpecialArmor.AMP_DURATIONSHIFT ) + ( 0 << Item_SpecialArmor.AMP_AMPLIFIERSHIFT ) + 100, Item_SpecialArmor.FLAG_ANYTIME )
-			.addEffect( Item_SpecialArmor.EFFECT_FEATHERFALLING, 73, Item_SpecialArmor.FLAG_ANYTIME ).setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
 
 			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
 			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
@@ -1074,8 +1413,9 @@ public class AndMod_ExTools {
 			Event_Arrow earrow = new Event_Arrow();
 
 			earrow.addArrow( Item.arrow.itemID );
-			if ( isEnabled( "Slime" ) ) earrow.addArrow( getItemIDforCraft( "SlimeArrow" ) );
 			if ( isEnabled( "Glass" ) ) earrow.addArrow( getItemIDforCraft( "GlassArrow" ) );
+			if ( isEnabled( "Ancient" ) ) earrow.addArrow( getItemIDforCraft( "AncientArrow" ) );
+			if ( isEnabled( "Slime" ) ) earrow.addArrow( getItemIDforCraft( "SlimeArrow" ) );
 			MinecraftForge.EVENT_BUS.register( earrow );
 
 			EntityRegistry.registerModEntity( Entity_Arrow.class, ObjectHeader + "ExArrow", 0, instance, 250, 1, true );
