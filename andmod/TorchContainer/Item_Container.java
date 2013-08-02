@@ -8,14 +8,10 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.util.EnumMovingObjectType;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
 public class Item_Container extends Item implements IRecipe {
 
-
-	private float fx, fy, fz;
 	private ItemStack contents = new ItemStack( 0, 1, 0 );
 
 
@@ -33,8 +29,49 @@ public class Item_Container extends Item implements IRecipe {
 	//p*は　ブロックのどこをクリックしたか（ブロックの上辺をクリックすればpy=1.0）
 	@Override
 	public boolean onItemUse( ItemStack items, EntityPlayer eplayer, World world, int bx, int by, int bz, int side, float px, float py, float pz ) {
-		fx = px; fy = py; fz = pz;
-		return false;
+		
+		int bid = world.getBlockId( bx, by, bz);
+		
+		if ( bid == Block.snow.blockID && ( world.getBlockMetadata( bx, by, bz ) & 7 ) < 1 )
+			side = 1;
+		else if ( bid != Block.vine.blockID && bid != Block.tallGrass.blockID && bid != Block.deadBush.blockID && 
+				( Block.blocksList[bid] == null || !Block.blocksList[bid].isBlockReplaceable( world, bx, by, bz ) ) )
+			switch( side ) {
+			case 0:
+				by --; break;
+			case 1:
+				by ++; break;
+			case 2:
+				bz --; break;
+			case 3:
+				bz ++; break;
+			case 4:
+				bx --; break;
+			case 5:
+				bx ++; break;
+			}
+		
+		if ( items.stackSize <= 0 || items.getItemDamage() >= items.getMaxDamage() || !eplayer.canPlayerEdit( bx, by, bz, side, contents ) || 
+				( by == 255 && Block.blocksList[contents.itemID].blockMaterial.isSolid() ) ||
+				!world.canPlaceEntityOnSide( contents.itemID, bx, by, bz, false, side, eplayer, contents ) )
+			return false;
+		
+		Block block = Block.blocksList[contents.itemID];
+		int meta = block.onBlockPlaced( world, bx, by, bz, side, px, py, pz, contents.getItem().getMetadata( contents.getItemDamage() ) );
+		
+		if ( placeBlockAt( contents, eplayer, world, bx, by, bz, side, meta ) ) {
+			world.playSoundEffect( bx + 0.5, by + 0.5, bz + 0.5, block.stepSound.getPlaceSound(), ( block.stepSound.getVolume() + 1.0F ) / 2.0F, block.stepSound.getPitch() * 0.8F );
+            items.damageItem( 1, eplayer );
+            
+            int charge = chargeItem( items, eplayer );
+    		if ( charge != items.getItemDamage() ) {
+    			items.setItemDamage( charge );
+    			world.playSoundAtEntity( eplayer, "random.pop", 0.2F, ( ( world.rand.nextFloat() - world.rand.nextFloat() ) * 0.7F + 1.0F ) * 2.0F );
+    		}
+		}
+		
+		return true;
+		
 	}
 
 
@@ -42,86 +79,13 @@ public class Item_Container extends Item implements IRecipe {
 	@Override
 	public ItemStack onItemRightClick( ItemStack items, World world, EntityPlayer eplayer ) {
 
-		eplayer.swingItem();
-
-		MovingObjectPosition mop = getMovingObjectPositionFromPlayer( world, eplayer, true );
-		if ( mop == null ) {
-
-			if ( ! eplayer.capabilities.isCreativeMode ) {
-				if ( items.getItemDamage() > 0 && eplayer.inventory.hasItem( contents.itemID ) ) {
-					world.playSoundAtEntity( eplayer, "random.pop", 0.2F, ( ( world.rand.nextFloat() - world.rand.nextFloat() ) * 0.7F + 1.0F ) * 2.0F );
-					return chargeItem ( items, eplayer );
-				}
-			}
-			
-			return items;
+		int charge = chargeItem( items, eplayer );
+		if ( charge != items.getItemDamage() ) {
+			items.setItemDamage( charge );
+			world.playSoundAtEntity( eplayer, "random.pop", 0.2F, ( ( world.rand.nextFloat() - world.rand.nextFloat() ) * 0.7F + 1.0F ) * 2.0F );
+			eplayer.swingItem();
 		}
-
-		if ( mop.typeOfHit == EnumMovingObjectType.TILE ) {
-
-			int bx = mop.blockX;
-			int by = mop.blockY;
-			int bz = mop.blockZ;
-			int side = mop.sideHit;
-
-
-			int bid = world.getBlockId( bx, by, bz );
-
-			if ( bid == Block.snow.blockID )
-				side = 1;
-			else if ( bid != Block.vine.blockID && bid != Block.tallGrass.blockID && bid != Block.deadBush.blockID
-					&& ( Block.blocksList[bid] == null || !Block.blocksList[bid].isBlockReplaceable( world, bx, by, bz ) ) )
-				switch ( side ) {
-				case 0:
-					by--;
-					break;
-				case 1:
-					by++;
-					break;
-				case 2:
-					bz--;
-					break;
-				case 3:
-					bz++;
-					break;
-				case 4:
-					bx--;
-					break;
-				case 5:
-					bx++;
-					break;
-				}
-
-
-
-
-			if ( items.stackSize == 0 || ! eplayer.canPlayerEdit( bx, by, bz, side, items ) ||
-				( by == 255 && Block.blocksList[contents.itemID].blockMaterial.isSolid() ) )
-				return items;
-
-			else if ( items.getItemDamage() < items.getMaxDamage() && world.canPlaceEntityOnSide( contents.itemID, bx, by, bz, false, side, eplayer, items ) ) {
-
-				Block block = Block.blocksList[contents.itemID];
-				int meta = getMetadata( contents.getItemDamage() );
-				int var14 = block.onBlockPlaced( world, bx, by, bz, side, fx, fy, fz, meta );
-
-				if ( placeBlockAt( items, eplayer, world, bx, by, bz, side, var14 ) ) {
-					world.playSoundEffect( bx + 0.5F, by + 0.5F, bz + 0.5F, block.stepSound.getPlaceSound(), ( block.stepSound.getVolume() + 1.0F ) / 2.0F, block.stepSound.getPitch() * 0.8F );
-					items.damageItem( 1, eplayer );
-				}
-
-
-				if ( items.getItemDamage() > 0 && eplayer.inventory.hasItem( contents.itemID ) )
-					items = chargeItem( items, eplayer );
-
-
-				return items;
-
-			} else if ( items.getItemDamage() >= items.getMaxDamage() || ( items.getItemDamage() > 0 && eplayer.inventory.hasItem( contents.itemID ) ) )
-				return chargeItem ( items, eplayer );
-			else return items;
-
-		} else return items;
+		return items;
 	}
 
 
@@ -132,52 +96,28 @@ public class Item_Container extends Item implements IRecipe {
 	 * アイテムを吸収して、耐久値を回復します。
 	 * @param items		アイテム。
 	 * @param eplayer	プレイヤー。
-	 * @return			処理したアイテムを返します。
+	 * @return			計算された耐久値を返します。
 	 */
-	private ItemStack chargeItem ( ItemStack items, EntityPlayer eplayer ) {
-
-		while ( eplayer.inventory.hasItem( contents.itemID ) && items.getItemDamage() > 0 ) {
+	private int chargeItem( ItemStack items, EntityPlayer eplayer ) {
+		
+		int ret = items.getItemDamage();
+		while ( eplayer.inventory.hasItem( contents.itemID ) && ret > 0 ) {
 			eplayer.inventory.consumeInventoryItem( contents.itemID );
-			items.setItemDamage( items.getItemDamage() - 1 );
+			ret --;
 		}
-
-		return items;
+		
+		return ret;
 	}
+	
 
+	private boolean placeBlockAt( ItemStack items, EntityPlayer eplayer, World world, int x, int y, int z, int side, int meta ) {
 
-
-	/**
-	 * アイテムを排出します。
-	 * @param items		アイテム。
-	 * @param eplayer	プレイヤー。
-	 * @return			処理したアイテムを返します。
-	 */
-	@Deprecated
-	public ItemStack dischargeItem ( ItemStack items, EntityPlayer eplayer ) {
-		while ( items.getItemDamage() < items.getMaxDamage() ) {
-
-			int dmg = items.getMaxStackSize();
-			if ( items.getItemDamage() + dmg > items.getMaxDamage() ) dmg = items.getMaxDamage() - items.getItemDamage();
-
-
-			if ( !eplayer.inventory.addItemStackToInventory( new ItemStack( contents.itemID, dmg, contents.getItemDamage() ) ) ) eplayer.dropPlayerItem( new ItemStack( contents.itemID, dmg, contents.getItemDamage() ) );
-			items.setItemDamage( items.getItemDamage() + dmg );
-
-		}
-		return items;
-	}
-
-
-
-
-	private boolean placeBlockAt( ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, int metadata ) {
-
-		if ( !world.setBlock( x, y, z, contents.itemID, metadata, 3 ) )
+		if ( !world.setBlock( x, y, z, contents.itemID, meta, 3 ) )
 			return false;
 
 		if ( world.getBlockId( x, y, z ) == contents.itemID ) {
-			Block.blocksList[contents.itemID].onBlockPlacedBy( world, x, y, z, player, stack );
-			Block.blocksList[contents.itemID].onPostBlockPlaced( world, x, y, z, metadata );
+			Block.blocksList[contents.itemID].onBlockPlacedBy( world, x, y, z, eplayer, items );
+			Block.blocksList[contents.itemID].onPostBlockPlaced( world, x, y, z, meta );
 		}
 
 		return true;

@@ -20,7 +20,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 @Mod(
 		modid	= "AndanteMod_TorchContainer",
 		name	= "Torch Container",
-		version	= "1.6.2.0"
+		version	= "1.6.2.1"
 		)
 @NetworkMod(
 		clientSideRequired = true,
@@ -65,7 +65,7 @@ public class AndMod_TorchContainer {
 
 	@Mod.EventHandler
 	public void init( FMLInitializationEvent event ) {
-		aitem = new Item_Container( aitemID, 256, new ItemStack(Block.torchWood, 1, 0 ) )
+		aitem = new Item_Container( aitemID, 256, new ItemStack( Block.torchWood, 1, 0 ) )
 		.setUnlocalizedName( aitemname[0] ).func_111206_d( aitemname[0] ).setCreativeTab( CreativeTabs.tabTools );
 
 		GameRegistry.registerItem( aitem, aitemname[0] );
