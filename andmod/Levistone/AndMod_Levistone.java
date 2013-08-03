@@ -30,16 +30,17 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 		)
 
 
-//なぜこれだけ互換性のない仕様にしたのでしょう…？
 public class AndMod_Levistone {
 
 	public int aitemID;
 	public Item aitem;
 	public String[] aitemname = new String[3];
-	public int aitemIDdefault = 20000;
+	public int aitemIDdefault = 23570;
 	public static String ObjectHeader = "Levistone:";
 	private int fm = OreDictionary.WILDCARD_VALUE;
 
+	private boolean isBreakable = true;
+	
 	@Mod.EventHandler
 	public void preInit( FMLPreInitializationEvent event ) {
 		aitemname[0] = "Levistone";
@@ -55,6 +56,9 @@ public class AndMod_Levistone {
 			ItemProp.comment = "ItemID - " + aitemname[1] ;
 			aitemID = ItemProp.getInt();
 
+			Property prop = cfg.get( "General", "isBreakable", isBreakable );
+			prop.comment = "Set false to prevent terrain damage." ;
+			isBreakable = prop.getBoolean( isBreakable );
 
 		} catch ( Exception e ) {
 			FMLLog.log( Level.SEVERE, e, "AndMod_" + ObjectHeader + "Error has occured" );
@@ -68,9 +72,9 @@ public class AndMod_Levistone {
 	@Mod.EventHandler
 	public void init( FMLInitializationEvent event ) {
 		
-		EnumArmorMaterial AMLevistone = EnumHelper.addArmorMaterial( "LEVISTONE", 5, new int[]{ 0, 0, 0, 0 }, 0 );
+		EnumArmorMaterial AMLevistone = EnumHelper.addArmorMaterial( "LEVISTONE", 16, new int[]{ 0, 0, 0, 0 }, 0 );
 		
-		aitem = new Item_Levistone( aitemID, ObjectHeader.toLowerCase() + "textures/armor/levistone.png", AMLevistone, 1 )
+		aitem = new Item_Levistone( aitemID, ObjectHeader.toLowerCase() + "textures/armor/levistone.png", AMLevistone, 1 ).setIsBreakable( isBreakable )
 		.setUnlocalizedName( aitemname[0] ).func_111206_d( aitemname[0] ).setCreativeTab( CreativeTabs.tabTools );
 
 		GameRegistry.registerItem( aitem, aitemname[0] );

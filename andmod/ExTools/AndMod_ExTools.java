@@ -17,6 +17,7 @@ import net.minecraftforge.common.EnumHelper;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Property;
 import net.minecraftforge.oredict.OreDictionary;
+import andmod.AndCore.Block_Base;
 import andmod.AndCore.Entity_Arrow;
 import andmod.AndCore.Event_Arrow;
 import andmod.AndCore.Event_DispenserArrow;
@@ -30,6 +31,7 @@ import andmod.AndCore.Item_Bow;
 import andmod.AndCore.Item_Hammer;
 import andmod.AndCore.Item_Hoe;
 import andmod.AndCore.Item_Pickaxe;
+import andmod.AndCore.Item_Shears;
 import andmod.AndCore.Item_Spade;
 import andmod.AndCore.Item_SpecialArmor;
 import andmod.AndCore.Item_SpecialSword;
@@ -88,11 +90,15 @@ public class AndMod_ExTools {
 	@Mod.Instance( "AndanteMod_ExTools" )
 	public static AndMod_ExTools instance;
 
-
 	@SidedProxy( clientSide = "andmod.AndCore.Proxy_Client", serverSide = "andmod.AndCore.Proxy_Common" )
 	public static Proxy_Common proxy;
 
 
+	//fixme: ここに特殊オプション変数を挿入
+	private boolean replaceVanillaTools = true;
+	
+	
+	
 	@Mod.EventHandler
 	public void preInit( FMLPreInitializationEvent event ) {
 
@@ -104,6 +110,15 @@ public class AndMod_ExTools {
 		id ++;
 		atypename[id] = "Ancient";
 		aitemIDdefault[id] = 23620;
+		id ++;
+		atypename[id] = "Coal";
+		aitemIDdefault[id] = 23652;
+		id ++;
+		atypename[id] = "Obsidian";
+		aitemIDdefault[id] = 23668;
+		id ++;
+		atypename[id] = "ExVanilla";
+		aitemIDdefault[id] = 23684;
 		id ++;
 		atypename[id] = "Slime";
 		aitemIDdefault[id] = 23812;
@@ -223,6 +238,172 @@ public class AndMod_ExTools {
 		
 		id = id / 16 * 16 + 15;
 		id++;
+		aitemname[id][0] = "CoalSword";
+		aitemname[id][1] = "Coal Sword";
+		aitemname[id][2] = "石炭の剣";
+		id++;
+		aitemname[id][0] = "CoalShovel";
+		aitemname[id][1] = "Coal Shovel";
+		aitemname[id][2] = "石炭のショベル";
+		id++;
+		aitemname[id][0] = "CoalPickaxe";
+		aitemname[id][1] = "Coal Pickaxe";
+		aitemname[id][2] = "石炭のツルハシ";
+		id++;
+		aitemname[id][0] = "CoalAxe";
+		aitemname[id][1] = "Coal Axe";
+		aitemname[id][2] = "石炭の斧";
+		id++;
+		aitemname[id][0] = "CoalHoe";
+		aitemname[id][1] = "Coal Hoe";
+		aitemname[id][2] = "石炭のクワ";
+		id++;
+		aitemname[id][0] = "CoalHammer";
+		aitemname[id][1] = "Coal Hammer";
+		aitemname[id][2] = "石炭のハンマー";
+		id++;
+		aitemname[id][0] = "CoalHelmet";
+		aitemname[id][1] = "Coal Helmet";
+		aitemname[id][2] = "石炭のヘルメット";
+		id++;
+		aitemname[id][0] = "CoalChestplate";
+		aitemname[id][1] = "Coal Chestplate";
+		aitemname[id][2] = "石炭のチェストプレート";
+		id++;
+		aitemname[id][0] = "CoalLeggings";
+		aitemname[id][1] = "Coal Leggings";
+		aitemname[id][2] = "石炭のレギンス";
+		id++;
+		aitemname[id][0] = "CoalBoots";
+		aitemname[id][1] = "Coal Boots";
+		aitemname[id][2] = "石炭のブーツ";
+		id++;
+		aitemname[id][0] = "CoalBow";
+		aitemname[id][1] = "Coal Bow";
+		aitemname[id][2] = "石炭の弓";
+		id++;
+		aitemname[id][0] = "CoalArrow";
+		aitemname[id][1] = "Coal Arrow";
+		aitemname[id][2] = "石炭の矢";
+		
+		id = id / 16 * 16 + 15;
+		id++;
+		aitemname[id][0] = "ObsidianSword";
+		aitemname[id][1] = "Obsidian Sword";
+		aitemname[id][2] = "黒曜石の剣";
+		id++;
+		aitemname[id][0] = "ObsidianShovel";
+		aitemname[id][1] = "Obsidian Shovel";
+		aitemname[id][2] = "黒曜石のショベル";
+		id++;
+		aitemname[id][0] = "ObsidianPickaxe";
+		aitemname[id][1] = "Obsidian Pickaxe";
+		aitemname[id][2] = "黒曜石のツルハシ";
+		id++;
+		aitemname[id][0] = "ObsidianAxe";
+		aitemname[id][1] = "Obsidian Axe";
+		aitemname[id][2] = "黒曜石の斧";
+		id++;
+		aitemname[id][0] = "ObsidianHoe";
+		aitemname[id][1] = "Obsidian Hoe";
+		aitemname[id][2] = "黒曜石のクワ";
+		id++;
+		aitemname[id][0] = "ObsidianHammer";
+		aitemname[id][1] = "Obsidian Hammer";
+		aitemname[id][2] = "黒曜石のハンマー";
+		id++;
+		aitemname[id][0] = "ObsidianHelmet";
+		aitemname[id][1] = "Obsidian Helmet";
+		aitemname[id][2] = "黒曜石のヘルメット";
+		id++;
+		aitemname[id][0] = "ObsidianChestplate";
+		aitemname[id][1] = "Obsidian Chestplate";
+		aitemname[id][2] = "黒曜石のチェストプレート";
+		id++;
+		aitemname[id][0] = "ObsidianLeggings";
+		aitemname[id][1] = "Obsidian Leggings";
+		aitemname[id][2] = "黒曜石のレギンス";
+		id++;
+		aitemname[id][0] = "ObsidianBoots";
+		aitemname[id][1] = "Obsidian Boots";
+		aitemname[id][2] = "黒曜石のブーツ";
+		id++;
+		aitemname[id][0] = "ObsidianShears";
+		aitemname[id][1] = "Obsidian Shears";
+		aitemname[id][2] = "黒曜石のハサミ";
+		id++;
+		aitemname[id][0] = "ObsidianBow";
+		aitemname[id][1] = "Obsidian Bow";
+		aitemname[id][2] = "黒曜石の弓";
+		id++;
+		aitemname[id][0] = "ObsidianArrow";
+		aitemname[id][1] = "Obsidian Arrow";
+		aitemname[id][2] = "黒曜石の矢";
+
+		id = id / 16 * 16 + 15;
+		id++;
+		aitemname[id][0] = "WoodenHammer";
+		aitemname[id][1] = "Wooden Hammer";
+		aitemname[id][2] = "木のハンマー";
+		id++;
+		aitemname[id][0] = "StoneHammer";
+		aitemname[id][1] = "Stone Hammer";
+		aitemname[id][2] = "石のハンマー";
+		id++;
+		aitemname[id][0] = "IronHammer";
+		aitemname[id][1] = "Iron Hammer";
+		aitemname[id][2] = "鉄のハンマー";
+		id++;
+		aitemname[id][0] = "GoldenHammer";
+		aitemname[id][1] = "Golden Hammer";
+		aitemname[id][2] = "金のハンマー";
+		id++;
+		aitemname[id][0] = "DiamondHammer";
+		aitemname[id][1] = "Diamond Hammer";
+		aitemname[id][2] = "ダイヤのハンマー";
+		id++;
+		aitemname[id][0] = "WoodenHelmet";
+		aitemname[id][1] = "Wooden Helmet";
+		aitemname[id][2] = "木のヘルメット";
+		id++;
+		aitemname[id][0] = "WoodenChestplate";
+		aitemname[id][1] = "Wooden Chestplate";
+		aitemname[id][2] = "木のチェストプレート";
+		id++;
+		aitemname[id][0] = "WoodenLeggings";
+		aitemname[id][1] = "Wooden Leggings";
+		aitemname[id][2] = "木のレギンス";
+		id++;
+		aitemname[id][0] = "WoodenBoots";
+		aitemname[id][1] = "Wooden Boots";
+		aitemname[id][2] = "木のブーツ";
+		id++;
+		aitemname[id][0] = "StoneHelmet";
+		aitemname[id][1] = "Stone Helmet";
+		aitemname[id][2] = "石のヘルメット";
+		id++;
+		aitemname[id][0] = "StoneChestplate";
+		aitemname[id][1] = "Stone Chestplate";
+		aitemname[id][2] = "石のチェストプレート";
+		id++;
+		aitemname[id][0] = "StoneLeggings";
+		aitemname[id][1] = "Stone Leggings";
+		aitemname[id][2] = "石のレギンス";
+		id++;
+		aitemname[id][0] = "StoneBoots";
+		aitemname[id][1] = "Stone Boots";
+		aitemname[id][2] = "石のブーツ";
+		id++;
+		aitemname[id][0] = "GoldenShears";
+		aitemname[id][1] = "Golden Shears";
+		aitemname[id][2] = "金のハサミ";
+		id++;
+		aitemname[id][0] = "DiamondShears";
+		aitemname[id][1] = "Diamond Shears";
+		aitemname[id][2] = "ダイヤのハサミ";
+		
+		id = id / 16 * 16 + 15;
+		id++;
 		aitemname[id][0] = "SlimeSword";
 		aitemname[id][1] = "Slime Sword";
 		aitemname[id][2] = "スライムの剣";
@@ -293,9 +474,9 @@ public class AndMod_ExTools {
 		ablockname[id][1] = "Obsidian Glass Pane";
 		ablockname[id][2] = "クリアオブシディアンペイン";
 		id++;
-		ablockname[id][0] = "CharcoalBlock";
-		ablockname[id][1] = "Block of Charcoal";
-		ablockname[id][2] = "木炭ブロック";
+		ablockname[id][0] = "CoalBlock";
+		ablockname[id][1] = "Block of Coal";
+		ablockname[id][2] = "石炭ブロック";
 		id++;
 		ablockname[id][0] = "SlimeBlock";
 		ablockname[id][1] = "Block of Slime";
@@ -311,6 +492,18 @@ public class AndMod_ExTools {
 		id ++;
 		ArmorTexture[id][0] = ObjectHeader.toLowerCase() + "textures/armor/ancient_1.png";
 		ArmorTexture[id][1] = ObjectHeader.toLowerCase() + "textures/armor/ancient_2.png";
+		id ++;
+		ArmorTexture[id][0] = ObjectHeader.toLowerCase() + "textures/armor/coal_1.png";
+		ArmorTexture[id][1] = ObjectHeader.toLowerCase() + "textures/armor/coal_2.png";
+		id ++;
+		ArmorTexture[id][0] = ObjectHeader.toLowerCase() + "textures/armor/obsidian_1.png";
+		ArmorTexture[id][1] = ObjectHeader.toLowerCase() + "textures/armor/obsidian_2.png";
+		id ++;
+		ArmorTexture[id][0] = ObjectHeader.toLowerCase() + "textures/armor/wood_1.png";
+		ArmorTexture[id][1] = ObjectHeader.toLowerCase() + "textures/armor/wood_2.png";
+		id ++;
+		ArmorTexture[id][0] = ObjectHeader.toLowerCase() + "textures/armor/stone_1.png";
+		ArmorTexture[id][1] = ObjectHeader.toLowerCase() + "textures/armor/stone_2.png";
 		id ++;
 		ArmorTexture[id][0] = ObjectHeader.toLowerCase() + "textures/armor/slime_1.png";
 		ArmorTexture[id][1] = ObjectHeader.toLowerCase() + "textures/armor/slime_2.png";
@@ -348,6 +541,7 @@ public class AndMod_ExTools {
 
 
 		//fixme:
+		//バニラツールの置換？
 		//Utility_ToolConfig.loadConfig( event.getSuggestedConfigurationFile() );
 
 
@@ -456,10 +650,37 @@ public class AndMod_ExTools {
 
 		} else id += 4;
 		
-		/*
+		
 		if ( isEnabled( "Coal" ) ) {
 			
-		} else*/ id += 1;
+			id ++;
+			ablock[id] = new Block_Base( ablockID[id], Material.rock ).setHardness( 3.0F ).setResistance( 5.0F ).setStepSound( Block.soundStoneFootstep ).setCreativeTab( CreativeTabs.tabBlock )
+			.setUnlocalizedName( ablockname[id][0] ).func_111022_d( ablockname[id][0] );
+
+			GameRegistry.registerBlock( ablock[id], ablockname[id][0] );
+			LanguageRegistry.addName( ablock[id], ablockname[id][1] );
+			LanguageRegistry.instance().addNameForObject( ablock[id], "ja_JP", ablockname[id][2] );
+
+			
+			Block.setBurnProperties( ablockID[id], 30, 2 );
+			fuelh.addFuel( ablockID[id], -1, 200 * 80 );
+
+			GameRegistry.addRecipe( new ItemStack( ablock[id], 1 ),
+					"ccc",
+					"ccc",
+					"ccc",
+					'c', new ItemStack( Item.coal, 1, fm ) );
+			GameRegistry.addRecipe( new ItemStack( Item.coal, 9 ),
+					"c",
+					'c', new ItemStack( ablock[id], 1, 0 ) );
+			GameRegistry.addRecipe( new ItemStack( Item.diamond, 1 ),
+					"ccc",
+					"ccc",
+					"ccc",
+					'c', new ItemStack( ablock[id], 1, 0 ) );
+			
+			
+		} else id += 1;
 		
 		
 		if ( isEnabled( "Slime" ) ) {
@@ -473,6 +694,7 @@ public class AndMod_ExTools {
 			LanguageRegistry.addName( ablock[id], ablockname[id][1] );
 			LanguageRegistry.instance().addNameForObject( ablock[id], "ja_JP", ablockname[id][2] );
 
+			
 			Block.setBurnProperties( ablockID[id], 5, 10 );
 			fuelh.addFuel( ablockID[id], -1, 200 * 8 );
 
@@ -496,7 +718,7 @@ public class AndMod_ExTools {
 		
 		id = -1;
 		
-		//Glass Tools
+		//point: Glass Tools
 		if ( isEnabled( "Glass" ) ) {
 			
 			//Glass Stick
@@ -554,7 +776,7 @@ public class AndMod_ExTools {
 			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-			eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_SWORDMAN, 0.15 );	//fixme
+			eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_SWORDMAN, 0.15 );
 			
 			{
 				ItemStack items = new ItemStack( aitem[id], 1, 0 );
@@ -831,7 +1053,7 @@ public class AndMod_ExTools {
 					'f', Item.feather );
 			
 			id = id / 16 * 16 + 15;
-		} else id += 16;
+		} else { id += 16; armorid ++; }
 
 		
 		//point: Ancient Tools
@@ -1111,12 +1333,984 @@ public class AndMod_ExTools {
 
 
 		
+
+		
+		//point: Coal Tools
+		if ( isEnabled( "Coal" ) ) {
+
+			EnumToolMaterial TMCoal = EnumHelper.addToolMaterial( "COAL", 1, 472, 5.0F, 2.0F, 8 );
+			TMCoal.customCraftingMaterial = new ItemStack( getBlockID( "CoalBlock" ), 1, 0 ).getItem();
+			
+			
+			//Coal Sword
+			id ++;
+
+			aitem[id] = new Item_SpecialSword( aitemID[id], TMCoal ).addEffect( Item_SpecialSword.EFFECT_IGNITION, 0, 4, 0.1F )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			fuelh.addFuel( aitemID[id], -1, 200 * 80 );
+			eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_ZOMBIE, 0.15 );
+			
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					"e",
+					"e",
+					"s",
+					'e', new ItemStack( getBlockID( "CoalBlock" ), 1, 0 ),
+					's', new ItemStack( Item.stick, 1, 0 ) );
+
+			
+
+			//Coal Shovel
+			id ++;
+
+			aitem[id] = new Item_Spade( aitemID[id], TMCoal )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			fuelh.addFuel( aitemID[id], -1, 200 * 80 );
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					"e",
+					"s",
+					"s",
+					'e', new ItemStack( getBlockID( "CoalBlock" ), 1, 0 ),
+					's', new ItemStack( Item.stick, 1, 0 ) );
+			
+			
+
+			//Coal Pickaxe
+			id ++;
+
+			aitem[id] = new Item_Pickaxe( aitemID[id], TMCoal )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			fuelh.addFuel( aitemID[id], -1, 200 * 80 );
+
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					"eee",
+					" s ",
+					" s ",
+					'e', new ItemStack( getBlockID( "CoalBlock" ), 1, 0 ),
+					's', new ItemStack( Item.stick, 1, 0 ) );
+
+			
+
+			//Coal Axe
+			id ++;
+
+			aitem[id] = new Item_Axe( aitemID[id], TMCoal )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			fuelh.addFuel( aitemID[id], -1, 200 * 80 );
+
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					"ee",
+					"es",
+					" s",
+					'e', new ItemStack( getBlockID( "CoalBlock" ), 1, 0 ),
+					's', new ItemStack( Item.stick, 1, 0 ) );
+
+
+			
+			//Coal Hoe
+			id ++;
+
+			aitem[id] = new Item_Hoe( aitemID[id], TMCoal )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			fuelh.addFuel( aitemID[id], -1, 200 * 80 );
+
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					"ee",
+					"s ",
+					"s ",
+					'e', new ItemStack( getBlockID( "CoalBlock" ), 1, 0 ),
+					's', new ItemStack( Item.stick, 1, 0 ) );
+
+
+			
+			//Coal Hammer
+			id ++;
+
+			aitem[id] = new Item_Hammer( aitemID[id], TMCoal ).setBurnTick( 200 * 80 ).setMaxDamage( (int)( 64 * 7.5 ) - 1 )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					" s ",
+					"eee",
+					" s ",
+					'e', new ItemStack( getBlockID( "CoalBlock" ), 1, 0 ),
+					's', new ItemStack( Item.stick, 1, 0 ) );
+
+
+
+
+
+
+			armorid ++;
+			EnumArmorMaterial AMCoal = EnumHelper.addArmorMaterial( "COAL", 18, new int[] { 2, 6, 4, 2 }, 8 );
+			AMCoal.customCraftingMaterial = new ItemStack( getBlockID( "CoalBlock" ), 1, 0 ).getItem();
+			eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
+					Event_MobEquipment.FLAG_OVERWORLD, 0.15 );
+			
+			
+			//Coal Helmet
+			id ++;
+
+			aitem[id] = new Item_Armor( aitemID[id], ArmorTexture[armorid], AMCoal, 0 )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			fuelh.addFuel( aitemID[id], -1, 200 * 80 );
+
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					"sss",
+					"s s",
+					's', new ItemStack( getBlockID( "CoalBlock" ), 1, 0 ) );
+
+
+
+			//Coal Chestplate
+			id ++;
+
+			aitem[id] = new Item_Armor( aitemID[id], ArmorTexture[armorid], AMCoal, 1 )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			fuelh.addFuel( aitemID[id], -1, 200 * 80 );
+
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					"s s",
+					"sss",
+					"sss",
+					's', new ItemStack( getBlockID( "CoalBlock" ), 1, 0 ) );
+
+
+			
+			//Coal Leggings
+			id ++;
+
+			aitem[id] = new Item_Armor( aitemID[id], ArmorTexture[armorid], AMCoal, 2 )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			fuelh.addFuel( aitemID[id], -1, 200 * 80 );
+
+			GameRegistry.addRecipe(new ItemStack( aitem[id], 1 ),
+					"sss",
+					"s s",
+					"s s",
+					's', new ItemStack( getBlockID( "CoalBlock" ), 1, 0 ) );
+
+			
+
+			//Coal Boots
+			id ++;
+
+			aitem[id] = new Item_Armor( aitemID[id], ArmorTexture[armorid], AMCoal, 3 )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			fuelh.addFuel( aitemID[id], -1, 200 * 80 );
+
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					"s s",
+					"s s",
+					's', new ItemStack( getBlockID( "CoalBlock" ), 1, 0 ) );
+
+
+
+			//Coal Bow
+			id ++;
+
+			aitem[id] = new Item_Bow( aitemID[id], TMCoal ).setParameters( 0.9F, 1.0F, 0.2F, 0.2F ).setCraftingMaterial( getBlockID( "CoalBlock" ) )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			fuelh.addFuel( aitemID[id], -1, 200 * 80 );
+				
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					" st",
+					"s t",
+					" st",
+					's', new ItemStack ( getBlockID( "CoalBlock" ), 1, 0 ),
+					't', Item.silk );
+
+
+
+			//Coal Arrow
+			id++;
+
+			aitem[id] = new Item_Arrow( aitemID[id], 64 ).setParameters( 0.9, 0.4, 0.2, 0.05, ObjectHeader.toLowerCase() + "textures/entity/" + aitemname[id][0].substring( ObjectHeader.length() ) + ".png" )
+			.addEffect( Struct_Arrow.EFFECT_FLAME, 0, 0, 1.0F )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			fuelh.addFuel( aitemID[id], -1, 200 * 2 );
+			BlockDispenser.dispenseBehaviorRegistry.putObject( aitem[id], new Event_DispenserArrow() );
+			
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 4 ),
+					"h",
+					"s",
+					"f",
+					'h', new ItemStack ( Item.coal, 1, fm ),
+					's', new ItemStack ( Item.stick, 1, 0 ),
+					'f', Item.feather );
+
+			
+			id = id / 16 * 16 + 15;
+		} else { id += 16; armorid ++; }
+
+
+		
+		//point: Obsidian Tools
+		if ( isEnabled( "Obsidian" ) ) {
+			
+			EnumToolMaterial TMObsidian = EnumHelper.addToolMaterial( "OBSIDIAN", 1, 2341, 5.5F, 1.8F, 1 );
+			TMObsidian.customCraftingMaterial = new ItemStack( Block.obsidian, 1, fm ).getItem();
+			
+			
+			//Obsidian Sword
+			id ++;
+
+			aitem[id] = new Item_Sword( aitemID[id], TMObsidian )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_SWORDMAN, 0.15 );
+			
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					"e",
+					"e",
+					"s",
+					'e', new ItemStack( Block.obsidian, 1, 0 ),
+					's', new ItemStack( Item.stick, 1, 0 ) );
+
+			
+
+			//Obsidian Shovel
+			id ++;
+
+			aitem[id] = new Item_Spade( aitemID[id], TMObsidian )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					"e",
+					"s",
+					"s",
+					'e', new ItemStack( Block.obsidian, 1, 0 ),
+					's', new ItemStack( Item.stick, 1, 0 ) );
+			
+			
+
+			//Obsidian Pickaxe
+			id ++;
+
+			aitem[id] = new Item_Pickaxe( aitemID[id], TMObsidian )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					"eee",
+					" s ",
+					" s ",
+					'e', new ItemStack( Block.obsidian, 1, 0 ),
+					's', new ItemStack( Item.stick, 1, 0 ) );
+
+			
+
+			//Obsidian Axe
+			id ++;
+
+			aitem[id] = new Item_Axe( aitemID[id], TMObsidian )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					"ee",
+					"es",
+					" s",
+					'e', new ItemStack( Block.obsidian, 1, 0 ),
+					's', new ItemStack( Item.stick, 1, 0 ) );
+
+
+			
+			//Obsidian Hoe
+			id ++;
+
+			aitem[id] = new Item_Hoe( aitemID[id], TMObsidian )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					"ee",
+					"s ",
+					"s ",
+					'e', new ItemStack( Block.obsidian, 1, 0 ),
+					's', new ItemStack( Item.stick, 1, 0 ) );
+
+
+			
+			//Obsidian Hammer
+			id ++;
+
+			aitem[id] = new Item_Hammer( aitemID[id], TMObsidian ).setMaxDamage( (int)( 64 * 36 ) - 1 )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					" s ",
+					"eee",
+					" s ",
+					'e', new ItemStack( Block.obsidian, 1, 0 ),
+					's', new ItemStack( Item.stick, 1, 0 ) );
+
+
+
+
+			armorid ++;
+			EnumArmorMaterial AMObsidian = EnumHelper.addArmorMaterial( "OBSIDIAN", 5, new int[] { 2, 6, 5, 2 }, 1 );
+			AMObsidian.customCraftingMaterial = new ItemStack( Block.obsidian, 1, 0 ).getItem();
+			eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
+					Event_MobEquipment.FLAG_ALLMOB, 0.15 );
+			
+			
+			//Obsidian Helmet
+			id ++;
+
+			aitem[id] = new Item_SpecialArmor( aitemID[id], ArmorTexture[armorid], AMObsidian, 0 )
+			.addEffect( Item_SpecialArmor.EFFECT_RESISTEXPLOSION, 250, Item_SpecialArmor.FLAG_ANYTIME ).addEffect( Item_SpecialArmor.EFFECT_RESISTEXPLOSION, 0, Item_SpecialArmor.FLAG_FULLEQ )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					"sss",
+					"s s",
+					's', new ItemStack( Block.obsidian, 1, 0 ) );
+
+
+
+			//Obsidian Chestplate
+			id ++;
+
+			aitem[id] = new Item_SpecialArmor( aitemID[id], ArmorTexture[armorid], AMObsidian, 1 )
+			.addEffect( Item_SpecialArmor.EFFECT_RESISTEXPLOSION, 250, Item_SpecialArmor.FLAG_ANYTIME ).addEffect( Item_SpecialArmor.EFFECT_RESISTEXPLOSION, 0, Item_SpecialArmor.FLAG_FULLEQ )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					"s s",
+					"sss",
+					"sss",
+					's', new ItemStack( Block.obsidian, 1, 0 ) );
+
+
+			
+			//Obsidian Leggings
+			id ++;
+
+			aitem[id] = new Item_SpecialArmor( aitemID[id], ArmorTexture[armorid], AMObsidian, 2 )
+			.addEffect( Item_SpecialArmor.EFFECT_RESISTEXPLOSION, 250, Item_SpecialArmor.FLAG_ANYTIME ).addEffect( Item_SpecialArmor.EFFECT_RESISTEXPLOSION, 0, Item_SpecialArmor.FLAG_FULLEQ )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			GameRegistry.addRecipe(new ItemStack( aitem[id], 1 ),
+					"sss",
+					"s s",
+					"s s",
+					's', new ItemStack( Block.obsidian, 1, 0 ) );
+
+			
+
+			//Obsidian Boots
+			id ++;
+
+			aitem[id] = new Item_SpecialArmor( aitemID[id], ArmorTexture[armorid], AMObsidian, 3 )
+			.addEffect( Item_SpecialArmor.EFFECT_RESISTEXPLOSION, 250, Item_SpecialArmor.FLAG_ANYTIME ).addEffect( Item_SpecialArmor.EFFECT_RESISTEXPLOSION, 0, Item_SpecialArmor.FLAG_FULLEQ )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					"s s",
+					"s s",
+					's', new ItemStack( Block.obsidian, 1, 0 ) );
+
+
+			
+			//Obsidian Shears
+			id ++;
+
+			aitem[id] = new Item_Shears( aitemID[id], TMObsidian )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					" s",
+					"s ",
+					's', new ItemStack( Block.obsidian, 1, 0 ) );
+
+			
+
+			//Obsidian Bow
+			id ++;
+			
+			aitem[id] = new Item_Bow( aitemID[id], TMObsidian ).setParameters( 0.5F, 1.1F, 0.5F, 0.0F ).setCraftingMaterial( Block.obsidian.blockID )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					" st",
+					"s t",
+					" st",
+					's', new ItemStack ( Block.obsidian, 1, 0 ),
+					't', Item.silk );
+
+
+
+			//Obsidian Arrow
+			id ++;
+			
+			aitem[id] = new Item_Arrow( aitemID[id], 64 ).setParameters( 0.7, 3.2, 0.0, 0.08, ObjectHeader.toLowerCase() + "textures/entity/" + aitemname[id][0].substring( ObjectHeader.length() ) + ".png" )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			BlockDispenser.dispenseBehaviorRegistry.putObject( aitem[id], new Event_DispenserArrow() );
+			
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 4 ),
+					"h",
+					"s",
+					"f",
+					'h', new ItemStack ( Block.obsidian, 1, 0 ),
+					's', new ItemStack ( Item.stick, 1, 0 ),
+					'f', Item.feather );
+
+			
+			id = id / 16 * 16 + 15;
+		} else { id += 16; armorid ++; }
+
+		
+		
+		//point: Ex Vanilla Tools
+		if ( isEnabled ( "ExVanilla" ) ) {
+			
+			//note: EnumToolMaterial.WOOD を使うと問答無用で竈の燃料になってしまう(すると無限燃焼の不具合を起こします)ので、これで対応します
+			EnumToolMaterial TMWood = EnumHelper.addToolMaterial( "NONFLAMMABLE_WOOD", EnumToolMaterial.WOOD.getHarvestLevel(), EnumToolMaterial.WOOD.getMaxUses(),
+					EnumToolMaterial.WOOD.getEfficiencyOnProperMaterial(), EnumToolMaterial.WOOD.getDamageVsEntity(), EnumToolMaterial.WOOD.getEnchantability() );
+
+			//Wooden Hammer
+			id ++;
+			
+			aitem[id] = new Item_Hammer( aitemID[id], TMWood ).setBurnTick( 200 ).setMaxDamage( (int)( 64 ) - 1 )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					" s ",
+					"eee",
+					" s ",
+					'e', new ItemStack( Block.planks, 1, fm ),
+					's', new ItemStack( Item.stick, 1, 0 ) );
+			
+			
+			//Stone Hammer
+			id ++;
+			
+			aitem[id] = new Item_Hammer( aitemID[id], EnumToolMaterial.STONE ).setMaxDamage( (int)( 64 * 2 ) - 1 )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					" s ",
+					"eee",
+					" s ",
+					'e', new ItemStack( Block.cobblestone, 1, 0 ),
+					's', new ItemStack( Item.stick, 1, 0 ) );
+			
+			
+			//Iron Hammer
+			id ++;
+			
+			aitem[id] = new Item_Hammer( aitemID[id], EnumToolMaterial.IRON ).setMaxDamage( (int)( 64 * 4 ) - 1 )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					" s ",
+					"eee",
+					" s ",
+					'e', new ItemStack( Item.ingotIron, 1, 0 ),
+					's', new ItemStack( Item.stick, 1, 0 ) );
+			
+			
+			//Gold Hammer
+			id ++;
+			
+			aitem[id] = new Item_Hammer( aitemID[id], EnumToolMaterial.GOLD ).setMaxDamage( (int)( 64 * 0.5 ) - 1 )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					" s ",
+					"eee",
+					" s ",
+					'e', new ItemStack( Item.ingotGold, 1, 0 ),
+					's', new ItemStack( Item.stick, 1, 0 ) );
+			
+			
+			//Diamond Hammer
+			id ++;
+			
+			aitem[id] = new Item_Hammer( aitemID[id], EnumToolMaterial.EMERALD ).setMaxDamage( (int)( 64 * 24 ) - 1 )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					" s ",
+					"eee",
+					" s ",
+					'e', new ItemStack( Item.diamond, 1, 0 ),
+					's', new ItemStack( Item.stick, 1, 0 ) );
+			
+			
+			
+			armorid ++;
+			EnumArmorMaterial AMWood = EnumHelper.addArmorMaterial( "WOOD", 3, new int[] { 1, 2, 2, 1 }, 15 );
+			AMWood.customCraftingMaterial = new ItemStack( Block.planks, 1, 0 ).getItem();
+			eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
+					Event_MobEquipment.FLAG_OVERWORLD, 0.15 );
+			
+			
+			//Wooden Helmet
+			id ++;
+
+			aitem[id] = new Item_SpecialArmor( aitemID[id], ArmorTexture[armorid], AMWood, 0 ).addEffect( Item_SpecialArmor.EFFECT_RESISTFIRE, Item_SpecialArmor.AMP_RESIST_WEAKNESS | 500, Item_SpecialArmor.FLAG_ANYTIME )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			fuelh.addFuel( aitemID[id], -1, 200 );
+
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					"sss",
+					"s s",
+					's', new ItemStack( Block.planks, 1, fm ) );
+
+
+
+			//Wooden Chestplate
+			id ++;
+
+			aitem[id] = new Item_SpecialArmor( aitemID[id], ArmorTexture[armorid], AMWood, 1 ).addEffect( Item_SpecialArmor.EFFECT_RESISTFIRE, Item_SpecialArmor.AMP_RESIST_WEAKNESS | 500, Item_SpecialArmor.FLAG_ANYTIME )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			fuelh.addFuel( aitemID[id], -1, 200 );
+
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					"s s",
+					"sss",
+					"sss",
+					's', new ItemStack( Block.planks, 1, fm ) );
+
+
+			
+			//Wooden Leggings
+			id ++;
+
+			aitem[id] = new Item_SpecialArmor( aitemID[id], ArmorTexture[armorid], AMWood, 2 ).addEffect( Item_SpecialArmor.EFFECT_RESISTFIRE, Item_SpecialArmor.AMP_RESIST_WEAKNESS | 500, Item_SpecialArmor.FLAG_ANYTIME )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			fuelh.addFuel( aitemID[id], -1, 200 );
+
+			GameRegistry.addRecipe(new ItemStack( aitem[id], 1 ),
+					"sss",
+					"s s",
+					"s s",
+					's', new ItemStack( Block.planks, 1, fm ) );
+
+			
+
+			//Wooden Boots
+			id ++;
+
+			aitem[id] = new Item_SpecialArmor( aitemID[id], ArmorTexture[armorid], AMWood, 3 ).addEffect( Item_SpecialArmor.EFFECT_RESISTFIRE, Item_SpecialArmor.AMP_RESIST_WEAKNESS | 500, Item_SpecialArmor.FLAG_ANYTIME )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			fuelh.addFuel( aitemID[id], -1, 200 );
+
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					"s s",
+					"s s",
+					's', new ItemStack( Block.planks, 1, fm ) );
+
+			
+			
+			armorid ++;
+			EnumArmorMaterial AMStone = EnumHelper.addArmorMaterial( "STONE", 4, new int[] { 2, 4, 3, 1 }, 5 );
+			AMStone.customCraftingMaterial = new ItemStack( Block.cobblestone, 1, 0 ).getItem();
+			eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
+					Event_MobEquipment.FLAG_ALLMOB, 0.15 );
+			
+			
+			//Stone Helmet
+			id ++;
+
+			aitem[id] = new Item_SpecialArmor( aitemID[id], ArmorTexture[armorid], AMStone, 0 ).setIsDisposable( true )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			fuelh.addFuel( aitemID[id], -1, 200 );
+
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					"sss",
+					"s s",
+					's', new ItemStack( Block.cobblestone, 1, fm ) );
+
+
+
+			//Stone Chestplate
+			id ++;
+
+			aitem[id] = new Item_SpecialArmor( aitemID[id], ArmorTexture[armorid], AMStone, 1 ).setIsDisposable( true )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			fuelh.addFuel( aitemID[id], -1, 200 );
+
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					"s s",
+					"sss",
+					"sss",
+					's', new ItemStack( Block.cobblestone, 1, fm ) );
+
+
+			
+			//Stone Leggings
+			id ++;
+
+			aitem[id] = new Item_SpecialArmor( aitemID[id], ArmorTexture[armorid], AMStone, 2 ).setIsDisposable( true )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			fuelh.addFuel( aitemID[id], -1, 200 );
+
+			GameRegistry.addRecipe(new ItemStack( aitem[id], 1 ),
+					"sss",
+					"s s",
+					"s s",
+					's', new ItemStack( Block.cobblestone, 1, fm ) );
+
+			
+
+			//Stone Boots
+			id ++;
+
+			aitem[id] = new Item_SpecialArmor( aitemID[id], ArmorTexture[armorid], AMStone, 3 ).setIsDisposable( true )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			fuelh.addFuel( aitemID[id], -1, 200 );
+
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					"s s",
+					"s s",
+					's', new ItemStack( Block.cobblestone, 1, fm ) );
+
+			
+			
+			//Golden Shears
+			id ++;
+
+			aitem[id] = new Item_Shears( aitemID[id], EnumToolMaterial.GOLD )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					" s",
+					"s ",
+					's', new ItemStack( Item.ingotGold, 1, 0 ) );
+			
+			
+			//Diamond Shears
+			id ++;
+
+			aitem[id] = new Item_Shears( aitemID[id], EnumToolMaterial.EMERALD )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					" s",
+					"s ",
+					's', new ItemStack( Item.diamond, 1, 0 ) );
+
+			
+			id = id / 16 * 16 + 15;
+		} else { id += 16; armorid += 2; }
+		
+		
+		//fixme: フラグの有効化とアーマー
+		if ( replaceVanillaTools ) {
+
+			eequip.addMobWeaponEquipment( new ItemStack( Item.swordWood ), Event_MobEquipment.FLAG_ZOMBIE, 0.15 );
+			eequip.addMobWeaponEquipment( new ItemStack( Item.swordStone ), Event_MobEquipment.FLAG_SWORDMAN, 0.15 );
+			eequip.addMobWeaponEquipment( new ItemStack( Item.swordDiamond ), Event_MobEquipment.FLAG_SWORDMAN, 0.15 );
+			eequip.addMobWeaponEquipment( new ItemStack( Item.swordGold ), Event_MobEquipment.FLAG_SWORDMAN, 0.15 );
+			
+			//Iron Shovel
+			Item.itemsList[Item.shovelIron.itemID] = new Item_Spade( Item.shovelIron.itemID - 256, EnumToolMaterial.IRON ).setUnlocalizedName( "shovelIron" ).func_111206_d( "iron_shovel" );
+
+			//Iron Pickaxe
+			Item.itemsList[Item.pickaxeIron.itemID] = new Item_Pickaxe( Item.pickaxeIron.itemID - 256, EnumToolMaterial.IRON ).setUnlocalizedName( "pickaxeIron" ).func_111206_d( "iron_pickaxe" );
+
+			//Iron Axe
+			Item.itemsList[Item.axeIron.itemID] = new Item_Axe( Item.axeIron.itemID - 256, EnumToolMaterial.IRON ).setUnlocalizedName( "hatchetIron" ).func_111206_d( "iron_axe" );
+
+			//Iron Sword
+			Item.itemsList[Item.swordIron.itemID] = new Item_Sword( Item.swordIron.itemID - 256, EnumToolMaterial.IRON ).setUnlocalizedName( "swordIron" ).func_111206_d( "iron_sword" );
+
+			//Wooden Sword
+			Item.itemsList[Item.swordWood.itemID] = new Item_Sword( Item.swordWood.itemID - 256, EnumToolMaterial.WOOD ).setUnlocalizedName( "swordWood" ).func_111206_d( "wood_sword" );
+
+			//Wooden Shovel
+			Item.itemsList[Item.shovelWood.itemID] = new Item_Spade( Item.shovelWood.itemID - 256, EnumToolMaterial.WOOD ).setUnlocalizedName( "shovelWood" ).func_111206_d( "wood_shovel" );
+
+			//Wooden Pickaxe
+			Item.itemsList[Item.pickaxeWood.itemID] = new Item_Pickaxe( Item.pickaxeWood.itemID - 256, EnumToolMaterial.WOOD ).setUnlocalizedName( "pickaxeWood" ).func_111206_d( "wood_pickaxe" );
+
+			//Wooden Axe
+			Item.itemsList[Item.axeWood.itemID] = new Item_Axe( Item.axeWood.itemID - 256, EnumToolMaterial.WOOD ).setUnlocalizedName( "hatchetWood" ).func_111206_d( "wood_axe" );
+
+			//Stone Sword
+			Item.itemsList[Item.swordStone.itemID] = new Item_Sword( Item.swordStone.itemID - 256, EnumToolMaterial.STONE ).setUnlocalizedName( "swordStone" ).func_111206_d( "stone_sword" );
+
+			//Stone Shovel
+			Item.itemsList[Item.shovelStone.itemID] = new Item_Spade( Item.shovelStone.itemID - 256, EnumToolMaterial.STONE ).setUnlocalizedName( "shovelStone" ).func_111206_d( "stone_shovel" );
+
+			//Stone Pickaxe
+			Item.itemsList[Item.pickaxeStone.itemID] = new Item_Pickaxe( Item.pickaxeStone.itemID - 256, EnumToolMaterial.STONE ).setUnlocalizedName( "pickaxeStone" ).func_111206_d( "stone_pickaxe" );
+
+			//Stone Axe
+			Item.itemsList[Item.axeStone.itemID] = new Item_Axe( Item.axeStone.itemID - 256, EnumToolMaterial.STONE ).setUnlocalizedName( "hatchetStone" ).func_111206_d( "stone_axe" );
+
+			//Diamond Sword
+			Item.itemsList[Item.swordDiamond.itemID] = new Item_Sword( Item.swordDiamond.itemID - 256, EnumToolMaterial.EMERALD ).setUnlocalizedName( "swordDiamond" ).func_111206_d( "diamond_sword" );
+
+			//Diamond Shovel
+			Item.itemsList[Item.shovelDiamond.itemID] = new Item_Spade( Item.shovelDiamond.itemID - 256, EnumToolMaterial.EMERALD ).setUnlocalizedName( "shovelDiamond" ).func_111206_d( "diamond_shovel" );
+
+			//Diamond Pickaxe
+			Item.itemsList[Item.pickaxeDiamond.itemID] = new Item_Pickaxe( Item.pickaxeDiamond.itemID - 256, EnumToolMaterial.EMERALD ).setUnlocalizedName( "pickaxeDiamond" ).func_111206_d( "diamond_pickaxe" );
+
+			//Diamond Axe
+			Item.itemsList[Item.axeDiamond.itemID] = new Item_Axe( Item.axeDiamond.itemID - 256, EnumToolMaterial.EMERALD ).setUnlocalizedName( "hatchetDiamond" ).func_111206_d( "diamond_axe" );
+
+			//Gold Sword
+			Item.itemsList[Item.swordGold.itemID] = new Item_Sword( Item.swordGold.itemID - 256, EnumToolMaterial.GOLD ).setUnlocalizedName( "swordGold" ).func_111206_d( "gold_sword" );
+
+			//Gold Shovel
+			Item.itemsList[Item.shovelGold.itemID] = new Item_Spade( Item.shovelGold.itemID - 256, EnumToolMaterial.GOLD ).setUnlocalizedName( "shovelGold" ).func_111206_d( "gold_shovel" );
+
+			//Gold Pickaxe
+			Item.itemsList[Item.pickaxeGold.itemID] = new Item_Pickaxe( Item.pickaxeGold.itemID - 256, EnumToolMaterial.GOLD ).setUnlocalizedName( "pickaxeGold" ).func_111206_d( "gold_pickaxe" );
+
+			//Gold Axe
+			Item.itemsList[Item.axeGold.itemID] = new Item_Axe( Item.axeGold.itemID - 256, EnumToolMaterial.GOLD ).setUnlocalizedName( "hatchetGold" ).func_111206_d( "gold_axe" );
+
+			//Wooden Hoe
+			Item.itemsList[Item.hoeWood.itemID] = new Item_Hoe( Item.hoeWood.itemID - 256, EnumToolMaterial.WOOD ).setUnlocalizedName( "hoeWood" ).func_111206_d( "wood_hoe" );
+
+			//Stone Hoe
+			Item.itemsList[Item.hoeStone.itemID] = new Item_Hoe( Item.hoeStone.itemID - 256, EnumToolMaterial.STONE ).setUnlocalizedName( "hoeStone" ).func_111206_d( "stone_hoe" );
+
+			//Iron Hoe
+			Item.itemsList[Item.hoeIron.itemID] = new Item_Hoe( Item.hoeIron.itemID - 256, EnumToolMaterial.IRON ).setUnlocalizedName( "hoeIron" ).func_111206_d( "iron_hoe" );
+
+			//Diamond Hoe
+			Item.itemsList[Item.hoeDiamond.itemID] = new Item_Hoe( Item.hoeDiamond.itemID - 256, EnumToolMaterial.EMERALD ).setUnlocalizedName( "hoeDiamond" ).func_111206_d( "diamond_hoe" );
+
+			//Gold Hoe
+			Item.itemsList[Item.hoeGold.itemID] = new Item_Hoe( Item.hoeGold.itemID - 256, EnumToolMaterial.GOLD ).setUnlocalizedName( "hoeGold" ).func_111206_d( "gold_hoe" );
+
+			//Shears
+			Item.itemsList[Item.shears.itemID] = new Item_Shears( Item.shears.itemID - 256, EnumToolMaterial.IRON ).setUnlocalizedName( "shears" ).func_111206_d( "shears" );
+
+		}
+		
+		
+		
+		
 		
 		//point: Slime Tools
 		if ( isEnabled( "Slime" ) ) {
 
 			EnumToolMaterial TMSlime = EnumHelper.addToolMaterial( "SLIME", 0, 96, 3.0F, 0.3F, 49 );
-			TMSlime.customCraftingMaterial = new ItemStack( getBlockID( "SlimeBlock" ) + 256, 1, 0 ).getItem();//Item.itemsList[ getBlockID( "SlimeBlock" ) ];
+			TMSlime.customCraftingMaterial = new ItemStack( getBlockID( "SlimeBlock" ), 1, 0 ).getItem();
 			
 			
 			//Slime Sword
@@ -1254,7 +2448,7 @@ public class AndMod_ExTools {
 
 			armorid ++;
 			EnumArmorMaterial AMSlime = EnumHelper.addArmorMaterial( "SLIME", 5, new int[] { 2, 5, 3, 2 }, 49 );
-			AMSlime.customCraftingMaterial = Item.itemsList[ getBlockID( "SlimeBlock" ) ];
+			AMSlime.customCraftingMaterial = new ItemStack( getBlockID( "SlimeBlock" ), 1, 0 ).getItem();
 			eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
 					Event_MobEquipment.FLAG_OVERWORLD, 0.15 );
 			
@@ -1283,7 +2477,7 @@ public class AndMod_ExTools {
 			id ++;
 
 			aitem[id] = new Item_SpecialArmor( aitemID[id], ArmorTexture[armorid], AMSlime, 1 ).setIsDisposable( true ).addEffect( Item_SpecialArmor.EFFECT_COUNTERSTATUS + Potion.weakness.id, ( ( 10 * 20 ) << Item_SpecialArmor.AMP_DURATIONSHIFT ) + ( 0 << Item_SpecialArmor.AMP_AMPLIFIERSHIFT ) + 100, Item_SpecialArmor.FLAG_ANYTIME )
-					.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
 
 			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
 			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
@@ -1304,7 +2498,7 @@ public class AndMod_ExTools {
 			id ++;
 
 			aitem[id] = new Item_SpecialArmor( aitemID[id], ArmorTexture[armorid], AMSlime, 2 ).setIsDisposable( true ).addEffect( Item_SpecialArmor.EFFECT_COUNTERSTATUS + Potion.weakness.id, ( ( 10 * 20 ) << Item_SpecialArmor.AMP_DURATIONSHIFT ) + ( 0 << Item_SpecialArmor.AMP_AMPLIFIERSHIFT ) + 100, Item_SpecialArmor.FLAG_ANYTIME )
-					.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
 
 			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
 			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
@@ -1325,7 +2519,7 @@ public class AndMod_ExTools {
 			id ++;
 
 			aitem[id] = new Item_SpecialArmor( aitemID[id], ArmorTexture[armorid], AMSlime, 3 ).setIsDisposable( true ).addEffect( Item_SpecialArmor.EFFECT_COUNTERSTATUS + Potion.weakness.id, ( ( 10 * 20 ) << Item_SpecialArmor.AMP_DURATIONSHIFT ) + ( 0 << Item_SpecialArmor.AMP_AMPLIFIERSHIFT ) + 100, Item_SpecialArmor.FLAG_ANYTIME )
-					.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
 
 			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
 			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
@@ -1388,7 +2582,7 @@ public class AndMod_ExTools {
 
 			
 			id = id / 16 * 16 + 15;
-		} else id += 16;
+		} else { id += 16; armorid ++; }
 
 
 		
@@ -1415,6 +2609,8 @@ public class AndMod_ExTools {
 			earrow.addArrow( Item.arrow.itemID );
 			if ( isEnabled( "Glass" ) ) earrow.addArrow( getItemIDforCraft( "GlassArrow" ) );
 			if ( isEnabled( "Ancient" ) ) earrow.addArrow( getItemIDforCraft( "AncientArrow" ) );
+			if ( isEnabled( "Coal" ) ) earrow.addArrow( getItemIDforCraft( "CoalArrow" ) );
+			if ( isEnabled( "Obsidian" ) ) earrow.addArrow( getItemIDforCraft( "ObsidianArrow" ) );
 			if ( isEnabled( "Slime" ) ) earrow.addArrow( getItemIDforCraft( "SlimeArrow" ) );
 			MinecraftForge.EVENT_BUS.register( earrow );
 

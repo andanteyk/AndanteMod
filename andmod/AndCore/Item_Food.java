@@ -72,21 +72,31 @@ public class Item_Food extends ItemFood {
 
 	@Override
 	public ItemStack onEaten( ItemStack items, World world, EntityPlayer eplayer ) {
+		
+		/*//重複食事テスト
+		try {
+			int x = 1 / 0;
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		}
+		*/
+			
 		items.stackSize --;
 		eplayer.getFoodStats().addStats( this );
+	
 		world.playSoundAtEntity( eplayer, "random.burp", 0.5F, world.rand.nextFloat() * 0.1F + 0.9F );
 
 		tryToApplyFoodEffect( items, world, eplayer );
 
 
-		if ( container != null )
+		if ( container != null ) {
 			if ( items.stackSize <= 0 )
 				return container;
 
-		//.copy() を付け忘れると container の個数が減少してバグを発生させるようです。
+			//.copy() を付け忘れると container の個数が減少してバグを発生させるようです。
 			else if ( !eplayer.inventory.addItemStackToInventory( container.copy() ) )
 				eplayer.dropPlayerItem( container ) ;
-
+		}
 
 		return items;
 	}

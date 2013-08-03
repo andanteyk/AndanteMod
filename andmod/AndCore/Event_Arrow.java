@@ -59,6 +59,10 @@ public class Event_Arrow {
 
 		int arrowID = hasArrow( e.entityPlayer );
 		Struct_Arrow arrow;
+		
+		
+		e.setCanceled( true );
+		
 
 		if( isInfinite && ( arrowID == Item.arrow.itemID || arrowID == 0 ) ) {
 			arrowID = Item.arrow.itemID;
@@ -134,7 +138,7 @@ public class Event_Arrow {
 			if ( !e.entityPlayer.worldObj.isRemote ) e.entityPlayer.worldObj.spawnEntityInWorld( earrow );
 
 
-			e.setCanceled( true );
+			//e.setCanceled( true );
 		}
 
 	}
