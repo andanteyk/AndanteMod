@@ -57,7 +57,7 @@ public class AndMod_Levistone {
 			aitemID = ItemProp.getInt();
 
 			Property prop = cfg.get( "General", "isBreakable", isBreakable );
-			prop.comment = "Set false to prevent terrain damage." ;
+			prop.comment = "Set false to disable terrain damage." ;
 			isBreakable = prop.getBoolean( isBreakable );
 
 		} catch ( Exception e ) {

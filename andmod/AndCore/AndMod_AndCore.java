@@ -107,7 +107,7 @@ public class AndMod_AndCore {
 		int id = -1;
 
 		id++;
-		ablock[id] = new Block_Lighting( ablockID[id] ).setLightOpacity( 0 ).setHardness( 0.0F ).setResistance( 0.0F )
+		ablock[id] = new Block_Luminescence( ablockID[id] ).setLightOpacity( 0 ).setHardness( 0.0F ).setResistance( 0.0F )
 		.setUnlocalizedName( ablockname[id][0] ).func_111022_d( ablockname[id][0] );
 
 		GameRegistry.registerBlock( ablock[id], ablockname[id][0] );

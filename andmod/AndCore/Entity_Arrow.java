@@ -234,7 +234,7 @@ public class Entity_Arrow extends EntityArrow implements IProjectile
 	@Override
 	public void onUpdate() {
 		onEntityUpdate();
-
+		
 		if ( prevRotationPitch == 0.0F && prevRotationYaw == 0.0F ) {
 			float f = MathHelper.sqrt_double( motionX * motionX + motionZ * motionZ );
 			prevRotationYaw = rotationYaw = (float)( Math.atan2( motionX, motionZ ) * 180.0D / Math.PI );

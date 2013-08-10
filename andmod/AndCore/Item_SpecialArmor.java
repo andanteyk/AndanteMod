@@ -326,14 +326,12 @@ public class Item_SpecialArmor extends Item_Armor implements ISpecialArmor {
 				switch( id ) {	//checkme
 				case EFFECT_GRAVITY:
 					if ( !eplayer.onGround ) {
-						eplayer.addVelocity( 0.0, -amp / 1000.0, 0.0 );
-						//eplayer.motionY -= amp / 1000.0;
+						eplayer.motionY -= amp / 1000.0;
 					} break;
 				case EFFECT_FEATHERFALLING:
-					if ( !eplayer.onGround && !eplayer.isSneaking() && !eplayer.handleWaterMovement() && !eplayer.handleLavaMovement() && eplayer.motionY < 0.0 ) {
-						eplayer.motionY += amp / 1000.0;
-						if ( eplayer.motionY > 0.0 ) eplayer.motionY = 0.0;
-						eplayer.fallDistance -= amp / 1000.0;
+					if ( !eplayer.onGround && !eplayer.isSneaking() && eplayer.motionY < -amp / 1000.0 ) {
+						eplayer.motionY = -amp / 1000.0;
+						eplayer.fallDistance = 0;
 					} break;
 				}
 

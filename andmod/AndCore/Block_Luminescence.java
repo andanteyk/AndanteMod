@@ -9,7 +9,7 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class Block_Lighting extends Block {
+public class Block_Luminescence extends Block {
 	
 	//メタデータフラグ
 	//1, 2	:明度。
@@ -18,7 +18,7 @@ public class Block_Lighting extends Block {
 	
 	protected final int tickRate = 5;
 
-	public Block_Lighting( int blockID ) {
+	public Block_Luminescence( int blockID ) {
 		super( blockID, Material.air );
 
 		setTickRandomly( true );

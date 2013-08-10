@@ -2,6 +2,7 @@ package andmod.AndCore;
 
 import java.util.ArrayList;
 
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.monster.EntitySkeleton;
@@ -28,6 +29,7 @@ public class Event_MobEquipment {
 	public static final int FLAG_SWORDMAN		= FLAG_ZOMBIE | FLAG_WITHERSKELETON | FLAG_ZOMBIEPIGMAN;
 	public static final int FLAG_ALLMOB			= FLAG_ZOMBIE | FLAG_SKELETON | FLAG_WITHERSKELETON | FLAG_ZOMBIEPIGMAN;
 
+	public static final int FLAG_DISABLEENCHANT	= 0x8000000;		//装備をエンチャントしません。
 	public static final int FLAG_NONOVERRIDABLE	= 0x10000000;		//置換不能にします。既存の装備がある場合、そちらを優先します。
 	public static final int FLAG_ANYMOB			= 0x20000000;		//全てのmobに適用します。蜘蛛も装備するなど、不具合が発生します。デバッグ用です。
 	public static final int FLAG_ISARMOR		= 0x40000000;		//内部フラグです。意識する必要はありません。鎧データかどうかを判別します。
@@ -118,8 +120,12 @@ public class Event_MobEquipment {
 	 */
 	private void tryToEquipWeapon( ItemStack items, int flag, EntityLivingBase eliv ) {
 		
-		if ( ( flag & FLAG_NONOVERRIDABLE ) == 0 || eliv.getCurrentItemOrArmor( 0 ) == null )
+		if ( ( flag & FLAG_NONOVERRIDABLE ) == 0 || eliv.getCurrentItemOrArmor( 0 ) == null ) {
 			eliv.setCurrentItemOrArmor( 0, items );
+			
+			if ( ( flag & FLAG_DISABLEENCHANT ) == 0 ) 
+				;//enchantWeapon( eliv );
+		}
 	}
 
 
@@ -136,9 +142,40 @@ public class Event_MobEquipment {
 				if ( i < 3 && eliv.worldObj.rand.nextFloat() < ( eliv.worldObj.difficultySetting == 3 ? 0.1F : 0.25F ) ) break;
 	
 				eliv.setCurrentItemOrArmor( i + 1, armor[3 - i] );
+				if ( ( flag & FLAG_DISABLEENCHANT ) == 0 )
+					;//enchantArmor( eliv, i );
 			}
 		}
 		
+	}
+	
+	
+	/**
+	 * 装備している武器をエンチャントします。
+	 * @param eliv	対象となる生物。
+	 */
+	private void enchantWeapon( EntityLivingBase eliv ) {
+		float f = eliv.worldObj.func_110746_b( eliv.posX, eliv.posY, eliv.posZ );
+
+        if ( eliv.getHeldItem() != null && eliv.worldObj.rand.nextFloat() < 0.25F * f )
+            EnchantmentHelper.addRandomEnchantment( eliv.worldObj.rand, eliv.getHeldItem(), (int)( 5.0F + f * (float)eliv.worldObj.rand.nextInt( 18 ) ) );
+        
+	}
+	
+	
+	/**
+	 * 装備している防具をエンチャントします。
+	 * @param eliv	対象となる生物。
+	 * @param index	鎧スロットの場所。
+	 */
+	private void enchantArmor( EntityLivingBase eliv, int index ) {
+		float f = eliv.worldObj.func_110746_b( eliv.posX, eliv.posY, eliv.posZ );
+
+        ItemStack items = eliv.getCurrentItemOrArmor( index + 1 );
+
+        if ( items != null && eliv.worldObj.rand.nextFloat() < 0.5F * f )
+            EnchantmentHelper.addRandomEnchantment( eliv.worldObj.rand, items, (int)( 5.0F + f * (float)eliv.worldObj.rand.nextInt( 18 ) ) );
+        
 	}
 
 }

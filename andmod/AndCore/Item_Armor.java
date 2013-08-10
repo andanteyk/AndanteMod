@@ -38,11 +38,20 @@ public class Item_Armor extends ItemArmor {
 		armortex = new String[] { topTexture, legsTexture };
 	}
 
+	
+	/*
+	public Item_Armor( int itemID, String[] texture, EnumArmorMaterial material, int armorType, int renderIndex ) {
+		super( itemID, material, renderIndex, armorType );
+		armortex = texture;
+	}
+	*/
 
+	
 	@Override
 	public String getArmorTexture( ItemStack items, Entity entity, int slot, int layer ) {
 		return armortex[ slot == 2 ? 1 : 0 ];
 	}
+	
 
 
 	//*/
@@ -64,7 +73,19 @@ public class Item_Armor extends ItemArmor {
 		} else return current;
 	}
 
+	
 
+	/*	//最大HP増加処理サンプル
+	@Override
+	public Multimap func_111205_h() {
+		System.out.println( "Multimap Called : " + "Armor Modifier " + this.getArmorMaterial().name() + " " + armorType );
+		Multimap multimap = HashMultimap.create();	//from Item.func_111205_h()
+		multimap.put( SharedMonsterAttributes.field_111267_a.func_111108_a(), new AttributeModifier( field_111210_e, "Armor Modifier " + this.getArmorMaterial().name() + " " + armorType, this.getArmorMaterial().getDamageReductionAmount( armorType ), 0 ) );
+		return multimap;
+	}
+	*/
+	
+	
 	/*/
 
 	//クリエイティブでも交換可能になりますが、空中クリックにまでは対応しきれないので断念
@@ -96,4 +117,5 @@ public class Item_Armor extends ItemArmor {
 	}
 
 	/*/
+	
 }
