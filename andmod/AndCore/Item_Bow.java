@@ -55,11 +55,12 @@ public class Item_Bow extends ItemBow {
 		knockback = 0.0;
 
 		property = new Struct_Arrow();
+		setFull3D();					//note: ちょっと弓本来の持ち方からずれますが、気にしない方向で
 	}
 
 
 	/**
-	 * 新しい弓を定義します。
+	 * 新しい弓を定義します。なお、修理素材は登録されません。{@link Item_Bow#setCraftingMaterial(int) setCraftingMaterial()}から登録してください。
 	 * @param itemID	アイテムのID。
 	 * @param material	素材。
 	 */
@@ -79,6 +80,7 @@ public class Item_Bow extends ItemBow {
 		knockback = 0.0F;
 
 		property = new Struct_Arrow();
+		setFull3D();					//上に同じ
 	}
 
 

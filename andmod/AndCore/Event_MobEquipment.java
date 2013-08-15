@@ -27,6 +27,8 @@ public class Event_MobEquipment {
 	public static final int FLAG_OVERWORLD		= FLAG_ZOMBIE | FLAG_SKELETON;
 	public static final int FLAG_NETHER			= FLAG_WITHERSKELETON | FLAG_ZOMBIEPIGMAN;
 	public static final int FLAG_SWORDMAN		= FLAG_ZOMBIE | FLAG_WITHERSKELETON | FLAG_ZOMBIEPIGMAN;
+	public static final int FLAG_BONE			= FLAG_SKELETON | FLAG_WITHERSKELETON;
+	public static final int FLAG_ROTTEN			= FLAG_ZOMBIE | FLAG_ZOMBIEPIGMAN;
 	public static final int FLAG_ALLMOB			= FLAG_ZOMBIE | FLAG_SKELETON | FLAG_WITHERSKELETON | FLAG_ZOMBIEPIGMAN;
 
 	public static final int FLAG_DISABLEENCHANT	= 0x8000000;		//装備をエンチャントしません。
@@ -124,7 +126,7 @@ public class Event_MobEquipment {
 			eliv.setCurrentItemOrArmor( 0, items );
 			
 			if ( ( flag & FLAG_DISABLEENCHANT ) == 0 ) 
-				;//enchantWeapon( eliv );
+				enchantWeapon( eliv );
 		}
 	}
 
@@ -137,13 +139,14 @@ public class Event_MobEquipment {
 	 */
 	private void tryToEquipArmor( ItemStack[] armor, int flag, EntityLivingBase eliv ) {
 		
-		if ( ( flag & FLAG_NONOVERRIDABLE ) == 0 || eliv.getCurrentItemOrArmor( 4 ) == null ) {		//ヘルメットから装備するので、ヘルメットがなければ未装備とみなします
+		if ( ( flag & FLAG_NONOVERRIDABLE ) == 0 || 
+				( eliv.getCurrentItemOrArmor( 1 ) == null && eliv.getCurrentItemOrArmor( 2 ) == null && eliv.getCurrentItemOrArmor( 3 ) == null && eliv.getCurrentItemOrArmor( 4 ) == null ) ) {	
 			for ( int i = 3; i >= 0; i -- ) {
 				if ( i < 3 && eliv.worldObj.rand.nextFloat() < ( eliv.worldObj.difficultySetting == 3 ? 0.1F : 0.25F ) ) break;
 	
 				eliv.setCurrentItemOrArmor( i + 1, armor[3 - i] );
 				if ( ( flag & FLAG_DISABLEENCHANT ) == 0 )
-					;//enchantArmor( eliv, i );
+					enchantArmor( eliv, i );
 			}
 		}
 		
@@ -157,7 +160,7 @@ public class Event_MobEquipment {
 	private void enchantWeapon( EntityLivingBase eliv ) {
 		float f = eliv.worldObj.func_110746_b( eliv.posX, eliv.posY, eliv.posZ );
 
-        if ( eliv.getHeldItem() != null && eliv.worldObj.rand.nextFloat() < 0.25F * f )
+        if ( eliv.getHeldItem() != null && !eliv.getHeldItem().isItemEnchanted() && eliv.worldObj.rand.nextFloat() < 0.25F * f )
             EnchantmentHelper.addRandomEnchantment( eliv.worldObj.rand, eliv.getHeldItem(), (int)( 5.0F + f * (float)eliv.worldObj.rand.nextInt( 18 ) ) );
         
 	}
@@ -173,7 +176,7 @@ public class Event_MobEquipment {
 
         ItemStack items = eliv.getCurrentItemOrArmor( index + 1 );
 
-        if ( items != null && eliv.worldObj.rand.nextFloat() < 0.5F * f )
+        if ( items != null && !items.isItemEnchanted() && eliv.worldObj.rand.nextFloat() < 0.5F * f )
             EnchantmentHelper.addRandomEnchantment( eliv.worldObj.rand, items, (int)( 5.0F + f * (float)eliv.worldObj.rand.nextInt( 18 ) ) );
         
 	}

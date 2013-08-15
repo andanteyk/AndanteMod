@@ -1,5 +1,7 @@
 package andmod.AndCore;
 
+import java.util.ArrayList;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.Enchantment;
@@ -7,10 +9,13 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.EnumToolMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
@@ -18,7 +23,7 @@ import cpw.mods.fml.common.ICraftingHandler;
 import cpw.mods.fml.common.IFuelHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-public class Item_Hammer extends ItemPickaxe implements ICraftingHandler, IFuelHandler {
+public class Item_Hammer extends ItemPickaxe implements ICraftingHandler, IFuelHandler, IRecipe {
 
 	protected int itemDamageVsEntity;
 	protected int itemDamageVsBlock;
@@ -27,8 +32,21 @@ public class Item_Hammer extends ItemPickaxe implements ICraftingHandler, IFuelH
 	protected boolean repair;
 	protected boolean isBurning = false;
 	protected int burnTick = 0;
-
-	private int fm = OreDictionary.WILDCARD_VALUE;
+	
+	protected int craftingLevel;
+	/** 武具修復時の耐久値回復量です。0は回復不可能、-1は常に完全回復します。 */
+	protected int repairAmount = 0;
+	
+	protected static ArrayList<ItemStack> MaterialList = new ArrayList<ItemStack>();
+	protected static ArrayList<ItemStack> ResultList = new ArrayList<ItemStack>();
+	protected static ArrayList<Integer> FlagList = new ArrayList<Integer>();
+	
+	
+	public static final int FLAG_UNREPAIRABLE	= 0x10000;
+	public static final int FLAG_UNBREAKABLE	= 0x20000;
+	
+	
+	private final int fm = OreDictionary.WILDCARD_VALUE;
 
 
 	/**
@@ -79,6 +97,8 @@ public class Item_Hammer extends ItemPickaxe implements ICraftingHandler, IFuelH
 		MinecraftForge.setToolClass( this, "pickaxe", toolMaterial.getHarvestLevel() );
 		MinecraftForge.setToolClass( this, "axe",     toolMaterial.getHarvestLevel() );
 		addBasicCraftingRecipe();
+		GameRegistry.addRecipe( this );
+		craftingLevel = toolMaterial.getHarvestLevel();
 	}
 
 
@@ -129,6 +149,40 @@ public class Item_Hammer extends ItemPickaxe implements ICraftingHandler, IFuelH
 	}
 
 
+	/**
+	 * 修理・破壊可能なアイテムを決定するレベルを設定します。
+	 * @param level		レベル。不可能なら-1を設定してください。既定値は採掘レベルになります。
+	 * @return			設定されたアイテムを返します。
+	 */
+	public Item_Hammer setCraftingLevel( int level ) {
+		craftingLevel = level;
+		return this;
+	}
+	
+
+	/**
+	 * 武具修復時の耐久値回復量を指定します。
+	 * @param amount	耐久値の回復量。-1を指定すると常に完全回復させます。
+	 * @return			設定されたアイテムを返します。
+	 */
+	public Item_Hammer setRepairAmount( int amount ) {
+		repairAmount = amount;
+		return this;
+	}
+	
+	
+	/**
+	 * ハンマーで修復・破壊可能なアイテムを追加します。
+	 * @param material	修復・破壊可能アイテム。ハンマーを含めると動作に支障をきたします。
+	 * @param result	破壊時に返されるアイテム。
+	 */
+	public static void addRepairingRecipe( ItemStack material, ItemStack result, int flag ) {
+		MaterialList.add( material );
+		ResultList.add( result );
+		FlagList.add( flag );
+	}
+	
+	
 	@Override
 	public boolean doesContainerItemLeaveCraftingGrid( ItemStack items ) {
 		return false;
@@ -221,16 +275,109 @@ public class Item_Hammer extends ItemPickaxe implements ICraftingHandler, IFuelH
 	}
 
 
+	//repairing recipe
+	@Override
+	public boolean matches( InventoryCrafting inv, World world ) {
+
+		boolean material = false;
+		boolean result = false;
+		int stackcnt = 0;
+		
+		
+		if ( craftingLevel < 0 )
+			return false;
+		
+		for ( int i = 0; i < inv.getSizeInventory(); i ++ ) {
+			ItemStack itemt = inv.getStackInSlot( i );
+			
+			if ( itemt != null ) {
+				if ( itemt.itemID == itemID )
+					if ( !material )
+						material = true;
+					else return false;
+				
+				else {
+					for ( int j = 0; j < MaterialList.size(); j ++ ) {
+						ItemStack s = MaterialList.get( j );
+						if ( craftingLevel >= ( FlagList.get( j ) & 0xFFFF ) && itemt.itemID == s.itemID && ( s.getItemDamage() == fm || itemt.getItemDamage() == s.getItemDamage() ) )
+							if ( !result )
+								result = true;
+							else return false;
+					}
+			
+				}
+				
+				stackcnt ++;
+		
+			}
+			
+		}
+		
+		return material && result && stackcnt == 2;
+	} 
+
+
+	@Override
+	public ItemStack getCraftingResult( InventoryCrafting inv ) {
+
+		for ( int i = 0; i < inv.getSizeInventory(); i ++ ) {
+			
+			ItemStack itemt = inv.getStackInSlot( i );
+			if ( itemt == null ) continue;
+			
+			for ( int j = 0; j < MaterialList.size(); j ++ ) {
+				ItemStack s = MaterialList.get( j );
+				
+				if ( itemt.itemID == s.itemID && ( s.getItemDamage() == fm || itemt.getItemDamage() == s.getItemDamage() ) )
+					if ( repairAmount != 0 && itemt.getItemDamage() > 0 && ( FlagList.get( j ) & FLAG_UNREPAIRABLE ) == 0 ) {
+						ItemStack res = itemt.copy();
+						
+						if ( repairAmount == -1 || itemt.getItemDamage() <= repairAmount ) 
+							res.setItemDamage( 0 );
+						else 
+							res.setItemDamage( itemt.getItemDamage() - repairAmount );
+						
+						return res;
+					
+					} else if ( ( FlagList.get(j) & FLAG_UNBREAKABLE ) == 0 ) { 
+						ItemStack res = ResultList.get( j ).copy();
+						int retnum = MathHelper.floor_double( (double)( itemt.getMaxDamage() - itemt.getItemDamage() ) * res.stackSize / itemt.getMaxDamage() );
+						if ( retnum < 1 ) return null;
+						else {
+							res.stackSize = retnum > 64 ? 64 : retnum;
+							return res;
+						}
+					}
+			}
+		}
+		
+		return null;
+	}
+
+
+	@Override
+	public int getRecipeSize() {
+		return 2;	//checkme
+	}
+
+
+	@Override
+	public ItemStack getRecipeOutput() {
+		return null;
+	}
 
 
 
 	
+	
+
+	
 	public void addBasicCraftingRecipe () {
-		addBasicCraftingRecipe ( toolMaterial.getHarvestLevel(), toolMaterial == EnumToolMaterial.GOLD );
+		addBasicCraftingRecipe ( toolMaterial.getHarvestLevel(), false /*toolMaterial == EnumToolMaterial.GOLD*/ );
 	}
 
 	public void addAdvancedCraftingRecipe () {
-		addAdvancedCraftingRecipe ( toolMaterial.getHarvestLevel(), toolMaterial == EnumToolMaterial.GOLD );
+		addAdvancedCraftingRecipe ( toolMaterial.getHarvestLevel(), false /*toolMaterial == EnumToolMaterial.GOLD*/ );
 	}
 
 
@@ -373,7 +520,7 @@ public class Item_Hammer extends ItemPickaxe implements ICraftingHandler, IFuelH
 
 
 
-
+		/*
 
 		if ( canRepairMetalEquipments ) {	//武具修復
 
@@ -576,6 +723,8 @@ public class Item_Hammer extends ItemPickaxe implements ICraftingHandler, IFuelH
 
 
 		}
+		
+		*/
 
 	}
 
@@ -1109,6 +1258,6 @@ public class Item_Hammer extends ItemPickaxe implements ICraftingHandler, IFuelH
 	}
 
 
-
+	
 }
 

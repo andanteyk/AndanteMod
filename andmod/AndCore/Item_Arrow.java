@@ -2,7 +2,6 @@ package andmod.AndCore;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -96,6 +95,8 @@ public class Item_Arrow extends Item {
 		if( !world.isRemote ) {
 			long itime = world.getChunkFromBlockCoords( (int)Math.round( eplayer.posX ), (int)Math.round( eplayer.posZ ) ).field_111204_q;
 			eplayer.addChatMessage( "Inhabited Time: " + itime );
+			double probbase = world.func_110746_b( eplayer.posX, eplayer.posY, eplayer.posZ );
+			eplayer.addChatMessage( "Probability Base : " + ( probbase * 100.0 ) );
 		}
 		
 		
@@ -106,6 +107,7 @@ public class Item_Arrow extends Item {
 	}
 
 	
+	/*
 	@Override
 	public void onPlayerStoppedUsing( ItemStack items, World world, EntityPlayer eplayer, int remain ) {
 		
@@ -134,7 +136,7 @@ public class Item_Arrow extends Item {
 		
 		return EnumAction.bow;
 	}
-	
+	*/
 	
 
 }

@@ -54,7 +54,6 @@ public class Item_Armor extends ItemArmor {
 	
 
 
-	//*/
 
 	//鎧を「交換」出来るようにもします
 	//note: クリエイティブで交換しようとしても、既存の鎧が上書きされるだけになります。(既存書き換えをしなければ)修正不能なので仕様です。
@@ -74,7 +73,7 @@ public class Item_Armor extends ItemArmor {
 	}
 
 	
-
+	
 	/*	//最大HP増加処理サンプル
 	@Override
 	public Multimap func_111205_h() {
@@ -85,37 +84,5 @@ public class Item_Armor extends ItemArmor {
 	}
 	*/
 	
-	
-	/*/
-
-	//クリエイティブでも交換可能になりますが、空中クリックにまでは対応しきれないので断念
-	@Override
-	public boolean onItemUseFirst( ItemStack items, EntityPlayer eplayer, World world, int bx, int by, int bz, int side, float hitX, float hitY, float hitZ ) {
-
-		int i = EntityLiving.getArmorPosition( items ) - 1;
-		ItemStack current = eplayer.getCurrentArmor( i );
-
-		eplayer.setCurrentItemOrArmor( i + 1, items.copy() );
-
-		if ( current == null ) {	//直接 null を返すことはできません
-			items.stackSize = 0;
-
-		} else {
-			items.itemID = current.itemID;
-			//items.stackSize = current.stackSize;
-			items.setItemDamage( current.getItemDamage() );
-
-			items.stackTagCompound = null;
-			if ( current.stackTagCompound != null ) {
-				items.stackTagCompound = (NBTTagCompound) current.stackTagCompound.copy();
-			}
-
-
-		}
-
-		return true;
-	}
-
-	/*/
 	
 }

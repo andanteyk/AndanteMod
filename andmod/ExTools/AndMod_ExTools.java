@@ -66,13 +66,13 @@ public class AndMod_ExTools {
 
 	//point: class
 
-	public static int aitemqty = 22;
+	public static int aitemqty = 23;
 	public static int[] aitemID = new int[aitemqty * 16];
 	public static Item[] aitem = new Item[aitemqty * 16];
 	public static String[][] aitemname = new String[aitemqty * 16][3];
 	public int aitemIDdefault[] = new int[aitemqty];
 
-	public static int ablockqty = 6;
+	public static int ablockqty = 7;
 	public static int[] ablockID = new int[ablockqty];
 	public static Block[] ablock = new Block[ablockqty];
 	public static String[][] ablockname = new String[ablockqty][3];
@@ -173,6 +173,9 @@ public class AndMod_ExTools {
 		id ++;
 		atypename[id] = "Glowstone";
 		aitemIDdefault[id] = 24030;
+		id ++;
+		atypename[id] = "Ghast";
+		aitemIDdefault[id] = 24046;
 		
 
 		
@@ -1040,9 +1043,9 @@ public class AndMod_ExTools {
 		aitemname[id][1] = "Paralysis Arrow";
 		aitemname[id][2] = "麻痺の矢";
 		id++;
-		aitemname[id][0] = "HolyArrow";
-		aitemname[id][1] = "Holy Arrow";
-		aitemname[id][2] = "聖なる矢";
+		aitemname[id][0] = "HealingArrow";
+		aitemname[id][1] = "Healing Arrow";
+		aitemname[id][2] = "癒しの矢";
 		id++;
 		aitemname[id][0] = "CursedArrow";
 		aitemname[id][1] = "Cursed Arrow";
@@ -1342,6 +1345,60 @@ public class AndMod_ExTools {
 		aitemname[id][1] = "Glowstone Arrow";
 		aitemname[id][2] = "グロウストーンの矢";
 		
+		id = id / 16 * 16 + 15;
+		id++;
+		aitemname[id][0] = "GhastSword";
+		aitemname[id][1] = "Ghast Sword";
+		aitemname[id][2] = "ガストの剣";
+		id++;
+		aitemname[id][0] = "GhastShovel";
+		aitemname[id][1] = "Ghast Shovel";
+		aitemname[id][2] = "ガストのショベル";
+		id++;
+		aitemname[id][0] = "GhastPickaxe";
+		aitemname[id][1] = "Ghast Pickaxe";
+		aitemname[id][2] = "ガストのツルハシ";
+		id++;
+		aitemname[id][0] = "GhastAxe";
+		aitemname[id][1] = "Ghast Axe";
+		aitemname[id][2] = "ガストの斧";
+		id++;
+		aitemname[id][0] = "GhastHoe";
+		aitemname[id][1] = "Ghast Hoe";
+		aitemname[id][2] = "ガストのクワ";
+		id++;
+		aitemname[id][0] = "GhastHammer";
+		aitemname[id][1] = "Ghast Hammer";
+		aitemname[id][2] = "ガストのハンマー";
+		id++;
+		aitemname[id][0] = "GhastHelmet";
+		aitemname[id][1] = "Ghast Helmet";
+		aitemname[id][2] = "ガストのヘルメット";
+		id++;
+		aitemname[id][0] = "GhastChestplate";
+		aitemname[id][1] = "Ghast Chestplate";
+		aitemname[id][2] = "ガストのチェストプレート";
+		id++;
+		aitemname[id][0] = "GhastLeggings";
+		aitemname[id][1] = "Ghast Leggings";
+		aitemname[id][2] = "ガストのレギンス";
+		id++;
+		aitemname[id][0] = "GhastBoots";
+		aitemname[id][1] = "Ghast Boots";
+		aitemname[id][2] = "ガストののブーツ";
+		id++;
+		aitemname[id][0] = "GhastShears";
+		aitemname[id][1] = "Ghast Shears";
+		aitemname[id][2] = "ガストのハサミ";
+		id++;
+		aitemname[id][0] = "GhastBow";
+		aitemname[id][1] = "Ghast Bow";
+		aitemname[id][2] = "ガストの弓";
+		id++;
+		aitemname[id][0] = "GhastArrow";
+		aitemname[id][1] = "Ghast Arrow";
+		aitemname[id][2] = "ガストの矢";
+		
 		//point: add new item name
 
 		
@@ -1372,6 +1429,11 @@ public class AndMod_ExTools {
 		ablockname[id][0] = "SlimeBlock";
 		ablockname[id][1] = "Block of Slime";
 		ablockname[id][2] = "スライムブロック";
+		id++;
+		ablockname[id][0] = "WhiteObsidian";
+		ablockname[id][1] = "White Obsidian";
+		ablockname[id][2] = "白曜石";
+		
 
 		//point: add new block name
 
@@ -1441,6 +1503,9 @@ public class AndMod_ExTools {
 		id ++;
 		ArmorTexture[id][0] = header + "glowstone_1.png";
 		ArmorTexture[id][1] = header + "glowstone_2.png";
+		id ++;
+		ArmorTexture[id][0] = header + "ghast_1.png";
+		ArmorTexture[id][1] = header + "ghast_2.png";
 
 
 
@@ -1499,7 +1564,7 @@ public class AndMod_ExTools {
 
 		fuelh = new Handler_Fuel();
 		eequip = new Event_MobEquipment();
-		//todo: master probability settings
+		//todo: master probability settings / base value = 0.2 = 20%
 		
 		int id = -1;
 		int armorid = -1;
@@ -1586,7 +1651,7 @@ public class AndMod_ExTools {
 		
 		
 		if ( isEnabled( "Coal" ) ) {
-			
+			//Coal Block //fixme: delete creative tabs
 			id ++;
 			ablock[id] = new Block_Base( ablockID[id], Material.rock ).setHardness( 3.0F ).setResistance( 5.0F ).setStepSound( Block.soundStoneFootstep ).setCreativeTab( CreativeTabs.tabBlock )
 			.setUnlocalizedName( ablockname[id][0] ).func_111022_d( ablockname[id][0] );
@@ -1599,19 +1664,22 @@ public class AndMod_ExTools {
 			Block.setBurnProperties( ablockID[id], 30, 2 );
 			fuelh.addFuel( ablockID[id], -1, 200 * 80 );
 
+			/*
 			GameRegistry.addRecipe( new ItemStack( ablock[id], 1 ),
 					"ccc",
 					"ccc",
 					"ccc",
 					'c', new ItemStack( Item.coal, 1, fm ) );
-			GameRegistry.addRecipe( new ItemStack( Item.coal, 9 ),
-					"c",
-					'c', new ItemStack( ablock[id], 1, 0 ) );
 			GameRegistry.addRecipe( new ItemStack( Item.diamond, 1 ),
 					"ccc",
 					"ccc",
 					"ccc",
 					'c', new ItemStack( ablock[id], 1, 0 ) );
+			*/
+			GameRegistry.addRecipe( new ItemStack( Item.coal, 9 ),
+					"c",
+					'c', new ItemStack( ablock[id], 1, 0 ) );
+			
 			
 			
 		} else id += 1;
@@ -1643,6 +1711,29 @@ public class AndMod_ExTools {
 
 		} else id += 1;
 
+		
+		if ( isEnabled( "Ghast" ) ) {
+			//White Obsidian
+			id ++;
+			ablock[id] = new Block_Base( ablockID[id], Material.rock ).setHardness( 50.0F ).setResistance( 2000.0F ).setStepSound( Block.soundStoneFootstep ).setCreativeTab( CreativeTabs.tabBlock )
+			.setUnlocalizedName( ablockname[id][0] ).func_111022_d( ablockname[id][0] );
+
+			GameRegistry.registerBlock( ablock[id], ablockname[id][0] );
+			LanguageRegistry.addName( ablock[id], ablockname[id][1] );
+			LanguageRegistry.instance().addNameForObject( ablock[id], "ja_JP", ablockname[id][2] );
+
+			
+			MinecraftForge.setBlockHarvestLevel( ablock[id], "pickaxe", 3 );
+			
+			GameRegistry.addRecipe( new ItemStack( ablock[id], 2 ),
+					"ccc",
+					"ctc",
+					"ccc",
+					'c', new ItemStack( Block.obsidian, 1, 0 ),
+					't', new ItemStack( Item.ghastTear, 1, 0 ) );
+			
+		} else id += 1;
+		
 		//point: add new blocks
 
 
@@ -1759,7 +1850,11 @@ public class AndMod_ExTools {
 		id += 16; armorid ++;
 		
 				
-				
+		if ( isEnabled( "Ghast" ) )
+			registerGhastTools( id, armorid );
+		id += 16; armorid ++;
+		
+		
 		//point: add new item
 
 
@@ -1767,7 +1862,8 @@ public class AndMod_ExTools {
 		
 		//point: arrow register
 		registerArrows();
-
+		
+		registerHammerRecipe();
 
 
 		GameRegistry.registerFuelHandler( fuelh );
@@ -1838,7 +1934,8 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_SWORDMAN, 0.15 );
+		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_OVERWORLD & Event_MobEquipment.FLAG_SWORDMAN, 0.001 );
+		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_NETHER    & Event_MobEquipment.FLAG_SWORDMAN, 0.001 );
 		
 		{
 			ItemStack items = new ItemStack( aitem[id], 1, 0 );
@@ -1951,7 +2048,7 @@ public class AndMod_ExTools {
 		//Glass Hammer
 		id ++;
 
-		aitem[id] = new Item_Hammer( aitemID[id], TMGlass )
+		aitem[id] = new Item_Hammer( aitemID[id], TMGlass ).setRepairAmount( -1 )
 		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
 
 		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
@@ -1978,7 +2075,9 @@ public class AndMod_ExTools {
 		EnumArmorMaterial AMGlass = EnumHelper.addArmorMaterial( "GLASS", 1, new int[] { 6, 16, 12, 6 }, 99 );
 		AMGlass.customCraftingMaterial = Item.itemsList[ getBlockID( "CrystalGlass" ) ];
 		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
-				Event_MobEquipment.FLAG_ALLMOB, 0.15 );
+				Event_MobEquipment.FLAG_OVERWORLD, 0.001 );
+		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
+				Event_MobEquipment.FLAG_NETHER,    0.001 );
 		
 		
 		//Glass Helmet
@@ -1996,7 +2095,7 @@ public class AndMod_ExTools {
 		{
 			ItemStack items = new ItemStack( aitem[id], 1, 0 );
 			items.addEnchantment( Enchantment.unbreaking, 3 );
-			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+			GameRegistry.addRecipe( items,
 				"sss",
 				"s s",
 				's', new ItemStack( getBlockID( "CrystalGlass" ), 1, 0 ) );
@@ -2159,7 +2258,8 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_SWORDMAN, 0.15 );
+		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_OVERWORLD & Event_MobEquipment.FLAG_SWORDMAN, 0.25 );
+		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_NETHER    & Event_MobEquipment.FLAG_SWORDMAN, 0.15 );
 		
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"e",
@@ -2275,7 +2375,9 @@ public class AndMod_ExTools {
 		EnumArmorMaterial AMAncient = EnumHelper.addArmorMaterial( "ANCIENT", 5, new int[] { 2, 5, 3, 1 }, 15 );
 		AMAncient.customCraftingMaterial = new ItemStack( Block.stoneBrick, 1, 0 ).getItem();
 		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
-				Event_MobEquipment.FLAG_ALLMOB, 0.15 );
+				Event_MobEquipment.FLAG_OVERWORLD, 0.25 );
+		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
+				Event_MobEquipment.FLAG_NETHER,    0.15 );
 		
 		
 		//Ancient Helmet
@@ -2402,7 +2504,7 @@ public class AndMod_ExTools {
 
 		
 		EnumToolMaterial TMCoal = EnumHelper.addToolMaterial( "COAL", 1, 472, 5.0F, 2.0F, 8 );
-		TMCoal.customCraftingMaterial = new ItemStack( getBlockID( "CoalBlock" ), 1, 0 ).getItem();
+		TMCoal.customCraftingMaterial = new ItemStack( Block.field_111034_cE, 1, 0 ).getItem();
 		
 		
 		//Coal Sword
@@ -2417,13 +2519,14 @@ public class AndMod_ExTools {
 
 
 		fuelh.addFuel( aitemID[id], -1, 200 * 80 );
-		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_ZOMBIE, 0.15 );
+		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_OVERWORLD & Event_MobEquipment.FLAG_SWORDMAN, 0.05 );
+		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_NETHER    & Event_MobEquipment.FLAG_SWORDMAN, 0.025 );
 		
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"e",
 				"e",
 				"s",
-				'e', new ItemStack( getBlockID( "CoalBlock" ), 1, 0 ),
+				'e', new ItemStack( Block.field_111034_cE, 1, 0 ),
 				's', new ItemStack( Item.stick, 1, 0 ) );
 
 		
@@ -2444,7 +2547,7 @@ public class AndMod_ExTools {
 				"e",
 				"s",
 				"s",
-				'e', new ItemStack( getBlockID( "CoalBlock" ), 1, 0 ),
+				'e', new ItemStack( Block.field_111034_cE, 1, 0 ),
 				's', new ItemStack( Item.stick, 1, 0 ) );
 		
 		
@@ -2466,7 +2569,7 @@ public class AndMod_ExTools {
 				"eee",
 				" s ",
 				" s ",
-				'e', new ItemStack( getBlockID( "CoalBlock" ), 1, 0 ),
+				'e', new ItemStack( Block.field_111034_cE, 1, 0 ),
 				's', new ItemStack( Item.stick, 1, 0 ) );
 
 		
@@ -2488,7 +2591,7 @@ public class AndMod_ExTools {
 				"ee",
 				"es",
 				" s",
-				'e', new ItemStack( getBlockID( "CoalBlock" ), 1, 0 ),
+				'e', new ItemStack( Block.field_111034_cE, 1, 0 ),
 				's', new ItemStack( Item.stick, 1, 0 ) );
 
 
@@ -2510,7 +2613,7 @@ public class AndMod_ExTools {
 				"ee",
 				"s ",
 				"s ",
-				'e', new ItemStack( getBlockID( "CoalBlock" ), 1, 0 ),
+				'e', new ItemStack( Block.field_111034_cE, 1, 0 ),
 				's', new ItemStack( Item.stick, 1, 0 ) );
 
 
@@ -2530,7 +2633,7 @@ public class AndMod_ExTools {
 				" s ",
 				"eee",
 				" s ",
-				'e', new ItemStack( getBlockID( "CoalBlock" ), 1, 0 ),
+				'e', new ItemStack( Block.field_111034_cE, 1, 0 ),
 				's', new ItemStack( Item.stick, 1, 0 ) );
 
 
@@ -2540,9 +2643,11 @@ public class AndMod_ExTools {
 
 		armorid ++;
 		EnumArmorMaterial AMCoal = EnumHelper.addArmorMaterial( "COAL", 18, new int[] { 2, 6, 4, 2 }, 8 );
-		AMCoal.customCraftingMaterial = new ItemStack( getBlockID( "CoalBlock" ), 1, 0 ).getItem();
+		AMCoal.customCraftingMaterial = new ItemStack( Block.field_111034_cE, 1, 0 ).getItem();
 		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
-				Event_MobEquipment.FLAG_OVERWORLD, 0.15 );
+				Event_MobEquipment.FLAG_OVERWORLD, 0.05 );
+		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
+				Event_MobEquipment.FLAG_NETHER,    0.025 );
 		
 		
 		//Coal Helmet
@@ -2561,7 +2666,7 @@ public class AndMod_ExTools {
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"sss",
 				"s s",
-				's', new ItemStack( getBlockID( "CoalBlock" ), 1, 0 ) );
+				's', new ItemStack( Block.field_111034_cE, 1, 0 ) );
 
 
 
@@ -2582,7 +2687,7 @@ public class AndMod_ExTools {
 				"s s",
 				"sss",
 				"sss",
-				's', new ItemStack( getBlockID( "CoalBlock" ), 1, 0 ) );
+				's', new ItemStack( Block.field_111034_cE, 1, 0 ) );
 
 
 		
@@ -2603,7 +2708,7 @@ public class AndMod_ExTools {
 				"sss",
 				"s s",
 				"s s",
-				's', new ItemStack( getBlockID( "CoalBlock" ), 1, 0 ) );
+				's', new ItemStack( Block.field_111034_cE, 1, 0 ) );
 
 		
 
@@ -2623,14 +2728,14 @@ public class AndMod_ExTools {
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"s s",
 				"s s",
-				's', new ItemStack( getBlockID( "CoalBlock" ), 1, 0 ) );
+				's', new ItemStack( Block.field_111034_cE, 1, 0 ) );
 
 
 
 		//Coal Bow
 		id ++;
 
-		aitem[id] = new Item_Bow( aitemID[id], TMCoal ).setParameters( 0.9F, 1.0F, 0.2F, 0.2F ).setCraftingMaterial( getBlockID( "CoalBlock" ) )
+		aitem[id] = new Item_Bow( aitemID[id], TMCoal ).setParameters( 0.9F, 1.0F, 0.2F, 0.2F ).setCraftingMaterial( Block.field_111034_cE.blockID )
 		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
 
 		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
@@ -2644,7 +2749,7 @@ public class AndMod_ExTools {
 				" st",
 				"s t",
 				" st",
-				's', new ItemStack ( getBlockID( "CoalBlock" ), 1, 0 ),
+				's', new ItemStack ( Block.field_111034_cE, 1, 0 ),
 				't', Item.silk );
 
 
@@ -2673,6 +2778,13 @@ public class AndMod_ExTools {
 				'f', Item.feather );
 
 		
+		
+		GameRegistry.addRecipe( new ItemStack( Block.field_111034_cE ), 
+				"ccc", 
+				"ccc",
+				"ccc",
+				'c', new ItemStack( Item.coal, 1, fm ) );
+		
 	}
 	
 	
@@ -2695,7 +2807,8 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_SWORDMAN, 0.15 );
+		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_OVERWORLD & Event_MobEquipment.FLAG_SWORDMAN, 0.05 );
+		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_NETHER    & Event_MobEquipment.FLAG_SWORDMAN, 0.10 );
 		
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"e",
@@ -2808,10 +2921,12 @@ public class AndMod_ExTools {
 
 
 		armorid ++;
-		EnumArmorMaterial AMObsidian = EnumHelper.addArmorMaterial( "OBSIDIAN", 5, new int[] { 2, 6, 5, 2 }, 1 );
+		EnumArmorMaterial AMObsidian = EnumHelper.addArmorMaterial( "OBSIDIAN", 50, new int[] { 2, 6, 5, 2 }, 1 );
 		AMObsidian.customCraftingMaterial = new ItemStack( Block.obsidian, 1, 0 ).getItem();
 		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
-				Event_MobEquipment.FLAG_ALLMOB, 0.15 );
+				Event_MobEquipment.FLAG_OVERWORLD, 0.05 );
+		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
+				Event_MobEquipment.FLAG_NETHER,    0.1 );
 		
 		
 		//Obsidian Helmet
@@ -3023,7 +3138,7 @@ public class AndMod_ExTools {
 		//Gold Hammer
 		id ++;
 		
-		aitem[id] = new Item_Hammer( aitemID[id], EnumToolMaterial.GOLD ).setMaxDamage( (int)( 64 * 0.5 ) - 1 )
+		aitem[id] = new Item_Hammer( aitemID[id], EnumToolMaterial.GOLD ).setCraftingLevel( 2 ).setRepairAmount( 64 ).setMaxDamage( (int)( 64 * 0.5 ) - 1 )
 		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
 
 		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
@@ -3063,7 +3178,7 @@ public class AndMod_ExTools {
 		EnumArmorMaterial AMWood = EnumHelper.addArmorMaterial( "WOOD", 3, new int[] { 1, 2, 2, 1 }, 15 );
 		AMWood.customCraftingMaterial = new ItemStack( Block.planks, 1, 0 ).getItem();
 		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
-				Event_MobEquipment.FLAG_OVERWORLD, 0.15 );
+				Event_MobEquipment.FLAG_OVERWORLD, 0.4 );
 		
 		
 		//Wooden Helmet
@@ -3152,7 +3267,9 @@ public class AndMod_ExTools {
 		EnumArmorMaterial AMStone = EnumHelper.addArmorMaterial( "STONE", 4, new int[] { 2, 4, 3, 1 }, 5 );
 		AMStone.customCraftingMaterial = new ItemStack( Block.cobblestone, 1, 0 ).getItem();
 		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
-				Event_MobEquipment.FLAG_ALLMOB, 0.15 );
+				Event_MobEquipment.FLAG_OVERWORLD, 0.3 );
+		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
+				Event_MobEquipment.FLAG_NETHER,    0.2 );
 		
 		
 		//Stone Helmet
@@ -3275,10 +3392,13 @@ public class AndMod_ExTools {
 		//fixme: フラグの有効化とアーマー
 		if ( replaceVanillaTools ) {
 
-			eequip.addMobWeaponEquipment( new ItemStack( Item.swordWood ), Event_MobEquipment.FLAG_ZOMBIE, 0.15 );
-			eequip.addMobWeaponEquipment( new ItemStack( Item.swordStone ), Event_MobEquipment.FLAG_SWORDMAN, 0.15 );
-			eequip.addMobWeaponEquipment( new ItemStack( Item.swordDiamond ), Event_MobEquipment.FLAG_SWORDMAN, 0.15 );
-			eequip.addMobWeaponEquipment( new ItemStack( Item.swordGold ), Event_MobEquipment.FLAG_SWORDMAN, 0.15 );
+			eequip.addMobWeaponEquipment( new ItemStack( Item.swordWood ), Event_MobEquipment.FLAG_OVERWORLD & Event_MobEquipment.FLAG_SWORDMAN, 0.4 );
+			eequip.addMobWeaponEquipment( new ItemStack( Item.swordStone ), Event_MobEquipment.FLAG_OVERWORLD & Event_MobEquipment.FLAG_SWORDMAN, 0.3 );
+			eequip.addMobWeaponEquipment( new ItemStack( Item.swordStone ), Event_MobEquipment.FLAG_NETHER    & Event_MobEquipment.FLAG_SWORDMAN, 0.2 );
+			eequip.addMobWeaponEquipment( new ItemStack( Item.swordDiamond ), Event_MobEquipment.FLAG_OVERWORLD & Event_MobEquipment.FLAG_SWORDMAN, 0.025 );
+			eequip.addMobWeaponEquipment( new ItemStack( Item.swordDiamond ), Event_MobEquipment.FLAG_NETHER    & Event_MobEquipment.FLAG_SWORDMAN, 0.01 );
+			eequip.addMobWeaponEquipment( new ItemStack( Item.swordGold ), Event_MobEquipment.FLAG_OVERWORLD & Event_MobEquipment.FLAG_SWORDMAN, 0.05 );
+			eequip.addMobWeaponEquipment( new ItemStack( Item.swordGold ), Event_MobEquipment.FLAG_NETHER    & Event_MobEquipment.FLAG_SWORDMAN, 0.05 );
 			
 			//Iron Shovel
 			Item.itemsList[Item.shovelIron.itemID] = new Item_Spade( Item.shovelIron.itemID - 256, EnumToolMaterial.IRON ).setUnlocalizedName( "shovelIron" ).func_111206_d( "iron_shovel" );
@@ -3290,7 +3410,7 @@ public class AndMod_ExTools {
 			Item.itemsList[Item.axeIron.itemID] = new Item_Axe( Item.axeIron.itemID - 256, EnumToolMaterial.IRON ).setUnlocalizedName( "hatchetIron" ).func_111206_d( "iron_axe" );
 
 			//Iron Sword
-			Item.itemsList[Item.swordIron.itemID] = new Item_Sword( Item.swordIron.itemID - 256, EnumToolMaterial.IRON ).setUnlocalizedName( "swordIron" ).func_111206_d( "iron_sword" );
+			Item.itemsList[Item.swordIron.itemID] = new Item_Sword( Item.swordIron.itemID - 256, EnumToolMaterial.IRON ).setItemDamageVsBlock( 32 ).setUnlocalizedName( "swordIron" ).func_111206_d( "iron_sword" );
 
 			//Wooden Sword
 			Item.itemsList[Item.swordWood.itemID] = new Item_Sword( Item.swordWood.itemID - 256, EnumToolMaterial.WOOD ).setUnlocalizedName( "swordWood" ).func_111206_d( "wood_sword" );
@@ -3385,7 +3505,8 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_SWORDMAN, 0.15 );
+		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_OVERWORLD & Event_MobEquipment.FLAG_SWORDMAN, 0.05 );
+		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_NETHER    & Event_MobEquipment.FLAG_SWORDMAN, 0.025 );
 		
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"e",
@@ -3501,7 +3622,9 @@ public class AndMod_ExTools {
 		EnumArmorMaterial AMLapisLazuli = EnumHelper.addArmorMaterial( "LAPISLAZULI", 24, new int[] { 2, 7, 5, 2 }, 25 );
 		AMLapisLazuli.customCraftingMaterial = new ItemStack( Block.blockLapis, 1, 0 ).getItem();
 		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
-				Event_MobEquipment.FLAG_ALLMOB, 0.15 );
+				Event_MobEquipment.FLAG_OVERWORLD, 0.05 );
+		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
+				Event_MobEquipment.FLAG_NETHER,    0.025 );
 		
 		
 		//LapisLazuli Helmet
@@ -3659,7 +3782,8 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_SWORDMAN, 0.15 );
+		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_OVERWORLD & Event_MobEquipment.FLAG_SWORDMAN, 0.05 );
+		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_NETHER    & Event_MobEquipment.FLAG_SWORDMAN, 0.025 );
 		
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"e",
@@ -3775,7 +3899,9 @@ public class AndMod_ExTools {
 		EnumArmorMaterial AMRedstone = EnumHelper.addArmorMaterial( "REDSTONE", 20, new int[] { 3, 7, 5, 3 }, 12 );
 		AMRedstone.customCraftingMaterial = new ItemStack( Block.blockRedstone, 1, 0 ).getItem();
 		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
-				Event_MobEquipment.FLAG_ALLMOB, 0.15 );
+				Event_MobEquipment.FLAG_OVERWORLD, 0.05 );
+		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
+				Event_MobEquipment.FLAG_NETHER,    0.025 );
 		
 		
 		//Redstone Helmet
@@ -3955,7 +4081,7 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_SWORDMAN, 0.15 );
+		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_OVERWORLD & Event_MobEquipment.FLAG_SWORDMAN, 0.07 );
 		
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"e",
@@ -4071,7 +4197,7 @@ public class AndMod_ExTools {
 		EnumArmorMaterial AMRainbow = EnumHelper.addArmorMaterial( "RAINBOW", 7, new int[] { 1, 3, 2, 1 }, 7 );
 		AMRainbow.customCraftingMaterial = new ItemStack( getItemIDforCraft( "RainbowShard" ), 1, 0 ).getItem();
 		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
-				Event_MobEquipment.FLAG_ALLMOB, 0.15 );
+				Event_MobEquipment.FLAG_OVERWORLD, 0.07 );
 		
 		
 		//Rainbow Helmet
@@ -4239,7 +4365,7 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_SWORDMAN, 0.15 );
+		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_NETHER    & Event_MobEquipment.FLAG_SWORDMAN, 0.10 );
 		
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"e",
@@ -4355,7 +4481,7 @@ public class AndMod_ExTools {
 		EnumArmorMaterial AMQuartz = EnumHelper.addArmorMaterial( "QUARTZ", 14, new int[] { 2, 6, 5, 2 }, 18 );
 		AMQuartz.customCraftingMaterial = new ItemStack( Block.blockNetherQuartz, 1, 0 ).getItem();
 		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
-				Event_MobEquipment.FLAG_ALLMOB, 0.15 );
+				Event_MobEquipment.FLAG_NETHER,    0.1 );
 		
 		
 		//Quartz Helmet
@@ -4514,7 +4640,8 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_SWORDMAN, 0.15 );
+		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_OVERWORLD & Event_MobEquipment.FLAG_SWORDMAN, 0.025 );
+		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_NETHER    & Event_MobEquipment.FLAG_SWORDMAN, 0.010 );
 		
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"e",
@@ -4630,7 +4757,9 @@ public class AndMod_ExTools {
 		EnumArmorMaterial AMEmerald = EnumHelper.addArmorMaterial( "REAL_EMERALD", 30, new int[] { 3, 7, 6, 3 }, 12 );
 		AMEmerald.customCraftingMaterial = new ItemStack( Item.emerald, 1, 0 ).getItem();
 		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
-				Event_MobEquipment.FLAG_ALLMOB, 0.15 );
+				Event_MobEquipment.FLAG_OVERWORLD, 0.025 );
+		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
+				Event_MobEquipment.FLAG_NETHER,    0.01 );
 		
 		
 		//Emerald Helmet
@@ -4781,7 +4910,7 @@ public class AndMod_ExTools {
 		//Flint Sword
 		id ++;
 
-		aitem[id] = new Item_Sword( aitemID[id], TMFlint )
+		aitem[id] = new Item_Sword( aitemID[id], TMFlint ).setItemDamageVsBlock( 8 )
 		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
 
 		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
@@ -4789,7 +4918,8 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_ZOMBIE, 0.15 );
+		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_OVERWORLD & Event_MobEquipment.FLAG_SWORDMAN, 0.075 );
+		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_NETHER    & Event_MobEquipment.FLAG_SWORDMAN, 0.15 );
 		
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"e",
@@ -4803,7 +4933,7 @@ public class AndMod_ExTools {
 		//Flint Shovel
 		id ++;
 
-		aitem[id] = new Item_Spade( aitemID[id], TMFlint )
+		aitem[id] = new Item_Spade( aitemID[id], TMFlint ).setItemDamageVsEntity( 8 )
 		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
 
 		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
@@ -4823,7 +4953,7 @@ public class AndMod_ExTools {
 		//Flint Pickaxe
 		id ++;
 
-		aitem[id] = new Item_Pickaxe( aitemID[id], TMFlint )
+		aitem[id] = new Item_Pickaxe( aitemID[id], TMFlint ).setItemDamageVsEntity( 8 )
 		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
 
 		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
@@ -4843,7 +4973,7 @@ public class AndMod_ExTools {
 		//Flint Axe
 		id ++;
 
-		aitem[id] = new Item_Axe( aitemID[id], TMFlint )
+		aitem[id] = new Item_Axe( aitemID[id], TMFlint ).setItemDamageVsEntity( 8 )
 		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
 
 		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
@@ -4907,7 +5037,9 @@ public class AndMod_ExTools {
 		EnumArmorMaterial AMFlint = EnumHelper.addArmorMaterial( "FLINT", 6, new int[] { 2, 5, 4, 1 }, 24 );
 		AMFlint.customCraftingMaterial = new ItemStack( Item.flint, 1, 0 ).getItem();
 		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
-				Event_MobEquipment.FLAG_OVERWORLD, 0.15 );
+				Event_MobEquipment.FLAG_OVERWORLD, 0.075 );
+		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
+				Event_MobEquipment.FLAG_NETHER,    0.15 );
 		
 		
 		//Flint Helmet
@@ -5045,7 +5177,7 @@ public class AndMod_ExTools {
 
 
 		fuelh.addFuel( aitemID[id], -1, 200 * 8 );
-		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_ZOMBIE, 0.15 );
+		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_OVERWORLD & Event_MobEquipment.FLAG_SWORDMAN, 0.075 );
 		
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"e",
@@ -5170,14 +5302,14 @@ public class AndMod_ExTools {
 		EnumArmorMaterial AMSlime = EnumHelper.addArmorMaterial( "SLIME", 5, new int[] { 2, 5, 3, 2 }, 49 );
 		AMSlime.customCraftingMaterial = new ItemStack( getBlockID( "SlimeBlock" ), 1, 0 ).getItem();
 		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
-				Event_MobEquipment.FLAG_OVERWORLD, 0.15 );
+				Event_MobEquipment.FLAG_OVERWORLD, 0.075 );
 		
 		
 		//Slime Helmet
 		id ++;
 
 		aitem[id] = new Item_SpecialArmor( aitemID[id], ArmorTexture[armorid], AMSlime, 0 )
-		.setIsDisposable( true ).addEffect( Item_SpecialArmor.EFFECT_COUNTERSTATUS + Potion.weakness.id, ( ( 10 * 20 ) << Item_SpecialArmor.AMP_DURATIONSHIFT ) + ( 0 << Item_SpecialArmor.AMP_AMPLIFIERSHIFT ) + 100, Item_SpecialArmor.FLAG_ANYTIME )
+		.setIsDisposable( true ).addEffect( Item_SpecialArmor.EFFECT_COUNTERSTATUS + Potion.weakness.id, ( ( 10 * 20 ) << Item_SpecialArmor.AMP_DURATIONSHIFT ) + ( 0 << Item_SpecialArmor.AMP_AMPLIFIERSHIFT ) | 100, Item_SpecialArmor.FLAG_ANYTIME )
 		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
 
 		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
@@ -5198,7 +5330,7 @@ public class AndMod_ExTools {
 		id ++;
 
 		aitem[id] = new Item_SpecialArmor( aitemID[id], ArmorTexture[armorid], AMSlime, 1 )
-		.setIsDisposable( true ).addEffect( Item_SpecialArmor.EFFECT_COUNTERSTATUS + Potion.weakness.id, ( ( 10 * 20 ) << Item_SpecialArmor.AMP_DURATIONSHIFT ) + ( 0 << Item_SpecialArmor.AMP_AMPLIFIERSHIFT ) + 100, Item_SpecialArmor.FLAG_ANYTIME )
+		.setIsDisposable( true ).addEffect( Item_SpecialArmor.EFFECT_COUNTERSTATUS + Potion.weakness.id, ( ( 10 * 20 ) << Item_SpecialArmor.AMP_DURATIONSHIFT ) + ( 0 << Item_SpecialArmor.AMP_AMPLIFIERSHIFT ) | 100, Item_SpecialArmor.FLAG_ANYTIME )
 		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
 
 		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
@@ -5220,7 +5352,7 @@ public class AndMod_ExTools {
 		id ++;
 
 		aitem[id] = new Item_SpecialArmor( aitemID[id], ArmorTexture[armorid], AMSlime, 2 )
-		.setIsDisposable( true ).addEffect( Item_SpecialArmor.EFFECT_COUNTERSTATUS + Potion.weakness.id, ( ( 10 * 20 ) << Item_SpecialArmor.AMP_DURATIONSHIFT ) + ( 0 << Item_SpecialArmor.AMP_AMPLIFIERSHIFT ) + 100, Item_SpecialArmor.FLAG_ANYTIME )
+		.setIsDisposable( true ).addEffect( Item_SpecialArmor.EFFECT_COUNTERSTATUS + Potion.weakness.id, ( ( 10 * 20 ) << Item_SpecialArmor.AMP_DURATIONSHIFT ) + ( 0 << Item_SpecialArmor.AMP_AMPLIFIERSHIFT ) | 100, Item_SpecialArmor.FLAG_ANYTIME )
 		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
 
 		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
@@ -5242,7 +5374,7 @@ public class AndMod_ExTools {
 		id ++;
 
 		aitem[id] = new Item_SpecialArmor( aitemID[id], ArmorTexture[armorid], AMSlime, 3 )
-		.setIsDisposable( true ).addEffect( Item_SpecialArmor.EFFECT_COUNTERSTATUS + Potion.weakness.id, ( ( 10 * 20 ) << Item_SpecialArmor.AMP_DURATIONSHIFT ) + ( 0 << Item_SpecialArmor.AMP_AMPLIFIERSHIFT ) + 100, Item_SpecialArmor.FLAG_ANYTIME )
+		.setIsDisposable( true ).addEffect( Item_SpecialArmor.EFFECT_COUNTERSTATUS + Potion.weakness.id, ( ( 10 * 20 ) << Item_SpecialArmor.AMP_DURATIONSHIFT ) + ( 0 << Item_SpecialArmor.AMP_AMPLIFIERSHIFT ) | 100, Item_SpecialArmor.FLAG_ANYTIME )
 		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
 
 		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
@@ -5327,7 +5459,8 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_SWORDMAN, 0.15 );
+		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_OVERWORLD & Event_MobEquipment.FLAG_SWORDMAN, 0.001 );
+		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_NETHER    & Event_MobEquipment.FLAG_SWORDMAN, 0.0025 );
 		
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"e",
@@ -5443,7 +5576,9 @@ public class AndMod_ExTools {
 		EnumArmorMaterial AMStar = EnumHelper.addArmorMaterial( "STAR", 123, new int[] { 5, 11, 9, 5 }, 24 );
 		AMStar.customCraftingMaterial = new ItemStack( Item.netherStar, 1, 0 ).getItem();
 		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
-				Event_MobEquipment.FLAG_ALLMOB, 0.15 );
+				Event_MobEquipment.FLAG_OVERWORLD, 0.001 );
+		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
+				Event_MobEquipment.FLAG_NETHER,    0.0025 );
 		
 		
 		//Star Helmet
@@ -5571,7 +5706,7 @@ public class AndMod_ExTools {
 
 		BlockDispenser.dispenseBehaviorRegistry.putObject( aitem[id], new Event_DispenserArrow() );
 		
-		GameRegistry.addRecipe( new ItemStack( aitem[id], 4 ),
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 64 ),
 				"h",
 				"s",
 				"f",
@@ -5603,7 +5738,8 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_ZOMBIE, 0.15 );
+		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_BONE,   0.15 );
+		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_ROTTEN, 0.05 );
 		
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"e",
@@ -5721,7 +5857,9 @@ public class AndMod_ExTools {
 		EnumArmorMaterial AMBone = EnumHelper.addArmorMaterial( "BONE", 8, new int[] { 2, 5, 4, 2 }, 17 );
 		AMBone.customCraftingMaterial = new ItemStack( Item.skull, 1, 0 ).getItem();
 		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
-				Event_MobEquipment.FLAG_OVERWORLD, 0.15 );
+				Event_MobEquipment.FLAG_BONE,   0.15 );
+		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
+				Event_MobEquipment.FLAG_ROTTEN, 0.05 );
 		
 		
 		//Bone Helmet
@@ -5845,6 +5983,56 @@ public class AndMod_ExTools {
 
 		
 		//fixme: without wither arrow
+		
+		
+		GameRegistry.addRecipe( new ItemStack( Item.skull, 1, 0 ),
+				"sss",
+				"scs",
+				"sss",
+				's', new ItemStack( Item.dyePowder, 1, 15 ),
+				'c', Item.bone );
+		GameRegistry.addRecipe( new ItemStack( Item.dyePowder, 11, 15 ),
+				"s",
+				's', new ItemStack( Item.skull.itemID, 1, 0 ) );
+
+		GameRegistry.addRecipe( new ItemStack( Item.skull, 1, 1 ),
+				"sss",
+				"sos",
+				"sss",
+				's', new ItemStack ( Item.coal, 1, 0 ),
+				'o', new ItemStack ( Item.skull, 1, 0 ) );
+		GameRegistry.addRecipe(new ItemStack( Item.coal, 8, 0 ),
+				"s",
+				's', new ItemStack( Item.skull.itemID, 1, 1 ) );
+
+		GameRegistry.addRecipe( new ItemStack( Item.skull, 1, 2 ),
+				"sss",
+				"sss",
+				"sss",
+				's', Item.rottenFlesh );
+		GameRegistry.addRecipe( new ItemStack( Item.rottenFlesh, 9, 0 ),
+				"s",
+				's', new ItemStack( Item.skull.itemID, 1, 2 ) );
+
+		/* //廃止されました
+		GameRegistry.addRecipe(new ItemStack(Item.skull, 1, 3),
+				"sss",
+				"sss",
+				"sss",
+				's', Item.appleRed );
+		GameRegistry.addRecipe(new ItemStack(Item.appleRed, 9, 0),
+				"s",
+				's', new ItemStack(Item.skull.itemID, 1, 3) );
+		 */
+
+		GameRegistry.addRecipe( new ItemStack( Item.skull, 1, 4 ),
+				"sss",
+				"sss",
+				"sss",
+				's', Item.gunpowder );
+		GameRegistry.addRecipe( new ItemStack( Item.gunpowder, 9, 0 ),
+				"s",
+				's', new ItemStack( Item.skull.itemID, 1, 4 ) );
 	}
 	
 	
@@ -5867,7 +6055,7 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_SWORDMAN, 0.15 );
+		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_OVERWORLD & Event_MobEquipment.FLAG_SWORDMAN, 0.015 );
 		
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"e",
@@ -5980,10 +6168,10 @@ public class AndMod_ExTools {
 
 
 		armorid ++;
-		EnumArmorMaterial AMEnder = EnumHelper.addArmorMaterial( "REAL_Ender", 30, new int[] { 3, 7, 6, 3 }, 12 );
+		EnumArmorMaterial AMEnder = EnumHelper.addArmorMaterial( "ENDER", 30, new int[] { 3, 7, 6, 3 }, 12 );
 		AMEnder.customCraftingMaterial = new ItemStack( Item.eyeOfEnder, 1, 0 ).getItem();
 		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
-				Event_MobEquipment.FLAG_ALLMOB, 0.15 );
+				Event_MobEquipment.FLAG_OVERWORLD, 0.015 );
 		
 		
 		//Ender Helmet
@@ -6117,7 +6305,7 @@ public class AndMod_ExTools {
 
 		BlockDispenser.dispenseBehaviorRegistry.putObject( aitem[id], new Event_DispenserArrow() );
 		
-		GameRegistry.addRecipe( new ItemStack( aitem[id], 4 ),
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 16 ),
 				"h",
 				"s",
 				"f",
@@ -6309,7 +6497,7 @@ public class AndMod_ExTools {
 		
 		BlockDispenser.dispenseBehaviorRegistry.putObject( aitem[id], new Event_DispenserArrow() );
 		
-		GameRegistry.addRecipe( new ItemStack( aitem[id], 4 ),
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 16 ),
 				"h",
 				"s",
 				"f",
@@ -6342,7 +6530,7 @@ public class AndMod_ExTools {
 				'f', Item.feather );
 		
 		
-		
+		//todo: Deprecated
 		//Poison Arrow
 		id ++;
 		
@@ -6358,7 +6546,7 @@ public class AndMod_ExTools {
 		BlockDispenser.dispenseBehaviorRegistry.putObject( aitem[id], new Event_DispenserArrow() );
 		
 		//from Splash Potion of Poison I
-		GameRegistry.addRecipe( new ItemStack( aitem[id], 2 ),
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 4 ),
 				"h",
 				"s",
 				"f",
@@ -6366,7 +6554,7 @@ public class AndMod_ExTools {
 				's', new ItemStack ( Item.stick, 1, 0 ),
 				'f', Item.feather );
 		//from Splash Potion of Poison II
-		GameRegistry.addRecipe( new ItemStack( aitem[id], 4 ),
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 8 ),
 				"h",
 				"s",
 				"f",
@@ -6374,7 +6562,7 @@ public class AndMod_ExTools {
 				's', new ItemStack ( Item.stick, 1, 0 ),
 				'f', Item.feather );
 		//from Splash Potion of Poison I extended
-		GameRegistry.addRecipe( new ItemStack( aitem[id], 4 ),
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 8 ),
 				"h",
 				"s",
 				"f",
@@ -6422,8 +6610,8 @@ public class AndMod_ExTools {
 				'f', Item.feather );
 		
 		
-		
-		//Holy Arrow
+		//todo: Deprecated
+		//Healing Arrow
 		id ++;
 		
 		aitem[id] = new Item_Arrow( aitemID[id], 64 ).setParameters( 1.0, 1.6, 0.0, 0.05, ObjectHeader.toLowerCase() + "textures/entity/" + aitemname[id][0].substring( ObjectHeader.length() ) + ".png" )
@@ -6439,7 +6627,7 @@ public class AndMod_ExTools {
 		BlockDispenser.dispenseBehaviorRegistry.putObject( aitem[id], new Event_DispenserArrow() );
 		
 		//from Splash Potion of Healing I
-		GameRegistry.addRecipe( new ItemStack( aitem[id], 2 ),
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 4 ),
 				"h",
 				"s",
 				"f",
@@ -6447,7 +6635,7 @@ public class AndMod_ExTools {
 				's', new ItemStack ( Item.stick, 1, 0 ),
 				'f', Item.feather );
 		//from Splash Potion of Healing II
-		GameRegistry.addRecipe( new ItemStack( aitem[id], 4 ),
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 8 ),
 				"h",
 				"s",
 				"f",
@@ -6455,7 +6643,7 @@ public class AndMod_ExTools {
 				's', new ItemStack ( Item.stick, 1, 0 ),
 				'f', Item.feather );
 		//from Splash Potion of Healing I extended...?
-		GameRegistry.addRecipe( new ItemStack( aitem[id], 4 ),
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 8 ),
 				"h",
 				"s",
 				"f",
@@ -6487,7 +6675,7 @@ public class AndMod_ExTools {
 		BlockDispenser.dispenseBehaviorRegistry.putObject( aitem[id], new Event_DispenserArrow() );
 		
 		//Splash Potion of Harming I
-		GameRegistry.addRecipe( new ItemStack( aitem[id], 2 ),
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 4 ),
 				"h",
 				"s",
 				"f",
@@ -6495,7 +6683,7 @@ public class AndMod_ExTools {
 				's', new ItemStack ( Item.stick, 1, 0 ),
 				'f', Item.feather );
 		//Splash Potion of Harming II
-		GameRegistry.addRecipe( new ItemStack( aitem[id], 4 ),
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 8 ),
 				"h",
 				"s",
 				"f",
@@ -6503,7 +6691,7 @@ public class AndMod_ExTools {
 				's', new ItemStack ( Item.stick, 1, 0 ),
 				'f', Item.feather );
 		//Splash Potion of Harming I extended...?
-		GameRegistry.addRecipe( new ItemStack( aitem[id], 4 ),
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 8 ),
 				"h",
 				"s",
 				"f",
@@ -6663,7 +6851,7 @@ public class AndMod_ExTools {
 				"h",
 				"s",
 				"f",
-				'h', new ItemStack ( Item.flintAndSteel, 1, fm ),
+				'h', new ItemStack ( Item.blazePowder, 1, fm ),
 				's', new ItemStack ( Item.stick, 1, 0 ),
 				'f', Item.feather );
 		
@@ -6697,7 +6885,7 @@ public class AndMod_ExTools {
 		//Torch Arrow
 		id ++;
 		
-		aitem[id] = new Item_Arrow( aitemID[id], 64 ).setParameters( 1.0, 0.0, 0.0, 0.00, ObjectHeader.toLowerCase() + "textures/entity/" + aitemname[id][0].substring( ObjectHeader.length() ) + ".png" )
+		aitem[id] = new Item_Arrow( aitemID[id], 64 ).setParameters( 1.0, 0.0, 0.0, 0.01, ObjectHeader.toLowerCase() + "textures/entity/" + aitemname[id][0].substring( ObjectHeader.length() ) + ".png" )
 		.addEffect( Struct_Arrow.EFFECT_PLACEBLOCK, Block.torchWood.blockID, 0, 1.0F )
 		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
 
@@ -6708,7 +6896,7 @@ public class AndMod_ExTools {
 		
 		BlockDispenser.dispenseBehaviorRegistry.putObject( aitem[id], new Event_DispenserArrow() );
 		
-		GameRegistry.addRecipe( new ItemStack( aitem[id], 4 ),
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 2 ),
 				"h",
 				"s",
 				"f",
@@ -6760,7 +6948,7 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_SWORDMAN, 0.15 );
+		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_NETHER    & Event_MobEquipment.FLAG_SWORDMAN, 0.05 );
 		
 		fuelh.addFuel( aitemID[id] + 256, -1, 200 * 64 );
 		
@@ -6886,7 +7074,7 @@ public class AndMod_ExTools {
 		EnumArmorMaterial AMBlaze = EnumHelper.addArmorMaterial( "BLAZE", 16, new int[] { 3, 6, 5, 2 }, 20 );
 		AMBlaze.customCraftingMaterial = new ItemStack( getItemIDforCraft( "BlazeQuartz" ), 1, 0 ).getItem();
 		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
-				Event_MobEquipment.FLAG_ALLMOB, 0.15 );
+				Event_MobEquipment.FLAG_NETHER,    0.05 );
 		
 		
 		//Blaze Helmet
@@ -7030,11 +7218,11 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		fuelh.addFuel( aitemID[id] + 256, -1, 200 * 9 );//checkme
+		fuelh.addFuel( aitemID[id] + 256, -1, (int)( 200 * 4.5 ) );//checkme
 		
 		BlockDispenser.dispenseBehaviorRegistry.putObject( aitem[id], new Event_DispenserArrow() );
 		
-		GameRegistry.addRecipe( new ItemStack( aitem[id], 4 ),
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 8 ),
 				"h",
 				"s",
 				"f",
@@ -7065,7 +7253,7 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_ZOMBIE, 0.15 );
+		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_OVERWORLD & Event_MobEquipment.FLAG_SWORDMAN, 0.075 );
 		
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"e",
@@ -7183,7 +7371,7 @@ public class AndMod_ExTools {
 		EnumArmorMaterial AMPumpkin = EnumHelper.addArmorMaterial( "PUMPKIN", 4, new int[] { 1, 3, 3, 1 }, 2 );
 		AMPumpkin.customCraftingMaterial = new ItemStack( Block.pumpkin, 1, 0 ).getItem();
 		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
-				Event_MobEquipment.FLAG_OVERWORLD, 0.15 );
+				Event_MobEquipment.FLAG_OVERWORLD, 0.075 );
 		
 		
 		//Pumpkin Helmet
@@ -7326,7 +7514,7 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_ZOMBIE, 0.15 );
+		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_OVERWORLD & Event_MobEquipment.FLAG_SWORDMAN, 0.05 );
 		
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"e",
@@ -7444,7 +7632,7 @@ public class AndMod_ExTools {
 		EnumArmorMaterial AMLantern = EnumHelper.addArmorMaterial( "LANTERN", 3, new int[] { 2, 3, 3, 1 }, 4 );
 		AMLantern.customCraftingMaterial = new ItemStack( Block.pumpkinLantern, 1, 0 ).getItem();
 		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
-				Event_MobEquipment.FLAG_OVERWORLD, 0.15 );
+				Event_MobEquipment.FLAG_OVERWORLD, 0.05 );
 		
 		
 		//Lantern Helmet
@@ -7590,7 +7778,7 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_SWORDMAN, 0.15 );
+		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_OVERWORLD & Event_MobEquipment.FLAG_SWORDMAN, 0.075 );
 		
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"e",
@@ -7706,7 +7894,7 @@ public class AndMod_ExTools {
 		EnumArmorMaterial AMCactus = EnumHelper.addArmorMaterial( "CACTUS", 5, new int[] { 2, 4, 3, 2 }, 3 );
 		AMCactus.customCraftingMaterial = new ItemStack( Block.cactus, 1, 0 ).getItem();
 		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
-				Event_MobEquipment.FLAG_ALLMOB, 0.15 );
+				Event_MobEquipment.FLAG_OVERWORLD, 0.075 );
 		
 		
 		//Cactus Helmet
@@ -7854,7 +8042,7 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_SWORDMAN, 0.15 );
+		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_NETHER    & Event_MobEquipment.FLAG_SWORDMAN, 0.1 );
 		
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"e",
@@ -7970,7 +8158,7 @@ public class AndMod_ExTools {
 		EnumArmorMaterial AMGlowstone = EnumHelper.addArmorMaterial( "GLOWSTONE", 10, new int[] { 3, 7, 5, 2 }, 16 );
 		AMGlowstone.customCraftingMaterial = new ItemStack( Block.glowStone, 1, 0 ).getItem();
 		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
-				Event_MobEquipment.FLAG_ALLMOB, 0.15 );
+				Event_MobEquipment.FLAG_NETHER,    0.1 );
 		
 		
 		//Glowstone Helmet
@@ -8113,6 +8301,286 @@ public class AndMod_ExTools {
 	}
 
 
+	//point: Ghast Tools
+	private void registerGhastTools( int id, int armorid ) {
+		
+		EnumToolMaterial TMGhast = EnumHelper.addToolMaterial( "Ghast", 3, 2401, 14.0F, 4.0F, 25 );
+		TMGhast.customCraftingMaterial = new ItemStack( getBlockID( "WhiteObsidian" ), 1, 0 ).getItem();
+		
+		
+		//Ghast Sword
+		id ++;
+
+		aitem[id] = new Item_Sword( aitemID[id], TMGhast )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_NETHER    & Event_MobEquipment.FLAG_SWORDMAN, 0.015 );
+		
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				"e",
+				"e",
+				"s",
+				'e', new ItemStack( getBlockID( "WhiteObsidian" ), 1, 0 ),
+				's', new ItemStack( Item.blazeRod, 1, 0 ) );
+
+		
+
+		//Ghast Shovel
+		id ++;
+
+		aitem[id] = new Item_Spade( aitemID[id], TMGhast )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				"e",
+				"s",
+				"s",
+				'e', new ItemStack( getBlockID( "WhiteObsidian" ), 1, 0 ),
+				's', new ItemStack( Item.blazeRod, 1, 0 ) );
+		
+		
+
+		//Ghast Pickaxe
+		id ++;
+
+		aitem[id] = new Item_Pickaxe( aitemID[id], TMGhast )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				"eee",
+				" s ",
+				" s ",
+				'e', new ItemStack( getBlockID( "WhiteObsidian" ), 1, 0 ),
+				's', new ItemStack( Item.blazeRod, 1, 0 ) );
+
+		
+
+		//Ghast Axe
+		id ++;
+
+		aitem[id] = new Item_Axe( aitemID[id], TMGhast )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				"ee",
+				"es",
+				" s",
+				'e', new ItemStack( getBlockID( "WhiteObsidian" ), 1, 0 ),
+				's', new ItemStack( Item.blazeRod, 1, 0 ) );
+
+
+		
+		//Ghast Hoe
+		id ++;
+
+		aitem[id] = new Item_Hoe( aitemID[id], TMGhast )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				"ee",
+				"s ",
+				"s ",
+				'e', new ItemStack( getBlockID( "WhiteObsidian" ), 1, 0 ),
+				's', new ItemStack( Item.blazeRod, 1, 0 ) );
+
+
+		
+		//Ghast Hammer
+		id ++;
+
+		aitem[id] = new Item_Hammer( aitemID[id], TMGhast ).setMaxDamage( (int)( 64 * 37.5 ) - 1 )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				" s ",
+				"eee",
+				" s ",
+				'e', new ItemStack( getBlockID( "WhiteObsidian" ), 1, 0 ),
+				's', new ItemStack( Item.blazeRod, 1, 0 ) );
+
+
+
+
+
+
+		armorid ++;
+		EnumArmorMaterial AMGhast = EnumHelper.addArmorMaterial( "Ghast", 62, new int[] { 4, 9, 7, 4 }, 25 );
+		AMGhast.customCraftingMaterial = new ItemStack( getBlockID( "WhiteObsidian" ), 1, 0 ).getItem();
+		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
+				Event_MobEquipment.FLAG_NETHER,    0.015 );
+		
+		
+		//Ghast Helmet
+		id ++;
+
+		aitem[id] = new Item_SpecialArmor( aitemID[id], ArmorTexture[armorid], AMGhast, 0 )
+		.addEffect( Potion.regeneration.id, 0, Item_SpecialArmor.FLAG_FULLEQ )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				"sss",
+				"s s",
+				's', new ItemStack( getBlockID( "WhiteObsidian" ), 1, 0 ) );
+
+
+
+		//Ghast Chestplate
+		id ++;
+
+		aitem[id] = new Item_SpecialArmor( aitemID[id], ArmorTexture[armorid], AMGhast, 1 )
+		.addEffect( Potion.regeneration.id, 0, Item_SpecialArmor.FLAG_FULLEQ )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				"s s",
+				"sss",
+				"sss",
+				's', new ItemStack( getBlockID( "WhiteObsidian" ), 1, 0 ) );
+
+
+		
+		//Ghast Leggings
+		id ++;
+
+		aitem[id] = new Item_SpecialArmor( aitemID[id], ArmorTexture[armorid], AMGhast, 2 )
+		.addEffect( Potion.regeneration.id, 0, Item_SpecialArmor.FLAG_FULLEQ )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+		GameRegistry.addRecipe(new ItemStack( aitem[id], 1 ),
+				"sss",
+				"s s",
+				"s s",
+				's', new ItemStack( getBlockID( "WhiteObsidian" ), 1, 0 ) );
+
+		
+
+		//Ghast Boots
+		id ++;
+
+		aitem[id] = new Item_SpecialArmor( aitemID[id], ArmorTexture[armorid], AMGhast, 3 )
+		.addEffect( Potion.regeneration.id, 0, Item_SpecialArmor.FLAG_FULLEQ )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				"s s",
+				"s s",
+				's', new ItemStack( getBlockID( "WhiteObsidian" ), 1, 0 ) );
+
+		
+		
+		//Ghast Shears
+		id ++;
+
+		aitem[id] = new Item_Shears( aitemID[id], TMGhast )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				" s",
+				"s ",
+				's', new ItemStack( getBlockID( "WhiteObsidian" ), 1, 0 ) );
+
+				
+
+		//Ghast Bow
+		id ++;
+
+		aitem[id] = new Item_Bow( aitemID[id], TMGhast ).setParameters( 3.0F, 1.25F, 1.0F, 0.0F ).setCraftingMaterial( getBlockID( "WhiteObsidian" ) )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				" st",
+				"s t",
+				" st",
+				's', new ItemStack ( getBlockID( "WhiteObsidian" ), 1, 0 ),
+				't', Item.silk );
+
+
+
+		//Ghast Arrow
+		id++;
+
+		aitem[id] = new Item_Arrow( aitemID[id], 64 ).setParameters( 2.0, 3.2, 0.0, 0.05, ObjectHeader.toLowerCase() + "textures/entity/" + aitemname[id][0].substring( ObjectHeader.length() ) + ".png" )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+		BlockDispenser.dispenseBehaviorRegistry.putObject( aitem[id], new Event_DispenserArrow() );
+		
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 16 ),
+				"h",
+				"s",
+				"f",
+				'h', new ItemStack ( Item.ghastTear, 1, 0 ),
+				's', new ItemStack ( Item.stick, 1, 0 ),
+				'f', Item.feather );
+
+		
+	}
+	
+
 
 	
 	private void registerArrows() {
@@ -8144,7 +8612,7 @@ public class AndMod_ExTools {
 			earrow.addArrow( getItemIDforCraft( "GoldenArrow" ) );
 			earrow.addArrow( getItemIDforCraft( "PoisonArrow" ) );
 			earrow.addArrow( getItemIDforCraft( "ParalysisArrow" ) );
-			earrow.addArrow( getItemIDforCraft( "HolyArrow" ) );
+			earrow.addArrow( getItemIDforCraft( "HealingArrow" ) );
 			earrow.addArrow( getItemIDforCraft( "CursedArrow" ) );
 			earrow.addArrow( getItemIDforCraft( "BlowArrow" ) );
 			earrow.addArrow( getItemIDforCraft( "AttractionArrow" ) );
@@ -8159,6 +8627,7 @@ public class AndMod_ExTools {
 		if ( isEnabled( "Lantern" ) ) earrow.addArrow( getItemIDforCraft( "LanternArrow" ) );
 		if ( isEnabled( "Cactus" ) ) earrow.addArrow( getItemIDforCraft( "CactusArrow" ) );
 		if ( isEnabled( "Glowstone" ) ) earrow.addArrow( getItemIDforCraft( "GlowstoneArrow" ) );
+		if ( isEnabled( "Ghast" ) ) earrow.addArrow( getItemIDforCraft( "GhastArrow" ) );
 		
 		MinecraftForge.EVENT_BUS.register( earrow );
 
@@ -8169,7 +8638,109 @@ public class AndMod_ExTools {
 
 	
 	
-	
+	private void registerHammerRecipe() {
+		Item_Hammer.addRepairingRecipe( new ItemStack( Item.shovelIron, 	1, fm ), new ItemStack( Item.ingotIron, 1, 0 ), 2 );
+		Item_Hammer.addRepairingRecipe( new ItemStack( Item.pickaxeIron, 	1, fm ), new ItemStack( Item.ingotIron, 3, 0 ), 2 );
+		Item_Hammer.addRepairingRecipe( new ItemStack( Item.axeIron, 		1, fm ), new ItemStack( Item.ingotIron, 3, 0 ), 2 );
+		Item_Hammer.addRepairingRecipe( new ItemStack( Item.flintAndSteel, 	1, fm ), new ItemStack( Item.ingotIron, 1, 0 ), 2 );
+		Item_Hammer.addRepairingRecipe( new ItemStack( Item.swordIron, 		1, fm ), new ItemStack( Item.ingotIron, 2, 0 ), 2 );
+		Item_Hammer.addRepairingRecipe( new ItemStack( Item.swordGold, 		1, fm ), new ItemStack( Item.ingotGold, 2, 0 ), 2 );
+		Item_Hammer.addRepairingRecipe( new ItemStack( Item.shovelGold, 	1, fm ), new ItemStack( Item.ingotGold, 1, 0 ), 2 );
+		Item_Hammer.addRepairingRecipe( new ItemStack( Item.pickaxeGold, 	1, fm ), new ItemStack( Item.ingotGold, 3, 0 ), 2 );
+		Item_Hammer.addRepairingRecipe( new ItemStack( Item.axeGold, 		1, fm ), new ItemStack( Item.ingotGold, 3, 0 ), 2 );
+		Item_Hammer.addRepairingRecipe( new ItemStack( Item.hoeIron, 		1, fm ), new ItemStack( Item.ingotIron, 2, 0 ), 2 );
+		Item_Hammer.addRepairingRecipe( new ItemStack( Item.hoeGold, 		1, fm ), new ItemStack( Item.ingotGold, 2, 0 ), 2 );
+		Item_Hammer.addRepairingRecipe( new ItemStack( Item.helmetChain, 	1, fm ), new ItemStack( Item.ingotIron, 2, 0 ), 2 );
+		Item_Hammer.addRepairingRecipe( new ItemStack( Item.plateChain, 	1, fm ), new ItemStack( Item.ingotIron, 4, 0 ), 2 );
+		Item_Hammer.addRepairingRecipe( new ItemStack( Item.legsChain, 		1, fm ), new ItemStack( Item.ingotIron, 3, 0 ), 2 );
+		Item_Hammer.addRepairingRecipe( new ItemStack( Item.bootsChain, 	1, fm ), new ItemStack( Item.ingotIron, 2, 0 ), 2 );
+		Item_Hammer.addRepairingRecipe( new ItemStack( Item.helmetIron, 	1, fm ), new ItemStack( Item.ingotIron, 5, 0 ), 2 );
+		Item_Hammer.addRepairingRecipe( new ItemStack( Item.plateIron, 		1, fm ), new ItemStack( Item.ingotIron, 8, 0 ), 2 );
+		Item_Hammer.addRepairingRecipe( new ItemStack( Item.legsIron, 		1, fm ), new ItemStack( Item.ingotIron, 7, 0 ), 2 );
+		Item_Hammer.addRepairingRecipe( new ItemStack( Item.bootsIron, 		1, fm ), new ItemStack( Item.ingotIron, 4, 0 ), 2 );
+		Item_Hammer.addRepairingRecipe( new ItemStack( Item.helmetGold, 	1, fm ), new ItemStack( Item.ingotGold, 5, 0 ), 2 );
+		Item_Hammer.addRepairingRecipe( new ItemStack( Item.plateGold, 		1, fm ), new ItemStack( Item.ingotGold, 8, 0 ), 2 );
+		Item_Hammer.addRepairingRecipe( new ItemStack( Item.legsGold, 		1, fm ), new ItemStack( Item.ingotGold, 7, 0 ), 2 );
+		Item_Hammer.addRepairingRecipe( new ItemStack( Item.bootsGold, 		1, fm ), new ItemStack( Item.ingotGold, 4, 0 ), 2 );
+		Item_Hammer.addRepairingRecipe( new ItemStack( Item.shears, 		1, fm ), new ItemStack( Item.ingotIron, 2, 0 ), 2 );
+		
+		if ( isEnabled( "Coal" ) ) {
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "CoalSword" ), 		1, fm ), new ItemStack( Item.coal, 18, 0 ), 2 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "CoalShovel" ), 		1, fm ), new ItemStack( Item.coal,  9, 0 ), 2 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "CoalPickaxe" ), 		1, fm ), new ItemStack( Item.coal, 27, 0 ), 2 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "CoalAxe" ),	 		1, fm ), new ItemStack( Item.coal, 27, 0 ), 2 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "CoalHoe" ), 			1, fm ), new ItemStack( Item.coal, 18, 0 ), 2 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "CoalHelmet" ), 		1, fm ), new ItemStack( Item.coal, 45, 0 ), 2 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "CoalChestplate" ), 	1, fm ), new ItemStack( Item.coal, 72, 0 ), 2 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "CoalLeggings" ), 	1, fm ), new ItemStack( Item.coal, 63, 0 ), 2 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "CoalBoots" ), 		1, fm ), new ItemStack( Item.coal, 36, 0 ), 2 | Item_Hammer.FLAG_UNREPAIRABLE );
+		}
+		
+		if ( isEnabled( "ExVanilla" ) ) {
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "GoldenShears" ),  1, fm ), new ItemStack( Item.ingotGold, 2, 0 ), 2 );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "DiamondShears" ), 1, fm ), new ItemStack( Item.diamond, 2, 0 ), 3 | Item_Hammer.FLAG_UNREPAIRABLE );
+		}
+		
+		if ( isEnabled( "LapisLazuli" ) ) {
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "LapisLazuliSword" ), 		1, fm ), new ItemStack( Item.dyePowder, 18, 4 ), 2 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "LapisLazuliShovel" ), 		1, fm ), new ItemStack( Item.dyePowder,  9, 4 ), 2 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "LapisLazuliPickaxe" ), 		1, fm ), new ItemStack( Item.dyePowder, 27, 4 ), 2 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "LapisLazuliAxe" ),	 		1, fm ), new ItemStack( Item.dyePowder, 27, 4 ), 2 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "LapisLazuliHoe" ), 			1, fm ), new ItemStack( Item.dyePowder, 18, 4 ), 2 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "LapisLazuliHelmet" ), 		1, fm ), new ItemStack( Item.dyePowder, 45, 4 ), 2 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "LapisLazuliChestplate" ), 	1, fm ), new ItemStack( Item.dyePowder, 72, 4 ), 2 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "LapisLazuliLeggings" ),	 	1, fm ), new ItemStack( Item.dyePowder, 63, 4 ), 2 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "LapisLazuliBoots" ), 		1, fm ), new ItemStack( Item.dyePowder, 36, 4 ), 2 | Item_Hammer.FLAG_UNREPAIRABLE );
+		}
+		
+		if ( isEnabled( "Redstone" ) ) {
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "RedstoneSword" ), 		1, fm ), new ItemStack( Item.redstone, 18, 0 ), 3 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "RedstoneShovel" ), 		1, fm ), new ItemStack( Item.redstone,  9, 0 ), 3 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "RedstonePickaxe" ), 		1, fm ), new ItemStack( Item.redstone, 27, 0 ), 3 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "RedstoneAxe" ),	 		1, fm ), new ItemStack( Item.redstone, 27, 0 ), 3 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "RedstoneHoe" ), 			1, fm ), new ItemStack( Item.redstone, 18, 0 ), 3 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "RedstoneHelmet" ), 		1, fm ), new ItemStack( Item.redstone, 45, 0 ), 3 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "RedstoneChestplate" ), 	1, fm ), new ItemStack( Item.redstone, 72, 0 ), 3 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "RedstoneLeggings" ), 	1, fm ), new ItemStack( Item.redstone, 63, 0 ), 3 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "RedstoneBoots" ), 		1, fm ), new ItemStack( Item.redstone, 36, 0 ), 3 | Item_Hammer.FLAG_UNREPAIRABLE );
+		}
+		
+		if ( isEnabled( "Quartz" ) ) {
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "QuartzSword" ), 		1, fm ), new ItemStack( Item.netherQuartz,  8, 0 ), 2 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "QuartzShovel" ), 	1, fm ), new ItemStack( Item.netherQuartz,  4, 0 ), 2 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "QuartzPickaxe" ), 	1, fm ), new ItemStack( Item.netherQuartz, 12, 0 ), 2 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "QuartzAxe" ),	 	1, fm ), new ItemStack( Item.netherQuartz, 12, 0 ), 2 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "QuartzHoe" ), 		1, fm ), new ItemStack( Item.netherQuartz,  8, 0 ), 2 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "QuartzHelmet" ), 	1, fm ), new ItemStack( Item.netherQuartz, 20, 0 ), 2 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "QuartzChestplate" ), 1, fm ), new ItemStack( Item.netherQuartz, 32, 0 ), 2 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "QuartzLeggings" ), 	1, fm ), new ItemStack( Item.netherQuartz, 28, 0 ), 2 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "QuartzBoots" ), 		1, fm ), new ItemStack( Item.netherQuartz, 16, 0 ), 2 | Item_Hammer.FLAG_UNREPAIRABLE );
+		}
+		
+		if ( isEnabled( "Emerald" ) ) {
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "EmeraldSword" ), 		1, fm ), new ItemStack( Item.emerald, 2, 0 ), 3 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "EmeraldShovel" ), 		1, fm ), new ItemStack( Item.emerald, 1, 0 ), 3 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "EmeraldPickaxe" ), 		1, fm ), new ItemStack( Item.emerald, 3, 0 ), 3 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "EmeraldAxe" ),	 		1, fm ), new ItemStack( Item.emerald, 3, 0 ), 3 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "EmeraldHoe" ), 			1, fm ), new ItemStack( Item.emerald, 2, 0 ), 3 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "EmeraldHelmet" ), 		1, fm ), new ItemStack( Item.emerald, 5, 0 ), 3 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "EmeraldChestplate" ),	1, fm ), new ItemStack( Item.emerald, 8, 0 ), 3 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "EmeraldLeggings" ), 		1, fm ), new ItemStack( Item.emerald, 7, 0 ), 3 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "EmeraldBoots" ), 		1, fm ), new ItemStack( Item.emerald, 4, 0 ), 3 | Item_Hammer.FLAG_UNREPAIRABLE );
+		}
+		
+		if ( isEnabled( "Glowstone" ) ) {
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "GlowstoneSword" ), 		1, fm ), new ItemStack( Item.glowstone,  8, 0 ), 2 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "GlowstoneShovel" ), 		1, fm ), new ItemStack( Item.glowstone,  4, 0 ), 2 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "GlowstonePickaxe" ), 	1, fm ), new ItemStack( Item.glowstone, 12, 0 ), 2 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "GlowstoneAxe" ),	 		1, fm ), new ItemStack( Item.glowstone, 12, 0 ), 2 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "GlowstoneHoe" ), 		1, fm ), new ItemStack( Item.glowstone,  8, 0 ), 2 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "GlowstoneHelmet" ), 		1, fm ), new ItemStack( Item.glowstone, 20, 0 ), 2 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "GlowstoneChestplate" ),	1, fm ), new ItemStack( Item.glowstone, 32, 0 ), 2 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "GlowstoneLeggings" ), 	1, fm ), new ItemStack( Item.glowstone, 28, 0 ), 2 | Item_Hammer.FLAG_UNREPAIRABLE );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "GlowstoneBoots" ), 		1, fm ), new ItemStack( Item.glowstone, 16, 0 ), 2 | Item_Hammer.FLAG_UNREPAIRABLE );
+		}
+	}
 	
 
 

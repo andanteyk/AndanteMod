@@ -89,22 +89,22 @@ public class Item_Pickaxe extends ItemPickaxe {
 		if ( block == Block.obsidian )
 			return toolMaterial.getHarvestLevel() >= 3;
 
-			else if (	block == Block.oreDiamond || block == Block.blockDiamond ||
-					block == Block.oreEmerald || block == Block.blockEmerald ||
-					block == Block.oreGold || block == Block.blockGold||
-					block == Block.oreRedstone || block == Block.oreRedstoneGlowing )
-				return toolMaterial.getHarvestLevel() >= 2;
+		else if (	block == Block.oreDiamond || block == Block.blockDiamond ||
+				block == Block.oreEmerald || block == Block.blockEmerald ||
+				block == Block.oreGold || block == Block.blockGold||
+				block == Block.oreRedstone || block == Block.oreRedstoneGlowing )
+			return toolMaterial.getHarvestLevel() >= 2;
 
-				else if (	block == Block.oreIron || block == Block.blockIron ||
-						block == Block.oreLapis || block == Block.blockLapis )
-					return toolMaterial.getHarvestLevel() >= 1;
+		else if (	block == Block.oreIron || block == Block.blockIron ||
+				block == Block.oreLapis || block == Block.blockLapis )
+			return toolMaterial.getHarvestLevel() >= 1;
 
-					else if ( 	block.blockMaterial == Material.rock ||
-							block.blockMaterial == Material.iron ||
-							block.blockMaterial == Material.anvil )
-						return true;
+		else if ( 	block.blockMaterial == Material.rock ||
+				block.blockMaterial == Material.iron ||
+				block.blockMaterial == Material.anvil )
+			return true;
 
-					else return false;
+		else return super.canHarvestBlock( block );
 
 	}
 

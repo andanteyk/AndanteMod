@@ -240,17 +240,17 @@ public class AndMod_ExBucket {
 				GameRegistry.addRecipe( new ItemStack( Block.stone, 64, 0 ),
 						"l",
 						"w",
-						'l', new ItemStack( getItemIDforCraft( "GoldenBucketLava" ), 1, 0 ),
-						'w', new ItemStack( getItemIDforCraft( "GoldenBucketWater" ), 1, 0 ) );
+						'l', new ItemStack( getItemIDforCraft( "GoldenBucketLava" ), 1, fm ),
+						'w', new ItemStack( getItemIDforCraft( "GoldenBucketWater" ), 1, fm ) );
 				GameRegistry.addRecipe( new ItemStack( Block.obsidian, 1, 0 ),
 						"w",
 						"l",
-						'l', new ItemStack( getItemIDforCraft( "GoldenBucketLava" ), 1, 0 ),
-						'w', new ItemStack( getItemIDforCraft( "GoldenBucketWater" ), 1, 0 ) );
+						'l', new ItemStack( getItemIDforCraft( "GoldenBucketLava" ), 1, fm ),
+						'w', new ItemStack( getItemIDforCraft( "GoldenBucketWater" ), 1, fm ) );
 				GameRegistry.addRecipe(new ItemStack(Block.cobblestone, 64, 0),
 						"wl",
-						'l', new ItemStack( getItemIDforCraft( "GoldenBucketLava" ), 1, 0 ),
-						'w', new ItemStack( getItemIDforCraft( "GoldenBucketWater" ), 1, 0 ) );
+						'l', new ItemStack( getItemIDforCraft( "GoldenBucketLava" ), 1, fm ),
+						'w', new ItemStack( getItemIDforCraft( "GoldenBucketWater" ), 1, fm ) );
 			}
 		}
 		
