@@ -24,7 +24,6 @@ public class Item_SpecialArmor extends Item_Armor implements ISpecialArmor {
 	protected double consumptionRatio		= 1.0;			//ダメージを受けたときの耐久値の減少比です。多くすると壊れやすくなります。
 
 
-	//note: ＊のあるものは実装が暴力的なので、余裕があったら修正してください。
 	public static final int EFFECT_IGNITION			=  256 + 0;		//自分に点火します。火だるまです。
 	public static final int EFFECT_EXTINGUISHMENT	=  256 + 1;		//自分に火がついているとき、自動で消火します。
 	public static final int EFFECT_AUTOREPAIRING	=  256 + 2;		//耐久値が回復します。
@@ -33,8 +32,8 @@ public class Item_SpecialArmor extends Item_Armor implements ISpecialArmor {
 	public static final int EFFECT_SECRETEATING		=  256 + 5;		//満腹度を回復します。
 	public static final int EFFECT_EXPLOSION		=  256 + 6;		//自爆します。
 	public static final int EFFECT_HEALTHEXTEND		=  256 + 7;		//最大体力を上昇させます。WIP
-	public static final int EFFECT_GRAVITY			=  256 + 8;		//重力を増大させます。＊
-	public static final int EFFECT_FEATHERFALLING	=  256 + 9;		//落下速度を緩和します。＊
+	public static final int EFFECT_GRAVITY			=  256 + 8;		//重力を増大させます。
+	public static final int EFFECT_FEATHERFALLING	=  256 + 9;		//落下速度を緩和します。
 	public static final int EFFECT_LUMINESCENCE		=  256 + 10;	//発光させます。
 	public static final int EFFECT_INVINCIBLE		=  384 + 0;		//あらゆるダメージに対し、抵抗力を得ます。
 	public static final int EFFECT_RESISTALL		=  384 + 1;		//鎧で防御可能なダメージに対し、抵抗力を得ます。

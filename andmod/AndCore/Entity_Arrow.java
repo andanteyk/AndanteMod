@@ -437,8 +437,10 @@ public class Entity_Arrow extends EntityArrow implements IProjectile
 
 					//point: 着弾時の効果
 					if ( !worldObj.isRemote ) {
-						onHitGround( mop.sideHit, getArrowProperty() );
-						onHitGround( mop.sideHit, getBowProperty() );
+						boolean flag1 = onHitGround( mop.sideHit, getArrowProperty() );
+						boolean flag2 = onHitGround( mop.sideHit, getBowProperty() );
+						if ( flag1 || flag2 )
+							setDead();
 					}
 
 					//checkme: 火矢を消すためのコードです。位置があっているかどうか、確認してください
@@ -650,9 +652,12 @@ public class Entity_Arrow extends EntityArrow implements IProjectile
 	/**
 	 * 特殊効果を適用します。
 	 * @param eliv		適用する生物。
-	 * @param arrow		特殊効果データ。
+	 * @param arrow		特殊効果データ。	
+	 * @return			適用されればtrueを返します。
 	 */
-	protected void applyEffect( EntityLivingBase eliv, Struct_Arrow arrow ) {
+	protected boolean applyEffect( EntityLivingBase eliv, Struct_Arrow arrow ) {
+		
+		boolean ret = false;
 
 		for ( int i = 0; i < arrow.EffectIDList.size(); i ++ )
 
@@ -685,8 +690,12 @@ public class Entity_Arrow extends EntityArrow implements IProjectile
 					entityitem.delayBeforeCanPickup = 10;
 					worldObj.spawnEntityInWorld( entityitem );
 				}
+				else continue;
+				
+				ret = true;
 			}
 
+		return ret;
 	}
 
 
@@ -694,9 +703,12 @@ public class Entity_Arrow extends EntityArrow implements IProjectile
 	 * ブロックに刺さった時に特殊効果を適用します。
 	 * @param side		刺さった面。
 	 * @param arrow		特殊効果。
+	 * @return			適用されればtrueを返します。
 	 */
-	protected void onHitGround( int side, Struct_Arrow arrow ) {
+	protected boolean onHitGround( int side, Struct_Arrow arrow ) {
 
+		boolean ret = false;
+		
 		for ( int i = 0; i < arrow.EffectIDList.size(); i ++ )
 
 			if ( rand.nextFloat() < arrow.ProbabilityList.get( i ) ) {
@@ -718,13 +730,19 @@ public class Entity_Arrow extends EntityArrow implements IProjectile
 
 				else if ( id == Struct_Arrow.EFFECT_PLACEBLOCK )
 					if ( placeBlock( xTile, yTile, zTile, side, amp & 0xFFF, amp >> 12 ) ) setDead();
+					else;
 
-
+				else continue;
+				
+				ret = true;
 			}
 
 
-		if ( !isDead && isBurning() )
+		if ( !isDead && isBurning() ) {
 			placeBlock( xTile, yTile, zTile, side, Block.fire.blockID, 0 );
+		}
+		
+		return ret;
 	}
 
 

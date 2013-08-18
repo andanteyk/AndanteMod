@@ -92,13 +92,14 @@ public class Item_Arrow extends Item {
 	public ItemStack onItemRightClick( ItemStack items, World world, EntityPlayer eplayer ) {
 
 		//debug
+		/*
 		if( !world.isRemote ) {
 			long itime = world.getChunkFromBlockCoords( (int)Math.round( eplayer.posX ), (int)Math.round( eplayer.posZ ) ).field_111204_q;
 			eplayer.addChatMessage( "Inhabited Time: " + itime );
 			double probbase = world.func_110746_b( eplayer.posX, eplayer.posY, eplayer.posZ );
 			eplayer.addChatMessage( "Probability Base : " + ( probbase * 100.0 ) );
 		}
-		
+		*/
 		
 		//投げられないほうがいいと思いますです
 		//eplayer.setItemInUse( items, getMaxItemUseDuration( items ) );

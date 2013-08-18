@@ -12,6 +12,8 @@ import net.minecraft.item.EnumToolMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
+import net.minecraft.util.WeightedRandomChestContent;
+import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.EnumHelper;
 import net.minecraftforge.common.MinecraftForge;
@@ -94,8 +96,10 @@ public class AndMod_ExTools {
 	public static Proxy_Common proxy;
 
 
-	//fixme: ここに特殊オプション変数を挿入
-	private boolean replaceVanillaTools = true;
+	//point: 特殊オプション変数
+	private boolean replaceVanillaTools = false;
+	private int mobEquipmentProbability = 100;
+	private boolean addChestContents = true;
 	
 	
 	Handler_Fuel fuelh;
@@ -1519,7 +1523,7 @@ public class AndMod_ExTools {
 			for ( int i = 0; i < atypename.length; i ++ ) {
 				if ( atypename[i] == null ) continue;
 
-				Property prop = cfg.get( "ToolType", atypename[i] + "Tools", aitemIDdefault[i] );
+				Property prop = cfg.get( "ToolType", atypename[i], aitemIDdefault[i] );
 				aitemIDdefault[i] = prop.getInt();
 			}
 
@@ -1533,17 +1537,57 @@ public class AndMod_ExTools {
 				BlockProp.comment = "BlockID - " + ablockname[i][1];
 				ablockID[i] = BlockProp.getInt();
 			}
+			
+			
+			Property prop = cfg.get( "General", "mobEquipmentProbability", mobEquipmentProbability );
+			prop.comment = "Specify mobs are to be equipped with new equipment. [0-10000;default=100]";
+			mobEquipmentProbability = prop.getInt();
+			
+			prop = cfg.get( "General", "replaceVanillaTools", replaceVanillaTools );
+			prop.comment = "Specify that you want to replace the tools of vanilla. [true/false]";
+			replaceVanillaTools = prop.getBoolean( replaceVanillaTools );
+			
+			prop = cfg.get( "General", "addChestContents", addChestContents );
+			prop.comment = "Specify whether to include a new item to the chest. [true/false]";
+			addChestContents = prop.getBoolean( addChestContents );
+			
+			
+			prop = cfg.get( "Axe", "showBreakingEffect", Item_Axe.showBreakingEffect );
+			prop.comment = "Specify that you want to display the destruction effects during harvesting. [true/false]";
+			Item_Axe.showBreakingEffect = prop.getBoolean( Item_Axe.showBreakingEffect );
+			
+			prop = cfg.get( "Axe", "canGatherItem", Item_Axe.canGatherItem );
+			prop.comment = "Specify that you want to harvest together the items in during harvesting. [true/false]";
+			Item_Axe.canGatherItem = prop.getBoolean( Item_Axe.canGatherItem );
+			
+			prop = cfg.get( "Axe", "canCutAll", Item_Axe.canCutAll );
+			prop.comment = "Specify that harvesting function is available. [0-2] 0=Disabled, 1=Disabled(Enabled to sneak in), 2=Enabled(Disabled to sneak in)";
+			Item_Axe.canCutAll = prop.getInt();
+			
+			prop = cfg.get( "Axe", "canCutLeaves", Item_Axe.canCutLeaves );
+			prop.comment = "Specify that you can also harvest leaves. [true/false]";
+			Item_Axe.canCutLeaves = prop.getBoolean( Item_Axe.canCutLeaves );
+			
+			prop = cfg.get( "Axe", "durabilityMode", Item_Axe.durabilityMode );
+			prop.comment = "Specify how the decrease of the value of durability during harvesting. [0-2] 0=decrease each time the harvesting, 1=Same as 0(Only within the range of durability), 2=Only decrease 1";
+			Item_Axe.durabilityMode = prop.getInt();
+			
+			prop = cfg.get( "Axe", "loopLimit", Item_Axe.loopLimit );
+			prop.comment = "Specify the limits of the harvesting range. [1-] Note: The number is too large to cause delay or freeze.";
+			Item_Axe.loopLimit = prop.getInt();
+			
+			prop = cfg.get( "Axe", "breakLimit", Item_Axe.breakLimit );
+			prop.comment = "Specify the limits of the number of harvesting. [1-] Note: The number is too large to cause delay or freeze.";
+			Item_Axe.breakLimit = prop.getInt();
+			
+			
 
 		} catch ( Exception e ) {
 			FMLLog.log(Level.SEVERE, e, "AndMod_" + ObjectHeader + "Error has occured");
 		} finally {	cfg.save();	}
 
 
-		//fixme:
-		//バニラツールの置換？
-		//Utility_ToolConfig.loadConfig( event.getSuggestedConfigurationFile() );
-
-
+		
 
 		for ( int i = 0; i < aitemID.length; i ++ )
 			if ( aitemname[i][0] != null )
@@ -1651,9 +1695,9 @@ public class AndMod_ExTools {
 		
 		
 		if ( isEnabled( "Coal" ) ) {
-			//Coal Block //fixme: delete creative tabs
+			//Coal Block
 			id ++;
-			ablock[id] = new Block_Base( ablockID[id], Material.rock ).setHardness( 3.0F ).setResistance( 5.0F ).setStepSound( Block.soundStoneFootstep ).setCreativeTab( CreativeTabs.tabBlock )
+			ablock[id] = new Block_Base( ablockID[id], Material.rock ).setHardness( 3.0F ).setResistance( 5.0F ).setStepSound( Block.soundStoneFootstep )//.setCreativeTab( CreativeTabs.tabBlock )
 			.setUnlocalizedName( ablockname[id][0] ).func_111022_d( ablockname[id][0] );
 
 			GameRegistry.registerBlock( ablock[id], ablockname[id][0] );
@@ -1820,7 +1864,7 @@ public class AndMod_ExTools {
 		id += 16; armorid ++;
 
 		
-		if ( isEnabled( "ExArcher" ) )
+		if ( isEnabled( "ExArcher" ) && isEnabled( "ExArcher2" ) )
 			registerExArcher( id, armorid );
 		id += 32;
 
@@ -1934,13 +1978,17 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_OVERWORLD & Event_MobEquipment.FLAG_SWORDMAN, 0.001 );
-		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_NETHER    & Event_MobEquipment.FLAG_SWORDMAN, 0.001 );
-		
 		{
 			ItemStack items = new ItemStack( aitem[id], 1, 0 );
 			items.addEnchantment( Enchantment.looting, 3 );
 			items.addEnchantment( Enchantment.unbreaking, 1 );
+			
+			eequip.addMobWeaponEquipment( items, Event_MobEquipment.FLAG_OVERWORLD & Event_MobEquipment.FLAG_SWORDMAN, 0.001 );
+			eequip.addMobWeaponEquipment( items, Event_MobEquipment.FLAG_NETHER    & Event_MobEquipment.FLAG_SWORDMAN, 0.001 );
+			
+			addChestContent( ChestGenHooks.STRONGHOLD_CORRIDOR, items, 1, 1, 1 );
+			addChestContent( ChestGenHooks.STRONGHOLD_CROSSING, items, 1, 1, 1 );
+			
 			GameRegistry.addRecipe( items,
 					"e",
 					"e",
@@ -1965,6 +2013,10 @@ public class AndMod_ExTools {
 			ItemStack items = new ItemStack( aitem[id], 1, 0 );
 			items.addEnchantment( Enchantment.silkTouch, 1 );
 			items.addEnchantment( Enchantment.unbreaking, 1 );
+			
+			addChestContent( ChestGenHooks.STRONGHOLD_CORRIDOR, items, 1, 1, 1 );
+			addChestContent( ChestGenHooks.STRONGHOLD_CROSSING, items, 1, 1, 1 );
+			
 			GameRegistry.addRecipe( items,
 				"e",
 				"s",
@@ -1989,6 +2041,10 @@ public class AndMod_ExTools {
 			ItemStack items = new ItemStack( aitem[id], 1, 0 );
 			items.addEnchantment( Enchantment.fortune, 3 );
 			items.addEnchantment( Enchantment.unbreaking, 1 );
+			
+			addChestContent( ChestGenHooks.STRONGHOLD_CORRIDOR, items, 1, 1, 1 );
+			addChestContent( ChestGenHooks.STRONGHOLD_CROSSING, items, 1, 1, 1 );
+			
 			GameRegistry.addRecipe( items,
 					"eee",
 					" s ",
@@ -2013,6 +2069,10 @@ public class AndMod_ExTools {
 			ItemStack items = new ItemStack( aitem[id], 1, 0 );
 			items.addEnchantment( Enchantment.fortune, 3 );
 			items.addEnchantment( Enchantment.unbreaking, 1 );
+			
+			addChestContent( ChestGenHooks.STRONGHOLD_CORRIDOR, items, 1, 1, 1 );
+			addChestContent( ChestGenHooks.STRONGHOLD_CROSSING, items, 1, 1, 1 );
+			
 			GameRegistry.addRecipe( items,
 					"ee",
 					"es",
@@ -2035,7 +2095,11 @@ public class AndMod_ExTools {
 
 		{
 			ItemStack items = new ItemStack( aitem[id], 1, 0 );
-			items.addEnchantment( Enchantment.unbreaking, 1 );
+			items.addEnchantment( Enchantment.unbreaking, 10 );
+			
+			addChestContent( ChestGenHooks.STRONGHOLD_CORRIDOR, items, 1, 1, 1 );
+			addChestContent( ChestGenHooks.STRONGHOLD_CROSSING, items, 1, 1, 1 );
+			
 			GameRegistry.addRecipe( items,
 					"ee",
 					"s ",
@@ -2059,6 +2123,10 @@ public class AndMod_ExTools {
 		{
 			ItemStack items = new ItemStack( aitem[id], 1 );
 			items.addEnchantment( Enchantment.unbreaking, 3 );
+			
+			addChestContent( ChestGenHooks.STRONGHOLD_CORRIDOR, items, 1, 1, 1 );
+			addChestContent( ChestGenHooks.STRONGHOLD_CROSSING, items, 1, 1, 1 );
+			
 			GameRegistry.addRecipe( items,
 					" s ",
 					"eee",
@@ -2074,10 +2142,30 @@ public class AndMod_ExTools {
 		armorid ++;
 		EnumArmorMaterial AMGlass = EnumHelper.addArmorMaterial( "GLASS", 1, new int[] { 6, 16, 12, 6 }, 99 );
 		AMGlass.customCraftingMaterial = Item.itemsList[ getBlockID( "CrystalGlass" ) ];
-		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
-				Event_MobEquipment.FLAG_OVERWORLD, 0.001 );
-		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
-				Event_MobEquipment.FLAG_NETHER,    0.001 );
+		
+		ItemStack helmet = new ItemStack( aitemID[id + 1] + 256, 1, 0 );
+		ItemStack chestplate = new ItemStack( aitemID[id + 2] + 256, 1, 0 );
+		ItemStack leggings = new ItemStack( aitemID[id + 3] + 256, 1, 0 );
+		ItemStack boots = new ItemStack( aitemID[id + 4] + 256, 1, 0 );
+		
+		helmet.addEnchantment( Enchantment.unbreaking, 3 );
+		chestplate.addEnchantment( Enchantment.unbreaking, 3 );
+		leggings.addEnchantment( Enchantment.unbreaking, 3 );
+		boots.addEnchantment( Enchantment.unbreaking, 3 );
+		
+		
+		
+		eequip.addMobArmorEquipment( helmet, chestplate, leggings, boots, Event_MobEquipment.FLAG_OVERWORLD, 0.001 );
+		eequip.addMobArmorEquipment( helmet, chestplate, leggings, boots, Event_MobEquipment.FLAG_NETHER,    0.001 );
+		
+		addChestContent( ChestGenHooks.STRONGHOLD_CORRIDOR, helmet, 1, 1, 1 );
+		addChestContent( ChestGenHooks.STRONGHOLD_CROSSING, helmet, 1, 1, 1 );
+		addChestContent( ChestGenHooks.STRONGHOLD_CORRIDOR, chestplate, 1, 1, 1 );
+		addChestContent( ChestGenHooks.STRONGHOLD_CROSSING, chestplate, 1, 1, 1 );
+		addChestContent( ChestGenHooks.STRONGHOLD_CORRIDOR, leggings, 1, 1, 1 );
+		addChestContent( ChestGenHooks.STRONGHOLD_CROSSING, leggings, 1, 1, 1 );
+		addChestContent( ChestGenHooks.STRONGHOLD_CORRIDOR, boots, 1, 1, 1 );
+		addChestContent( ChestGenHooks.STRONGHOLD_CROSSING, boots, 1, 1, 1 );
 		
 		
 		//Glass Helmet
@@ -2092,15 +2180,12 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		{
-			ItemStack items = new ItemStack( aitem[id], 1, 0 );
-			items.addEnchantment( Enchantment.unbreaking, 3 );
-			GameRegistry.addRecipe( items,
-				"sss",
-				"s s",
-				's', new ItemStack( getBlockID( "CrystalGlass" ), 1, 0 ) );
-		}
-
+		GameRegistry.addRecipe( helmet,
+			"sss",
+			"s s",
+			's', new ItemStack( getBlockID( "CrystalGlass" ), 1, 0 ) );
+	
+		
 
 		//Glass Chestplate
 		id ++;
@@ -2114,16 +2199,13 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		{
-			ItemStack items = new ItemStack( aitem[id], 1, 0 );
-			items.addEnchantment( Enchantment.unbreaking, 3 );
-			GameRegistry.addRecipe( items,
-					"s s",
-					"sss",
-					"sss",
-					's', new ItemStack( getBlockID( "CrystalGlass" ), 1, 0 ) );
-		}
-
+		GameRegistry.addRecipe( chestplate,
+				"s s",
+				"sss",
+				"sss",
+				's', new ItemStack( getBlockID( "CrystalGlass" ), 1, 0 ) );
+	
+			
 		
 		//Glass Leggings
 		id ++;
@@ -2137,15 +2219,12 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		{
-			ItemStack items = new ItemStack( aitem[id], 1, 0 );
-			items.addEnchantment( Enchantment.unbreaking, 3 );
-			GameRegistry.addRecipe( items,
-				"sss",
-				"s s",
-				"s s",
-				's', new ItemStack( getBlockID( "CrystalGlass" ), 1, 0 ) );
-		}
+		GameRegistry.addRecipe( leggings,
+			"sss",
+			"s s",
+			"s s",
+			's', new ItemStack( getBlockID( "CrystalGlass" ), 1, 0 ) );
+	
 		
 
 		//Glass Boots
@@ -2160,14 +2239,11 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		{
-			ItemStack items = new ItemStack( aitem[id], 1, 0 );
-			items.addEnchantment( Enchantment.unbreaking, 3 );
-			GameRegistry.addRecipe( items,
-					"s s",
-					"s s",
-					's', new ItemStack( getBlockID( "CrystalGlass" ), 1, 0 ) );
-		}
+		GameRegistry.addRecipe( boots,
+				"s s",
+				"s s",
+				's', new ItemStack( getBlockID( "CrystalGlass" ), 1, 0 ) );
+	
 		
 
 		//Glass Bow
@@ -2186,6 +2262,10 @@ public class AndMod_ExTools {
 			ItemStack items = new ItemStack( aitem[id], 1, 0 );
 			items.addEnchantment( Enchantment.unbreaking, 1 );
 			items.addEnchantment( Enchantment.infinity, 1 );
+			
+			addChestContent( ChestGenHooks.STRONGHOLD_CORRIDOR, items, 1, 1, 1 );
+			addChestContent( ChestGenHooks.STRONGHOLD_CROSSING, items, 1, 1, 1 );
+			
 			GameRegistry.addRecipe( items,
 					" st",
 					"s t",
@@ -2208,6 +2288,9 @@ public class AndMod_ExTools {
 
 
 		BlockDispenser.dispenseBehaviorRegistry.putObject( aitem[id], new Event_DispenserArrow() );
+		
+		addChestContent( ChestGenHooks.STRONGHOLD_CORRIDOR, new ItemStack( aitem[id] ), 16, 64, 1 );
+		addChestContent( ChestGenHooks.STRONGHOLD_CROSSING, new ItemStack( aitem[id] ), 16, 64, 1 );
 		
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 4 ),
 				"h",
@@ -2518,7 +2601,7 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		fuelh.addFuel( aitemID[id], -1, 200 * 80 );
+		fuelh.addFuel( aitemID[id] + 256, -1, 200 * 80 );
 		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_OVERWORLD & Event_MobEquipment.FLAG_SWORDMAN, 0.05 );
 		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_NETHER    & Event_MobEquipment.FLAG_SWORDMAN, 0.025 );
 		
@@ -2542,7 +2625,7 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		fuelh.addFuel( aitemID[id], -1, 200 * 80 );
+		fuelh.addFuel( aitemID[id] + 256, -1, 200 * 80 );
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"e",
 				"s",
@@ -2563,7 +2646,7 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		fuelh.addFuel( aitemID[id], -1, 200 * 80 );
+		fuelh.addFuel( aitemID[id] + 256, -1, 200 * 80 );
 
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"eee",
@@ -2585,7 +2668,7 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		fuelh.addFuel( aitemID[id], -1, 200 * 80 );
+		fuelh.addFuel( aitemID[id] + 256, -1, 200 * 80 );
 
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"ee",
@@ -2607,7 +2690,7 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		fuelh.addFuel( aitemID[id], -1, 200 * 80 );
+		fuelh.addFuel( aitemID[id] + 256, -1, 200 * 80 );
 
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"ee",
@@ -2661,7 +2744,7 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		fuelh.addFuel( aitemID[id], -1, 200 * 80 );
+		fuelh.addFuel( aitemID[id] + 256, -1, 200 * 80 );
 
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"sss",
@@ -2681,7 +2764,7 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		fuelh.addFuel( aitemID[id], -1, 200 * 80 );
+		fuelh.addFuel( aitemID[id] + 256, -1, 200 * 80 );
 
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"s s",
@@ -2702,7 +2785,7 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		fuelh.addFuel( aitemID[id], -1, 200 * 80 );
+		fuelh.addFuel( aitemID[id] + 256, -1, 200 * 80 );
 
 		GameRegistry.addRecipe(new ItemStack( aitem[id], 1 ),
 				"sss",
@@ -2723,7 +2806,7 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		fuelh.addFuel( aitemID[id], -1, 200 * 80 );
+		fuelh.addFuel( aitemID[id] + 256, -1, 200 * 80 );
 
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"s s",
@@ -2743,7 +2826,7 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		fuelh.addFuel( aitemID[id], -1, 200 * 80 );
+		fuelh.addFuel( aitemID[id] + 256, -1, 200 * 80 );
 			
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				" st",
@@ -2766,7 +2849,7 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		fuelh.addFuel( aitemID[id], -1, 200 * 2 );
+		fuelh.addFuel( aitemID[id] + 256, -1, 200 * 2 );
 		BlockDispenser.dispenseBehaviorRegistry.putObject( aitem[id], new Event_DispenserArrow() );
 		
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 4 ),
@@ -2926,7 +3009,7 @@ public class AndMod_ExTools {
 		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
 				Event_MobEquipment.FLAG_OVERWORLD, 0.05 );
 		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
-				Event_MobEquipment.FLAG_NETHER,    0.1 );
+				Event_MobEquipment.FLAG_NETHER,    0.10 );
 		
 		
 		//Obsidian Helmet
@@ -3192,7 +3275,7 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		fuelh.addFuel( aitemID[id], -1, 200 );
+		fuelh.addFuel( aitemID[id] + 256, -1, 200 );
 
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"sss",
@@ -3212,7 +3295,7 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		fuelh.addFuel( aitemID[id], -1, 200 );
+		fuelh.addFuel( aitemID[id] + 256, -1, 200 );
 
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"s s",
@@ -3233,7 +3316,7 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		fuelh.addFuel( aitemID[id], -1, 200 );
+		fuelh.addFuel( aitemID[id] + 256, -1, 200 );
 
 		GameRegistry.addRecipe(new ItemStack( aitem[id], 1 ),
 				"sss",
@@ -3254,7 +3337,7 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		fuelh.addFuel( aitemID[id], -1, 200 );
+		fuelh.addFuel( aitemID[id] + 256, -1, 200 );
 
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"s s",
@@ -3283,8 +3366,6 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		fuelh.addFuel( aitemID[id], -1, 200 );
-
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"sss",
 				"s s",
@@ -3302,8 +3383,6 @@ public class AndMod_ExTools {
 		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
-
-		fuelh.addFuel( aitemID[id], -1, 200 );
 
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"s s",
@@ -3324,8 +3403,6 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		fuelh.addFuel( aitemID[id], -1, 200 );
-
 		GameRegistry.addRecipe(new ItemStack( aitem[id], 1 ),
 				"sss",
 				"s s",
@@ -3344,8 +3421,6 @@ public class AndMod_ExTools {
 		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
-
-		fuelh.addFuel( aitemID[id], -1, 200 );
 
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"s s",
@@ -3389,7 +3464,7 @@ public class AndMod_ExTools {
 
 		
 		
-		//fixme: フラグの有効化とアーマー
+		//point: フラグの有効化とアーマー
 		if ( replaceVanillaTools ) {
 
 			eequip.addMobWeaponEquipment( new ItemStack( Item.swordWood ), Event_MobEquipment.FLAG_OVERWORLD & Event_MobEquipment.FLAG_SWORDMAN, 0.4 );
@@ -3410,7 +3485,7 @@ public class AndMod_ExTools {
 			Item.itemsList[Item.axeIron.itemID] = new Item_Axe( Item.axeIron.itemID - 256, EnumToolMaterial.IRON ).setUnlocalizedName( "hatchetIron" ).func_111206_d( "iron_axe" );
 
 			//Iron Sword
-			Item.itemsList[Item.swordIron.itemID] = new Item_Sword( Item.swordIron.itemID - 256, EnumToolMaterial.IRON ).setItemDamageVsBlock( 32 ).setUnlocalizedName( "swordIron" ).func_111206_d( "iron_sword" );
+			Item.itemsList[Item.swordIron.itemID] = new Item_Sword( Item.swordIron.itemID - 256, EnumToolMaterial.IRON ).setUnlocalizedName( "swordIron" ).func_111206_d( "iron_sword" );
 
 			//Wooden Sword
 			Item.itemsList[Item.swordWood.itemID] = new Item_Sword( Item.swordWood.itemID - 256, EnumToolMaterial.WOOD ).setUnlocalizedName( "swordWood" ).func_111206_d( "wood_sword" );
@@ -4371,7 +4446,7 @@ public class AndMod_ExTools {
 				"e",
 				"e",
 				"s",
-				'e', new ItemStack( Block.blockNetherQuartz, 1, 0 ),
+				'e', new ItemStack( Block.blockNetherQuartz, 1, fm ),
 				's', new ItemStack( Item.stick, 1, 0 ) );
 
 		
@@ -4391,7 +4466,7 @@ public class AndMod_ExTools {
 				"e",
 				"s",
 				"s",
-				'e', new ItemStack( Block.blockNetherQuartz, 1, 0 ),
+				'e', new ItemStack( Block.blockNetherQuartz, 1, fm ),
 				's', new ItemStack( Item.stick, 1, 0 ) );
 		
 		
@@ -4411,7 +4486,7 @@ public class AndMod_ExTools {
 				"eee",
 				" s ",
 				" s ",
-				'e', new ItemStack( Block.blockNetherQuartz, 1, 0 ),
+				'e', new ItemStack( Block.blockNetherQuartz, 1, fm ),
 				's', new ItemStack( Item.stick, 1, 0 ) );
 
 		
@@ -4431,7 +4506,7 @@ public class AndMod_ExTools {
 				"ee",
 				"es",
 				" s",
-				'e', new ItemStack( Block.blockNetherQuartz, 1, 0 ),
+				'e', new ItemStack( Block.blockNetherQuartz, 1, fm ),
 				's', new ItemStack( Item.stick, 1, 0 ) );
 
 
@@ -4451,7 +4526,7 @@ public class AndMod_ExTools {
 				"ee",
 				"s ",
 				"s ",
-				'e', new ItemStack( Block.blockNetherQuartz, 1, 0 ),
+				'e', new ItemStack( Block.blockNetherQuartz, 1, fm ),
 				's', new ItemStack( Item.stick, 1, 0 ) );
 
 
@@ -4471,7 +4546,7 @@ public class AndMod_ExTools {
 				" s ",
 				"eee",
 				" s ",
-				'e', new ItemStack( Block.blockNetherQuartz, 1, 0 ),
+				'e', new ItemStack( Block.blockNetherQuartz, 1, fm ),
 				's', new ItemStack( Item.stick, 1, 0 ) );
 
 
@@ -4479,7 +4554,7 @@ public class AndMod_ExTools {
 
 		armorid ++;
 		EnumArmorMaterial AMQuartz = EnumHelper.addArmorMaterial( "QUARTZ", 14, new int[] { 2, 6, 5, 2 }, 18 );
-		AMQuartz.customCraftingMaterial = new ItemStack( Block.blockNetherQuartz, 1, 0 ).getItem();
+		AMQuartz.customCraftingMaterial = new ItemStack( Block.blockNetherQuartz, 1, fm ).getItem();
 		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
 				Event_MobEquipment.FLAG_NETHER,    0.1 );
 		
@@ -4498,7 +4573,7 @@ public class AndMod_ExTools {
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"sss",
 				"s s",
-				's', new ItemStack( Block.blockNetherQuartz, 1, 0 ) );
+				's', new ItemStack( Block.blockNetherQuartz, 1, fm ) );
 
 
 
@@ -4517,7 +4592,7 @@ public class AndMod_ExTools {
 				"s s",
 				"sss",
 				"sss",
-				's', new ItemStack( Block.blockNetherQuartz, 1, 0 ) );
+				's', new ItemStack( Block.blockNetherQuartz, 1, fm ) );
 
 
 		
@@ -4536,7 +4611,7 @@ public class AndMod_ExTools {
 				"sss",
 				"s s",
 				"s s",
-				's', new ItemStack( Block.blockNetherQuartz, 1, 0 ) );
+				's', new ItemStack( Block.blockNetherQuartz, 1, fm ) );
 
 		
 
@@ -4554,7 +4629,7 @@ public class AndMod_ExTools {
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"s s",
 				"s s",
-				's', new ItemStack( Block.blockNetherQuartz, 1, 0 ) );
+				's', new ItemStack( Block.blockNetherQuartz, 1, fm ) );
 
 
 		
@@ -4572,7 +4647,7 @@ public class AndMod_ExTools {
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				" s",
 				"s ",
-				's', new ItemStack( Block.blockNetherQuartz, 1, 0 ) );
+				's', new ItemStack( Block.blockNetherQuartz, 1, fm ) );
 
 		
 
@@ -4591,7 +4666,7 @@ public class AndMod_ExTools {
 				" st",
 				"s t",
 				" st",
-				's', new ItemStack ( Block.blockNetherQuartz, 1, 0 ),
+				's', new ItemStack ( Block.blockNetherQuartz, 1, fm ),
 				't', Item.silk );
 
 
@@ -4642,6 +4717,8 @@ public class AndMod_ExTools {
 
 		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_OVERWORLD & Event_MobEquipment.FLAG_SWORDMAN, 0.025 );
 		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_NETHER    & Event_MobEquipment.FLAG_SWORDMAN, 0.010 );
+		
+		addChestContent( ChestGenHooks.VILLAGE_BLACKSMITH, new ItemStack( aitem[id], 1, 0 ), 1, 1, 2 );
 		
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"e",
@@ -4772,13 +4849,15 @@ public class AndMod_ExTools {
 		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
-
+		
+		addChestContent( ChestGenHooks.VILLAGE_BLACKSMITH, new ItemStack( aitem[id], 1, 0 ), 1, 1, 2 );
+		
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"sss",
 				"s s",
 				's', new ItemStack( Item.emerald, 1, 0 ) );
 
-
+		
 
 		//Emerald Chestplate
 		id ++;
@@ -4791,13 +4870,15 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
+		addChestContent( ChestGenHooks.VILLAGE_BLACKSMITH, new ItemStack( aitem[id], 1, 0 ), 1, 1, 2 );
+		
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"s s",
 				"sss",
 				"sss",
 				's', new ItemStack( Item.emerald, 1, 0 ) );
 
-
+		
 		
 		//Emerald Leggings
 		id ++;
@@ -4810,6 +4891,8 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
+		addChestContent( ChestGenHooks.VILLAGE_BLACKSMITH, new ItemStack( aitem[id], 1, 0 ), 1, 1, 2 );
+		
 		GameRegistry.addRecipe(new ItemStack( aitem[id], 1 ),
 				"sss",
 				"s s",
@@ -4817,7 +4900,7 @@ public class AndMod_ExTools {
 				's', new ItemStack( Item.emerald, 1, 0 ) );
 
 		
-
+		
 		//Emerald Boots
 		id ++;
 
@@ -4829,12 +4912,14 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
+		addChestContent( ChestGenHooks.VILLAGE_BLACKSMITH, new ItemStack( aitem[id], 1, 0 ), 1, 1, 2 );
+		
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"s s",
 				"s s",
 				's', new ItemStack( Item.emerald, 1, 0 ) );
 
-
+		
 		
 		//Emerald Shears
 		id ++;
@@ -5176,7 +5261,7 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		fuelh.addFuel( aitemID[id], -1, 200 * 8 );
+		fuelh.addFuel( aitemID[id] + 256, -1, 200 * 8 );
 		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_OVERWORLD & Event_MobEquipment.FLAG_SWORDMAN, 0.075 );
 		
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
@@ -5199,7 +5284,7 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		fuelh.addFuel( aitemID[id], -1, 200 * 8 );
+		fuelh.addFuel( aitemID[id] + 256, -1, 200 * 8 );
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"e",
 				"s",
@@ -5220,7 +5305,7 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		fuelh.addFuel( aitemID[id], -1, 200 * 8 );
+		fuelh.addFuel( aitemID[id] + 256, -1, 200 * 8 );
 
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"eee",
@@ -5242,7 +5327,7 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		fuelh.addFuel( aitemID[id], -1, 200 * 8 );
+		fuelh.addFuel( aitemID[id] + 256, -1, 200 * 8 );
 
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"ee",
@@ -5264,7 +5349,7 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		fuelh.addFuel( aitemID[id], -1, 200 * 8 );
+		fuelh.addFuel( aitemID[id] + 256, -1, 200 * 8 );
 
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"ee",
@@ -5317,7 +5402,7 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		fuelh.addFuel( aitemID[id], -1, 200 * 8 );
+		fuelh.addFuel( aitemID[id] + 256, -1, 200 * 8 );
 
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"sss",
@@ -5338,7 +5423,7 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		fuelh.addFuel( aitemID[id], -1, 200 * 8 );
+		fuelh.addFuel( aitemID[id] + 256, -1, 200 * 8 );
 
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"s s",
@@ -5360,7 +5445,7 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		fuelh.addFuel( aitemID[id], -1, 200 * 8 );
+		fuelh.addFuel( aitemID[id] + 256, -1, 200 * 8 );
 
 		GameRegistry.addRecipe(new ItemStack( aitem[id], 1 ),
 				"sss",
@@ -5382,7 +5467,7 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		fuelh.addFuel( aitemID[id], -1, 200 * 8 );
+		fuelh.addFuel( aitemID[id] + 256, -1, 200 * 8 );
 
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"s s",
@@ -5402,7 +5487,7 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		fuelh.addFuel( aitemID[id], -1, 200 * 8 );
+		fuelh.addFuel( aitemID[id] + 256, -1, 200 * 8 );
 			
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				" st",
@@ -5425,7 +5510,7 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
-		fuelh.addFuel( aitemID[id], -1, 200 * 2 );
+		fuelh.addFuel( aitemID[id] + 256, -1, 200 * 2 );
 		BlockDispenser.dispenseBehaviorRegistry.putObject( aitem[id], new Event_DispenserArrow() );
 		
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 4 ),
@@ -5460,7 +5545,10 @@ public class AndMod_ExTools {
 
 
 		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_OVERWORLD & Event_MobEquipment.FLAG_SWORDMAN, 0.001 );
-		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_NETHER    & Event_MobEquipment.FLAG_SWORDMAN, 0.0025 );
+		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_NETHER    & Event_MobEquipment.FLAG_SWORDMAN, 0.004 );
+		
+		addChestContent( ChestGenHooks.STRONGHOLD_CORRIDOR, new ItemStack( aitem[id] ), 1, 1, 1 );
+		addChestContent( ChestGenHooks.STRONGHOLD_CROSSING, new ItemStack( aitem[id] ), 1, 1, 1 );
 		
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"e",
@@ -5482,6 +5570,9 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
+		addChestContent( ChestGenHooks.STRONGHOLD_CORRIDOR, new ItemStack( aitem[id] ), 1, 1, 1 );
+		addChestContent( ChestGenHooks.STRONGHOLD_CROSSING, new ItemStack( aitem[id] ), 1, 1, 1 );
+		
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"e",
 				"s",
@@ -5502,6 +5593,9 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
+		addChestContent( ChestGenHooks.STRONGHOLD_CORRIDOR, new ItemStack( aitem[id] ), 1, 1, 1 );
+		addChestContent( ChestGenHooks.STRONGHOLD_CROSSING, new ItemStack( aitem[id] ), 1, 1, 1 );
+		
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"eee",
 				" s ",
@@ -5522,6 +5616,9 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
+		addChestContent( ChestGenHooks.STRONGHOLD_CORRIDOR, new ItemStack( aitem[id] ), 1, 1, 1 );
+		addChestContent( ChestGenHooks.STRONGHOLD_CROSSING, new ItemStack( aitem[id] ), 1, 1, 1 );
+		
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"ee",
 				"es",
@@ -5542,6 +5639,9 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
+		addChestContent( ChestGenHooks.STRONGHOLD_CORRIDOR, new ItemStack( aitem[id] ), 1, 1, 1 );
+		addChestContent( ChestGenHooks.STRONGHOLD_CROSSING, new ItemStack( aitem[id] ), 1, 1, 1 );
+		
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"ee",
 				"s ",
@@ -5562,6 +5662,9 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
+		addChestContent( ChestGenHooks.STRONGHOLD_CORRIDOR, new ItemStack( aitem[id] ), 1, 1, 1 );
+		addChestContent( ChestGenHooks.STRONGHOLD_CROSSING, new ItemStack( aitem[id] ), 1, 1, 1 );
+		
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				" s ",
 				"eee",
@@ -5578,7 +5681,7 @@ public class AndMod_ExTools {
 		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
 				Event_MobEquipment.FLAG_OVERWORLD, 0.001 );
 		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
-				Event_MobEquipment.FLAG_NETHER,    0.0025 );
+				Event_MobEquipment.FLAG_NETHER,    0.004 );
 		
 		
 		//Star Helmet
@@ -5592,6 +5695,9 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
+		addChestContent( ChestGenHooks.STRONGHOLD_CORRIDOR, new ItemStack( aitem[id] ), 1, 1, 1 );
+		addChestContent( ChestGenHooks.STRONGHOLD_CROSSING, new ItemStack( aitem[id] ), 1, 1, 1 );
+		
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"sss",
 				"s s",
@@ -5610,6 +5716,9 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
+		addChestContent( ChestGenHooks.STRONGHOLD_CORRIDOR, new ItemStack( aitem[id] ), 1, 1, 1 );
+		addChestContent( ChestGenHooks.STRONGHOLD_CROSSING, new ItemStack( aitem[id] ), 1, 1, 1 );
+		
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"s s",
 				"sss",
@@ -5629,6 +5738,9 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
+		addChestContent( ChestGenHooks.STRONGHOLD_CORRIDOR, new ItemStack( aitem[id] ), 1, 1, 1 );
+		addChestContent( ChestGenHooks.STRONGHOLD_CROSSING, new ItemStack( aitem[id] ), 1, 1, 1 );
+		
 		GameRegistry.addRecipe(new ItemStack( aitem[id], 1 ),
 				"sss",
 				"s s",
@@ -5648,6 +5760,9 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
+		addChestContent( ChestGenHooks.STRONGHOLD_CORRIDOR, new ItemStack( aitem[id] ), 1, 1, 1 );
+		addChestContent( ChestGenHooks.STRONGHOLD_CROSSING, new ItemStack( aitem[id] ), 1, 1, 1 );
+		
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				"s s",
 				"s s",
@@ -5666,6 +5781,9 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
+		addChestContent( ChestGenHooks.STRONGHOLD_CORRIDOR, new ItemStack( aitem[id] ), 1, 1, 1 );
+		addChestContent( ChestGenHooks.STRONGHOLD_CROSSING, new ItemStack( aitem[id] ), 1, 1, 1 );
+		
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				" s",
 				"s ",
@@ -5684,6 +5802,9 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 
+		addChestContent( ChestGenHooks.STRONGHOLD_CORRIDOR, new ItemStack( aitem[id] ), 1, 1, 1 );
+		addChestContent( ChestGenHooks.STRONGHOLD_CROSSING, new ItemStack( aitem[id] ), 1, 1, 1 );
+		
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
 				" st",
 				"s t",
@@ -5705,6 +5826,9 @@ public class AndMod_ExTools {
 
 
 		BlockDispenser.dispenseBehaviorRegistry.putObject( aitem[id], new Event_DispenserArrow() );
+		
+		addChestContent( ChestGenHooks.STRONGHOLD_CORRIDOR, new ItemStack( aitem[id] ), 16, 64, 1 );
+		addChestContent( ChestGenHooks.STRONGHOLD_CROSSING, new ItemStack( aitem[id] ), 16, 64, 1 );
 		
 		GameRegistry.addRecipe( new ItemStack( aitem[id], 64 ),
 				"h",
@@ -5982,7 +6106,28 @@ public class AndMod_ExTools {
 				'f', Item.feather );
 
 		
-		//fixme: without wither arrow
+		//@Deprecated
+		//Wither Arrow
+		id++;
+
+		aitem[id] = new Item_Arrow( aitemID[id], 64 ).setParameters( 1.1, 2.0, 0.2, 0.03, ObjectHeader.toLowerCase() + "textures/entity/" + aitemname[id][0].substring( ObjectHeader.length() ) + ".png" )
+		.addEffect( Potion.wither.id, 2, 20 * 6, 0.8F )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+		BlockDispenser.dispenseBehaviorRegistry.putObject( aitem[id], new Event_DispenserArrow() );
+		
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 8 ),
+				"h",
+				"s",
+				"f",
+				'h', new ItemStack ( Item.skull, 1, 1 ),
+				's', new ItemStack ( Item.bone, 1, 0 ),
+				'f', Item.feather );
 		
 		
 		GameRegistry.addRecipe( new ItemStack( Item.skull, 1, 0 ),
@@ -6034,6 +6179,7 @@ public class AndMod_ExTools {
 				"s",
 				's', new ItemStack( Item.skull.itemID, 1, 4 ) );
 	}
+	
 	
 	
 	//point: Ender Tools
@@ -7096,7 +7242,7 @@ public class AndMod_ExTools {
 				"s s",
 				's', new ItemStack( getItemIDforCraft( "BlazeQuartz" ), 1, 0 ) );
 
-
+		
 
 		//Blaze Chestplate
 		id ++;
@@ -7758,6 +7904,7 @@ public class AndMod_ExTools {
 
 		
 	}
+	
 	
 	
 	//point: Cactus Tools
@@ -8574,7 +8721,7 @@ public class AndMod_ExTools {
 				"s",
 				"f",
 				'h', new ItemStack ( Item.ghastTear, 1, 0 ),
-				's', new ItemStack ( Item.stick, 1, 0 ),
+				's', new ItemStack ( Item.blazeRod, 1, 0 ),
 				'f', Item.feather );
 
 		
@@ -8601,8 +8748,11 @@ public class AndMod_ExTools {
 		if ( isEnabled( "Emerald" ) ) earrow.addArrow( getItemIDforCraft( "EmeraldArrow" ) );
 		if ( isEnabled( "Slime" ) ) earrow.addArrow( getItemIDforCraft( "SlimeArrow" ) );
 		if ( isEnabled( "Star" ) ) earrow.addArrow( getItemIDforCraft( "StarArrow" ) );
-		if ( isEnabled( "Bone" ) ) earrow.addArrow( getItemIDforCraft( "BoneArrow" ) );
-		//without wither arrow
+		if ( isEnabled( "Bone" ) ) {
+			earrow.addArrow( getItemIDforCraft( "BoneArrow" ) );
+			earrow.addArrow( getItemIDforCraft( "WitherArrow" ) );
+		}
+		
 		if ( isEnabled( "Ender" ) ) earrow.addArrow( getItemIDforCraft( "EnderArrow" ) );
 		if ( isEnabled( "ExArcher" ) ) {
 			earrow.addArrow( getItemIDforCraft( "WoodenArrow" ) );
@@ -8623,6 +8773,7 @@ public class AndMod_ExTools {
 			earrow.addArrow( getItemIDforCraft( "MagicalArrow" ) );
 			earrow.addArrow( getItemIDforCraft( "TorchArrow" ) );	
 		}
+		if ( isEnabled( "Blaze" ) ) earrow.addArrow( getItemIDforCraft( "BlazeArrow" ) );
 		if ( isEnabled( "Pumpkin" ) ) earrow.addArrow( getItemIDforCraft( "PumpkinArrow" ) );
 		if ( isEnabled( "Lantern" ) ) earrow.addArrow( getItemIDforCraft( "LanternArrow" ) );
 		if ( isEnabled( "Cactus" ) ) earrow.addArrow( getItemIDforCraft( "CactusArrow" ) );
@@ -8743,6 +8894,12 @@ public class AndMod_ExTools {
 	}
 	
 
+	
+	
+	private void addChestContent( String category, ItemStack items, int min, int max, int weight ) {
+		if ( addChestContents )
+			ChestGenHooks.addItem( category, new WeightedRandomChestContent( items, min, max, weight ) );
+	}
 
 
 	public static int getItemID( String name ) {
@@ -8783,8 +8940,9 @@ public class AndMod_ExTools {
 	private boolean isEnabled( String typeName ) {
 
 		for ( int i = 0; i < atypename.length; i ++ )
-			if ( atypename[i].equals( typeName ) ) return true;
+			if ( atypename[i].equals( typeName ) && aitemIDdefault[i] != 0 ) return true;
 
 		return false;
 	}
+	
 }

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumRarity;
 import net.minecraft.item.EnumToolMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
@@ -20,8 +19,7 @@ public class Item_SpecialSword extends Item_Sword {
 
 	/** エンチャントされたかのような輝きを与えます。 */
 	protected boolean hasFoiledEffect = false;
-	protected EnumRarity rarity = EnumRarity.common;
-
+	
 	public static final int EFFECT_IGNITION		= 256 + 0;	//着火します。
 	public static final int EFFECT_EXPLOSION	= 256 + 1;	//爆破します。
 	public static final int EFFECT_LIFEDRAIN	= 256 + 2;	//一定の割合で体力を吸い取ります。
@@ -43,7 +41,6 @@ public class Item_SpecialSword extends Item_Sword {
 	 */
 	public Item_SpecialSword( int itemID, EnumToolMaterial material ) {
 		super( itemID, material );
-
 	}
 
 
@@ -79,18 +76,6 @@ public class Item_SpecialSword extends Item_Sword {
 		hasFoiledEffect = flag;
 		return this;
 	}
-
-
-	/**
-	 * アイテムの表示色を設定します。
-	 * @param rarity	レアリティ。
-	 * @return			設定されたアイテムを返します。
-	 */
-	public Item_SpecialSword setRarity( EnumRarity rarity ) {
-		this.rarity = rarity;
-		return this;
-	}
-
 
 
 	@Override
@@ -177,12 +162,5 @@ public class Item_SpecialSword extends Item_Sword {
 	public boolean hasEffect( ItemStack items, int pass ) {
 		return hasFoiledEffect ? true : super.hasEffect( items, pass );
 	}
-
-
-	@Override
-	public EnumRarity getRarity( ItemStack par1ItemStack ) {
-		return rarity;
-	}
-
 
 }

@@ -7,7 +7,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
-import andmod.AndCore.Handler_Fuel;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
@@ -35,7 +34,7 @@ public class AndMod_Util {
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent event) {
 
-		Handler_Fuel fuelh = new Handler_Fuel();
+		Handler_FuelUtil fuelh = new Handler_FuelUtil();
 
 
 
@@ -141,7 +140,8 @@ public class AndMod_Util {
 				's', new ItemStack( Block.tallGrass, 1, fm ) ) ;
 
 
-		//info: 燃料の追加
+		//info: 燃料の追加 - 現在は Handler_FuelUtil 内に格納されています
+		/*
 		fuelh.addFuel( Item.seeds.itemID,		-1, 200 / 4		);
 		fuelh.addFuel( Block.leaves.blockID,	-1, 200 / 2		);
 		fuelh.addFuel( Block.deadBush.blockID,	-1, 200			);
@@ -153,7 +153,8 @@ public class AndMod_Util {
 		fuelh.addFuel( Item.magmaCream.itemID,	-1, 200 * 12	);
 		fuelh.addFuel( Item.doorWood.itemID,	-1, 200 * 4		);
 		fuelh.addFuel( Item.boat.itemID,		-1, 200 * 4		);
-
+		*/
+		
 
 		//info: ネザーウォートを赤石粉に;9つでクラフトに変更
 		GameRegistry.addShapelessRecipe( new ItemStack( Item.redstone, 1, 0 ), 

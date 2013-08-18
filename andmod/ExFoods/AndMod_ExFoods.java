@@ -22,7 +22,8 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 @Mod(
 		modid	= "AndanteMod_ExFoods",
 		name	= "ExFoods",
-		version	= "1.6.2.0"
+		version	= "1.6.2.0",
+		dependencies = "required-after:AndanteMod_AndCore"
 		)
 @NetworkMod(
 		clientSideRequired = true,
