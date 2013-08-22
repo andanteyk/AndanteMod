@@ -82,7 +82,7 @@ public class Render_Arrow extends Render
 
 	protected ResourceLocation func_110779_a( Entity_Arrow earrow ) {
 
-		if( earrow.getArrowID() < 0 || earrow.getArrowID() == Item.arrow.itemID ) return field_110780_a;
+		if( earrow.getArrowID() < 0 || earrow.getArrowID() == Item.arrow.itemID || !( Item.itemsList[earrow.getArrowID()] instanceof Item_Arrow ) ) return field_110780_a;
 		else return ( (Item_Arrow)Item.itemsList[earrow.getArrowID()] ).getTexture();
 	}
 

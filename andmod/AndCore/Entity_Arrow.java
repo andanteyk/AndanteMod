@@ -346,9 +346,11 @@ public class Entity_Arrow extends EntityArrow implements IProjectile
 					}
 
 
+					//debug
+					/*
 					if ( ! worldObj.isRemote )
 						System.out.println( String.format( "[EntityArrow] %1$.2f damage", dmg ) );
-
+					 */
 
 					//§ エンダーマンにも当たるように処理　「弓矢属性の直接攻撃ダメージ」として処理しています
 					DamageSource damagesource = null;
@@ -537,8 +539,15 @@ public class Entity_Arrow extends EntityArrow implements IProjectile
 		if ( !worldObj.isRemote && inGround && arrowShake <= 0 ) {
 			boolean flag = canBePickedUp == 1 || canBePickedUp == 2 && eplayer.capabilities.isCreativeMode;
 
-			if ( canBePickedUp == 1 && !eplayer.inventory.addItemStackToInventory( new ItemStack( getArrowID(), 1, 0 ) ) )
-				flag = false;
+			if ( canBePickedUp == 1 ) {
+				if ( Item.itemsList[getArrowID()].getMaxDamage() <= 0 )
+					if ( !eplayer.inventory.addItemStackToInventory( new ItemStack( getArrowID(), 1, 0 ) ) )
+						flag = false;
+					else;
+				
+				else if ( !eplayer.inventory.addItemStackToInventory( new ItemStack( Item.arrow, 1, 0 ) ) )
+					flag = false;
+			}
 
 			if ( flag ) {
 				playSound( "random.pop", 0.2F, ( ( rand.nextFloat() - rand.nextFloat() ) * 0.7F + 1.0F ) * 2.0F );

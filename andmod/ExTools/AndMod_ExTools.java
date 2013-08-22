@@ -54,7 +54,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 @Mod(
 		modid	= "AndanteMod_ExTools",
 		name	= "ExTools",
-		version	= "1.6.2.0",
+		version	= "1.6.2.1",
 		dependencies = "required-after:AndanteMod_AndCore"
 		)
 @NetworkMod(
@@ -1389,7 +1389,7 @@ public class AndMod_ExTools {
 		id++;
 		aitemname[id][0] = "GhastBoots";
 		aitemname[id][1] = "Ghast Boots";
-		aitemname[id][2] = "ガストののブーツ";
+		aitemname[id][2] = "ガストのブーツ";
 		id++;
 		aitemname[id][0] = "GhastShears";
 		aitemname[id][1] = "Ghast Shears";
@@ -1608,11 +1608,12 @@ public class AndMod_ExTools {
 
 		fuelh = new Handler_Fuel();
 		eequip = new Event_MobEquipment();
-		//todo: master probability settings / base value = 0.2 = 20%
+		eequip.setMasterProbability( mobEquipmentProbability );
 		
 		int id = -1;
 		int armorid = -1;
 		
+
 
 
 		if ( isEnabled( "Glass" ) ) {
@@ -1787,6 +1788,8 @@ public class AndMod_ExTools {
 		id = -1;
 		
 		
+		if ( replaceVanillaTools )
+			registerReplacedVanillaTools();
 		
 		
 		if ( isEnabled( "Glass" ) ) 
@@ -1917,6 +1920,101 @@ public class AndMod_ExTools {
 	
 	
 	
+	
+	
+	//point: Replaced Vanilla Tools
+	private void registerReplacedVanillaTools() {
+			
+		eequip.addMobWeaponEquipment( new ItemStack( Item.swordWood ), Event_MobEquipment.FLAG_OVERWORLD & Event_MobEquipment.FLAG_SWORDMAN, 0.4 );
+		eequip.addMobWeaponEquipment( new ItemStack( Item.swordStone ), Event_MobEquipment.FLAG_OVERWORLD & Event_MobEquipment.FLAG_SWORDMAN, 0.3 );
+		eequip.addMobWeaponEquipment( new ItemStack( Item.swordStone ), Event_MobEquipment.FLAG_NETHER    & Event_MobEquipment.FLAG_SWORDMAN, 0.2 );
+		eequip.addMobWeaponEquipment( new ItemStack( Item.swordDiamond ), Event_MobEquipment.FLAG_OVERWORLD & Event_MobEquipment.FLAG_SWORDMAN, 0.025 );
+		eequip.addMobWeaponEquipment( new ItemStack( Item.swordDiamond ), Event_MobEquipment.FLAG_NETHER    & Event_MobEquipment.FLAG_SWORDMAN, 0.01 );
+		eequip.addMobWeaponEquipment( new ItemStack( Item.swordGold ), Event_MobEquipment.FLAG_OVERWORLD & Event_MobEquipment.FLAG_SWORDMAN, 0.05 );
+		eequip.addMobWeaponEquipment( new ItemStack( Item.swordGold ), Event_MobEquipment.FLAG_NETHER    & Event_MobEquipment.FLAG_SWORDMAN, 0.05 );
+		
+		//Iron Shovel
+		Item.itemsList[Item.shovelIron.itemID] = new Item_Spade( Item.shovelIron.itemID - 256, EnumToolMaterial.IRON ).setUnlocalizedName( "shovelIron" ).func_111206_d( "iron_shovel" );
+
+		//Iron Pickaxe
+		Item.itemsList[Item.pickaxeIron.itemID] = new Item_Pickaxe( Item.pickaxeIron.itemID - 256, EnumToolMaterial.IRON ).setUnlocalizedName( "pickaxeIron" ).func_111206_d( "iron_pickaxe" );
+
+		//Iron Axe
+		Item.itemsList[Item.axeIron.itemID] = new Item_Axe( Item.axeIron.itemID - 256, EnumToolMaterial.IRON ).setUnlocalizedName( "hatchetIron" ).func_111206_d( "iron_axe" );
+
+		//Iron Sword
+		Item.itemsList[Item.swordIron.itemID] = new Item_Sword( Item.swordIron.itemID - 256, EnumToolMaterial.IRON ).setUnlocalizedName( "swordIron" ).func_111206_d( "iron_sword" );
+
+		//Wooden Sword
+		Item.itemsList[Item.swordWood.itemID] = new Item_Sword( Item.swordWood.itemID - 256, EnumToolMaterial.WOOD ).setUnlocalizedName( "swordWood" ).func_111206_d( "wood_sword" );
+
+		//Wooden Shovel
+		Item.itemsList[Item.shovelWood.itemID] = new Item_Spade( Item.shovelWood.itemID - 256, EnumToolMaterial.WOOD ).setUnlocalizedName( "shovelWood" ).func_111206_d( "wood_shovel" );
+
+		//Wooden Pickaxe
+		Item.itemsList[Item.pickaxeWood.itemID] = new Item_Pickaxe( Item.pickaxeWood.itemID - 256, EnumToolMaterial.WOOD ).setUnlocalizedName( "pickaxeWood" ).func_111206_d( "wood_pickaxe" );
+
+		//Wooden Axe
+		Item.itemsList[Item.axeWood.itemID] = new Item_Axe( Item.axeWood.itemID - 256, EnumToolMaterial.WOOD ).setUnlocalizedName( "hatchetWood" ).func_111206_d( "wood_axe" );
+
+		//Stone Sword
+		Item.itemsList[Item.swordStone.itemID] = new Item_Sword( Item.swordStone.itemID - 256, EnumToolMaterial.STONE ).setUnlocalizedName( "swordStone" ).func_111206_d( "stone_sword" );
+
+		//Stone Shovel
+		Item.itemsList[Item.shovelStone.itemID] = new Item_Spade( Item.shovelStone.itemID - 256, EnumToolMaterial.STONE ).setUnlocalizedName( "shovelStone" ).func_111206_d( "stone_shovel" );
+
+		//Stone Pickaxe
+		Item.itemsList[Item.pickaxeStone.itemID] = new Item_Pickaxe( Item.pickaxeStone.itemID - 256, EnumToolMaterial.STONE ).setUnlocalizedName( "pickaxeStone" ).func_111206_d( "stone_pickaxe" );
+
+		//Stone Axe
+		Item.itemsList[Item.axeStone.itemID] = new Item_Axe( Item.axeStone.itemID - 256, EnumToolMaterial.STONE ).setUnlocalizedName( "hatchetStone" ).func_111206_d( "stone_axe" );
+
+		//Diamond Sword
+		Item.itemsList[Item.swordDiamond.itemID] = new Item_Sword( Item.swordDiamond.itemID - 256, EnumToolMaterial.EMERALD ).setUnlocalizedName( "swordDiamond" ).func_111206_d( "diamond_sword" );
+
+		//Diamond Shovel
+		Item.itemsList[Item.shovelDiamond.itemID] = new Item_Spade( Item.shovelDiamond.itemID - 256, EnumToolMaterial.EMERALD ).setUnlocalizedName( "shovelDiamond" ).func_111206_d( "diamond_shovel" );
+
+		//Diamond Pickaxe
+		Item.itemsList[Item.pickaxeDiamond.itemID] = new Item_Pickaxe( Item.pickaxeDiamond.itemID - 256, EnumToolMaterial.EMERALD ).setUnlocalizedName( "pickaxeDiamond" ).func_111206_d( "diamond_pickaxe" );
+
+		//Diamond Axe
+		Item.itemsList[Item.axeDiamond.itemID] = new Item_Axe( Item.axeDiamond.itemID - 256, EnumToolMaterial.EMERALD ).setUnlocalizedName( "hatchetDiamond" ).func_111206_d( "diamond_axe" );
+
+		//Gold Sword
+		Item.itemsList[Item.swordGold.itemID] = new Item_Sword( Item.swordGold.itemID - 256, EnumToolMaterial.GOLD ).setUnlocalizedName( "swordGold" ).func_111206_d( "gold_sword" );
+
+		//Gold Shovel
+		Item.itemsList[Item.shovelGold.itemID] = new Item_Spade( Item.shovelGold.itemID - 256, EnumToolMaterial.GOLD ).setUnlocalizedName( "shovelGold" ).func_111206_d( "gold_shovel" );
+
+		//Gold Pickaxe
+		Item.itemsList[Item.pickaxeGold.itemID] = new Item_Pickaxe( Item.pickaxeGold.itemID - 256, EnumToolMaterial.GOLD ).setUnlocalizedName( "pickaxeGold" ).func_111206_d( "gold_pickaxe" );
+
+		//Gold Axe
+		Item.itemsList[Item.axeGold.itemID] = new Item_Axe( Item.axeGold.itemID - 256, EnumToolMaterial.GOLD ).setUnlocalizedName( "hatchetGold" ).func_111206_d( "gold_axe" );
+
+		//Wooden Hoe
+		Item.itemsList[Item.hoeWood.itemID] = new Item_Hoe( Item.hoeWood.itemID - 256, EnumToolMaterial.WOOD ).setUnlocalizedName( "hoeWood" ).func_111206_d( "wood_hoe" );
+
+		//Stone Hoe
+		Item.itemsList[Item.hoeStone.itemID] = new Item_Hoe( Item.hoeStone.itemID - 256, EnumToolMaterial.STONE ).setUnlocalizedName( "hoeStone" ).func_111206_d( "stone_hoe" );
+
+		//Iron Hoe
+		Item.itemsList[Item.hoeIron.itemID] = new Item_Hoe( Item.hoeIron.itemID - 256, EnumToolMaterial.IRON ).setUnlocalizedName( "hoeIron" ).func_111206_d( "iron_hoe" );
+
+		//Diamond Hoe
+		Item.itemsList[Item.hoeDiamond.itemID] = new Item_Hoe( Item.hoeDiamond.itemID - 256, EnumToolMaterial.EMERALD ).setUnlocalizedName( "hoeDiamond" ).func_111206_d( "diamond_hoe" );
+
+		//Gold Hoe
+		Item.itemsList[Item.hoeGold.itemID] = new Item_Hoe( Item.hoeGold.itemID - 256, EnumToolMaterial.GOLD ).setUnlocalizedName( "hoeGold" ).func_111206_d( "gold_hoe" );
+
+		//Leather Cap
+		//Item.itemsList[Item.helmetLeather.itemID] = new Item_Armor( Item.helmetLeather.itemID - 256, new String[]{ "textures/models/armor/leather_layer_1.png", "textures/models/armor/leather_layer_2.png" }, EnumArmorMaterial.CLOTH, 0, 0 ).setUnlocalizedName( "helmetCloth" ).func_111206_d( "leather_helmet" );
+		
+		//Shears
+		Item.itemsList[Item.shears.itemID] = new Item_Shears( Item.shears.itemID - 256, EnumToolMaterial.IRON ).setUnlocalizedName( "shears" ).func_111206_d( "shears" );
+
+	}
 	
 	
 	//point: Glass Tools
@@ -3461,102 +3559,6 @@ public class AndMod_ExTools {
 				" s",
 				"s ",
 				's', new ItemStack( Item.diamond, 1, 0 ) );
-
-		
-		
-		//point: フラグの有効化とアーマー
-		if ( replaceVanillaTools ) {
-
-			eequip.addMobWeaponEquipment( new ItemStack( Item.swordWood ), Event_MobEquipment.FLAG_OVERWORLD & Event_MobEquipment.FLAG_SWORDMAN, 0.4 );
-			eequip.addMobWeaponEquipment( new ItemStack( Item.swordStone ), Event_MobEquipment.FLAG_OVERWORLD & Event_MobEquipment.FLAG_SWORDMAN, 0.3 );
-			eequip.addMobWeaponEquipment( new ItemStack( Item.swordStone ), Event_MobEquipment.FLAG_NETHER    & Event_MobEquipment.FLAG_SWORDMAN, 0.2 );
-			eequip.addMobWeaponEquipment( new ItemStack( Item.swordDiamond ), Event_MobEquipment.FLAG_OVERWORLD & Event_MobEquipment.FLAG_SWORDMAN, 0.025 );
-			eequip.addMobWeaponEquipment( new ItemStack( Item.swordDiamond ), Event_MobEquipment.FLAG_NETHER    & Event_MobEquipment.FLAG_SWORDMAN, 0.01 );
-			eequip.addMobWeaponEquipment( new ItemStack( Item.swordGold ), Event_MobEquipment.FLAG_OVERWORLD & Event_MobEquipment.FLAG_SWORDMAN, 0.05 );
-			eequip.addMobWeaponEquipment( new ItemStack( Item.swordGold ), Event_MobEquipment.FLAG_NETHER    & Event_MobEquipment.FLAG_SWORDMAN, 0.05 );
-			
-			//Iron Shovel
-			Item.itemsList[Item.shovelIron.itemID] = new Item_Spade( Item.shovelIron.itemID - 256, EnumToolMaterial.IRON ).setUnlocalizedName( "shovelIron" ).func_111206_d( "iron_shovel" );
-
-			//Iron Pickaxe
-			Item.itemsList[Item.pickaxeIron.itemID] = new Item_Pickaxe( Item.pickaxeIron.itemID - 256, EnumToolMaterial.IRON ).setUnlocalizedName( "pickaxeIron" ).func_111206_d( "iron_pickaxe" );
-
-			//Iron Axe
-			Item.itemsList[Item.axeIron.itemID] = new Item_Axe( Item.axeIron.itemID - 256, EnumToolMaterial.IRON ).setUnlocalizedName( "hatchetIron" ).func_111206_d( "iron_axe" );
-
-			//Iron Sword
-			Item.itemsList[Item.swordIron.itemID] = new Item_Sword( Item.swordIron.itemID - 256, EnumToolMaterial.IRON ).setUnlocalizedName( "swordIron" ).func_111206_d( "iron_sword" );
-
-			//Wooden Sword
-			Item.itemsList[Item.swordWood.itemID] = new Item_Sword( Item.swordWood.itemID - 256, EnumToolMaterial.WOOD ).setUnlocalizedName( "swordWood" ).func_111206_d( "wood_sword" );
-
-			//Wooden Shovel
-			Item.itemsList[Item.shovelWood.itemID] = new Item_Spade( Item.shovelWood.itemID - 256, EnumToolMaterial.WOOD ).setUnlocalizedName( "shovelWood" ).func_111206_d( "wood_shovel" );
-
-			//Wooden Pickaxe
-			Item.itemsList[Item.pickaxeWood.itemID] = new Item_Pickaxe( Item.pickaxeWood.itemID - 256, EnumToolMaterial.WOOD ).setUnlocalizedName( "pickaxeWood" ).func_111206_d( "wood_pickaxe" );
-
-			//Wooden Axe
-			Item.itemsList[Item.axeWood.itemID] = new Item_Axe( Item.axeWood.itemID - 256, EnumToolMaterial.WOOD ).setUnlocalizedName( "hatchetWood" ).func_111206_d( "wood_axe" );
-
-			//Stone Sword
-			Item.itemsList[Item.swordStone.itemID] = new Item_Sword( Item.swordStone.itemID - 256, EnumToolMaterial.STONE ).setUnlocalizedName( "swordStone" ).func_111206_d( "stone_sword" );
-
-			//Stone Shovel
-			Item.itemsList[Item.shovelStone.itemID] = new Item_Spade( Item.shovelStone.itemID - 256, EnumToolMaterial.STONE ).setUnlocalizedName( "shovelStone" ).func_111206_d( "stone_shovel" );
-
-			//Stone Pickaxe
-			Item.itemsList[Item.pickaxeStone.itemID] = new Item_Pickaxe( Item.pickaxeStone.itemID - 256, EnumToolMaterial.STONE ).setUnlocalizedName( "pickaxeStone" ).func_111206_d( "stone_pickaxe" );
-
-			//Stone Axe
-			Item.itemsList[Item.axeStone.itemID] = new Item_Axe( Item.axeStone.itemID - 256, EnumToolMaterial.STONE ).setUnlocalizedName( "hatchetStone" ).func_111206_d( "stone_axe" );
-
-			//Diamond Sword
-			Item.itemsList[Item.swordDiamond.itemID] = new Item_Sword( Item.swordDiamond.itemID - 256, EnumToolMaterial.EMERALD ).setUnlocalizedName( "swordDiamond" ).func_111206_d( "diamond_sword" );
-
-			//Diamond Shovel
-			Item.itemsList[Item.shovelDiamond.itemID] = new Item_Spade( Item.shovelDiamond.itemID - 256, EnumToolMaterial.EMERALD ).setUnlocalizedName( "shovelDiamond" ).func_111206_d( "diamond_shovel" );
-
-			//Diamond Pickaxe
-			Item.itemsList[Item.pickaxeDiamond.itemID] = new Item_Pickaxe( Item.pickaxeDiamond.itemID - 256, EnumToolMaterial.EMERALD ).setUnlocalizedName( "pickaxeDiamond" ).func_111206_d( "diamond_pickaxe" );
-
-			//Diamond Axe
-			Item.itemsList[Item.axeDiamond.itemID] = new Item_Axe( Item.axeDiamond.itemID - 256, EnumToolMaterial.EMERALD ).setUnlocalizedName( "hatchetDiamond" ).func_111206_d( "diamond_axe" );
-
-			//Gold Sword
-			Item.itemsList[Item.swordGold.itemID] = new Item_Sword( Item.swordGold.itemID - 256, EnumToolMaterial.GOLD ).setUnlocalizedName( "swordGold" ).func_111206_d( "gold_sword" );
-
-			//Gold Shovel
-			Item.itemsList[Item.shovelGold.itemID] = new Item_Spade( Item.shovelGold.itemID - 256, EnumToolMaterial.GOLD ).setUnlocalizedName( "shovelGold" ).func_111206_d( "gold_shovel" );
-
-			//Gold Pickaxe
-			Item.itemsList[Item.pickaxeGold.itemID] = new Item_Pickaxe( Item.pickaxeGold.itemID - 256, EnumToolMaterial.GOLD ).setUnlocalizedName( "pickaxeGold" ).func_111206_d( "gold_pickaxe" );
-
-			//Gold Axe
-			Item.itemsList[Item.axeGold.itemID] = new Item_Axe( Item.axeGold.itemID - 256, EnumToolMaterial.GOLD ).setUnlocalizedName( "hatchetGold" ).func_111206_d( "gold_axe" );
-
-			//Wooden Hoe
-			Item.itemsList[Item.hoeWood.itemID] = new Item_Hoe( Item.hoeWood.itemID - 256, EnumToolMaterial.WOOD ).setUnlocalizedName( "hoeWood" ).func_111206_d( "wood_hoe" );
-
-			//Stone Hoe
-			Item.itemsList[Item.hoeStone.itemID] = new Item_Hoe( Item.hoeStone.itemID - 256, EnumToolMaterial.STONE ).setUnlocalizedName( "hoeStone" ).func_111206_d( "stone_hoe" );
-
-			//Iron Hoe
-			Item.itemsList[Item.hoeIron.itemID] = new Item_Hoe( Item.hoeIron.itemID - 256, EnumToolMaterial.IRON ).setUnlocalizedName( "hoeIron" ).func_111206_d( "iron_hoe" );
-
-			//Diamond Hoe
-			Item.itemsList[Item.hoeDiamond.itemID] = new Item_Hoe( Item.hoeDiamond.itemID - 256, EnumToolMaterial.EMERALD ).setUnlocalizedName( "hoeDiamond" ).func_111206_d( "diamond_hoe" );
-
-			//Gold Hoe
-			Item.itemsList[Item.hoeGold.itemID] = new Item_Hoe( Item.hoeGold.itemID - 256, EnumToolMaterial.GOLD ).setUnlocalizedName( "hoeGold" ).func_111206_d( "gold_hoe" );
-
-			//Leather Cap
-			//Item.itemsList[Item.helmetLeather.itemID] = new Item_Armor( Item.helmetLeather.itemID - 256, new String[]{ "textures/models/armor/leather_layer_1.png", "textures/models/armor/leather_layer_2.png" }, EnumArmorMaterial.CLOTH, 0, 0 ).setUnlocalizedName( "helmetCloth" ).func_111206_d( "leather_helmet" );
-			
-			//Shears
-			Item.itemsList[Item.shears.itemID] = new Item_Shears( Item.shears.itemID - 256, EnumToolMaterial.IRON ).setUnlocalizedName( "shears" ).func_111206_d( "shears" );
-
-		}
 		
 	}
 	

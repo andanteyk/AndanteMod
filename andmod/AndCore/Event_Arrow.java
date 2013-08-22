@@ -22,12 +22,13 @@ public class Event_Arrow {
 		IDList.add( arrowID );
 	}
 
+	
 	protected int hasArrow( EntityPlayer eplayer ) {
 		for ( int i = 0; i < eplayer.inventory.getSizeInventory() - 4; i ++ ) {
 			ItemStack items = eplayer.inventory.getStackInSlot( i );
 			if ( items == null ) continue;
 			for ( int j = 0; j < IDList.size(); j ++ )
-				if ( items.itemID == IDList.get( j ) )
+				if ( items.itemID == IDList.get( j ) && ( items.getMaxDamage() <= 0 || items.getItemDamage() < items.getMaxDamage() ) )
 					return items.itemID;
 
 		}
@@ -37,7 +38,16 @@ public class Event_Arrow {
 
 
 	protected void consumeArrow( int itemID, EntityPlayer eplayer ) {
-		eplayer.inventory.consumeInventoryItem( itemID );
+		if ( Item.itemsList[itemID].getMaxDamage() <= 0 )
+			eplayer.inventory.consumeInventoryItem( itemID );
+		else
+			for ( int i = 0; i < eplayer.inventory.getSizeInventory() - 4; i ++ ) {
+				ItemStack items = eplayer.inventory.getStackInSlot( i );
+				if ( items != null && items.itemID == itemID && items.getItemDamage() < items.getMaxDamage() ) {
+					items.setItemDamage( items.getItemDamage() + 1 );
+					break;
+				}
+			}
 	}
 
 
@@ -69,8 +79,8 @@ public class Event_Arrow {
 			arrow = defaultArrow;
 
 		} else {
-			//arrowID = hasArrow( e.entityPlayer );
 			arrow = getArrowProperty( arrowID );
+		
 		}
 
 
