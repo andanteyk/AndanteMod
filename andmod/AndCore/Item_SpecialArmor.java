@@ -31,7 +31,7 @@ public class Item_SpecialArmor extends Item_Armor implements ISpecialArmor {
 	public static final int EFFECT_HAPPINESS		=  256 + 4;		//装備しているだけで経験値が入ります。お得です。
 	public static final int EFFECT_SECRETEATING		=  256 + 5;		//満腹度を回復します。
 	public static final int EFFECT_EXPLOSION		=  256 + 6;		//自爆します。
-	public static final int EFFECT_HEALTHEXTEND		=  256 + 7;		//最大体力を上昇させます。WIP
+	public static final int EFFECT_HEALTHEXTEND		=  256 + 7;		//最大体力を上昇させます。(WIP)
 	public static final int EFFECT_GRAVITY			=  256 + 8;		//重力を増大させます。
 	public static final int EFFECT_FEATHERFALLING	=  256 + 9;		//落下速度を緩和します。
 	public static final int EFFECT_LUMINESCENCE		=  256 + 10;	//発光させます。
@@ -54,7 +54,7 @@ public class Item_SpecialArmor extends Item_Armor implements ISpecialArmor {
 	public static final int AMP_RESIST_UNBREAKABLE		= 0x2000000;	//属性耐性のとき、耐久値が減らなくなります
 	public static final int AMP_AMPLIFIERSHIFT			= 11;
 	public static final int AMP_DURATIONSHIFT			= 19;
-	public static final int AMP_COUNTER_PROJECTILE		= 0x2000;		//遠隔攻撃も反射します
+	public static final int AMP_COUNTER_PROJECTILE		= 1 << 27;		//遠隔攻撃も反射します
 	public static final int AMP_EXPLOSION_DESTRUCTABLE	= 1 << 30;		//爆発が地形破壊するかどうか（反撃用）
 	public static final int AMP_EXPLOSION_UNSAFE		= AMP_EXPLOSION_DESTRUCTABLE >> 1;	//自分も爆発ダメージを受けるか
 	public static final int AMP_EXPLOSION_FLAMMABLE		= AMP_EXPLOSION_DESTRUCTABLE >> 2;	//火をばら撒くか
@@ -77,7 +77,7 @@ public class Item_SpecialArmor extends Item_Armor implements ISpecialArmor {
 		パラメータ設定資料
 	   ------------------------------------------------------------------------
 	   @コードを読んでいる方
-		これは典型的な「神オブジェクト」というダメ手法を用いて開発されています。
+		これはダメ手法を用いて開発されています。
 	   	発狂するので、読まないほうがいいです。
 	   	他の方のソースを参考にしてください。
 	   ------------------------------------------------------------------------
@@ -253,7 +253,7 @@ public class Item_SpecialArmor extends Item_Armor implements ISpecialArmor {
 					esrc.setFire( amp >> AMP_DURATIONSHIFT );
 				else if ( id == EFFECT_COUNTEREXPLOSION )
 					if ( !eliv.worldObj.isRemote )
-						eliv.worldObj.newExplosion( ( ( amp & AMP_EXPLOSION_UNSAFE ) != 0 ? null : eliv ), esrc.posX, esrc.posY, esrc.posZ, ( amp << 4 >> ( 4 + AMP_AMPLIFIERSHIFT ) ) / 10.0F, ( amp & AMP_EXPLOSION_FLAMMABLE ) != 0, ( amp & AMP_EXPLOSION_DESTRUCTABLE ) != 0 );
+						eliv.worldObj.newExplosion( ( ( amp & AMP_EXPLOSION_UNSAFE ) != 0 ? null : eliv ), esrc.posX, esrc.posY, esrc.posZ, ( amp << 5 >> ( 5 + AMP_AMPLIFIERSHIFT ) ) / 10.0F, ( amp & AMP_EXPLOSION_FLAMMABLE ) != 0, ( amp & AMP_EXPLOSION_DESTRUCTABLE ) != 0 );
 
 
 			}
@@ -276,10 +276,34 @@ public class Item_SpecialArmor extends Item_Armor implements ISpecialArmor {
 			
 			if ( !world.isRemote ) {
 				
-				if ( id < 256 )
-					eplayer.addPotionEffect( new PotionEffect( id, ( id == Potion.nightVision.id ) ? 219 : ( id == Potion.confusion.id ? 99 : 2 ), amp ) );
+				if ( id < 256 ) { //fixme: HealthBoost/Absorption は正常に動作しません。
+					int time = 2;
+					if ( id == Potion.nightVision.id )
+						time = 219;
+					else if ( id == Potion.confusion.id )
+						time = 99;
+					else if ( id == Potion.regeneration.id ) 
+						time = 52;
+					else if ( id == Potion.poison.id ) 
+						time = 27;
+					else if ( id == Potion.wither.id ) 
+						time = 42;
+					
+					if ( id == Potion.regeneration.id || id == Potion.poison.id || id == Potion.wither.id ) {
+						PotionEffect pe = eplayer.getActivePotionEffect( Potion.potionTypes[id] );
+						if ( pe == null || pe.duration <= 2 )
+							eplayer.addPotionEffect( new PotionEffect( id, time, amp ) );
+						
+					} else if ( id == Potion.field_76444_x.id || id == Potion.field_76434_w.id ) {		//HealthBoost/Absorption
+						PotionEffect pe = eplayer.getActivePotionEffect( Potion.potionTypes[id] );
+						if ( pe == null )
+							eplayer.addPotionEffect( new PotionEffect( id, time, amp ) );
+						else if ( pe.duration <= 2 )
+							pe.duration = time;
+						
+					} else eplayer.addPotionEffect( new PotionEffect( id, time, amp ) );
 
-				else if ( id < 512 )
+				} else if ( id < 512 )
 					switch( id ) {
 					case EFFECT_IGNITION:
 						if ( itemRand.nextInt( 1000 ) < amp )
@@ -305,7 +329,7 @@ public class Item_SpecialArmor extends Item_Armor implements ISpecialArmor {
 							eplayer.getFoodStats().addStats( ( amp >> AMP_AMPLIFIERSHIFT ) & 0xFF, ( amp >> AMP_DURATIONSHIFT ) / 10.0F ); break;
 					case EFFECT_EXPLOSION:
 						if ( itemRand.nextInt( 1000 ) < ( amp & ( ( 1 << AMP_AMPLIFIERSHIFT ) - 1 ) ) )
-							eplayer.worldObj.newExplosion( ( ( amp & AMP_EXPLOSION_UNSAFE ) != 0 ? null : eplayer ), eplayer.posX, eplayer.posY, eplayer.posZ, ( amp << 4 >> ( 4 + AMP_AMPLIFIERSHIFT ) ) / 10.0F, ( amp & AMP_EXPLOSION_FLAMMABLE ) != 0, ( amp & AMP_EXPLOSION_DESTRUCTABLE ) != 0 );
+							eplayer.worldObj.newExplosion( ( ( amp & AMP_EXPLOSION_UNSAFE ) != 0 ? null : eplayer ), eplayer.posX, eplayer.posY, eplayer.posZ, ( amp << 5 >> ( 5 + AMP_AMPLIFIERSHIFT ) ) / 10.0F, ( amp & AMP_EXPLOSION_FLAMMABLE ) != 0, ( amp & AMP_EXPLOSION_DESTRUCTABLE ) != 0 );
 						break;
 					case EFFECT_LUMINESCENCE:
 						{

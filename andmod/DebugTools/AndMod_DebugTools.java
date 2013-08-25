@@ -1,12 +1,18 @@
-package andmod.AndCore;
+package andmod.DebugTools;
 
 import java.util.logging.Level;
 
 import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.EnumArmorMaterial;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.Property;
 import net.minecraftforge.oredict.OreDictionary;
+import andmod.AndCore.Item_Food;
+import andmod.AndCore.Item_SpecialArmor;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -16,9 +22,10 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 @Mod(
-		modid	= "AndanteMod_AndCore",
-		name	= "AndCore",
-		version	= "1.6.2.3"
+		modid	= "AndanteMod_DebugTools",
+		name	= "Debug Tools",
+		version	= "1.6.2.0",
+		dependencies = "required-after:AndanteMod_AndCore"
 		)
 @NetworkMod(
 		clientSideRequired = true,
@@ -27,23 +34,23 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 
 
 
-public class AndMod_AndCore {
+public class AndMod_DebugTools {
 
 	//point: class
 
-	public static int aitemqty = 0;
+	public static int aitemqty = 2;
 	public static int[] aitemID = new int[aitemqty];
 	public static Item[] aitem = new Item[aitemqty];
 	public static String[][] aitemname = new String[aitemqty][3];
-	public int aitemIDdefault = 0;
+	public int aitemIDdefault = 24004;
 
-	public static int ablockqty = 1;
+	public static int ablockqty = 0;
 	public static int[] ablockID = new int[ablockqty];
 	public static Block[] ablock = new Block[ablockqty];
 	public static String[][] ablockname = new String[ablockqty][3];
 	public int ablockIDdefault = 2366;
 	
-	public static String ObjectHeader = "AndCore:";
+	public static String ObjectHeader = "DebugTools:";
 
 	private int fm = OreDictionary.WILDCARD_VALUE;
 
@@ -53,18 +60,24 @@ public class AndMod_AndCore {
 
 		int id = -1;
 
-		/*
+		
 		id++;
-		aitemname[id][0] = "Chocolate";
-		aitemname[id][1] = "Chocolate";
-		aitemname[id][2] = "チョコレート";
-		 */
+		aitemname[id][0] = "PhoenixPotion";
+		aitemname[id][1] = "Potion of Phoenix";
+		aitemname[id][2] = "蓬莱の薬";
+		id++;
+		aitemname[id][0] = "Halo";
+		aitemname[id][1] = "Angelic Circle";
+		aitemname[id][2] = "天使の輪";
+		
 		//point: add new item name
 
+		/*
 		id ++;
 		ablockname[id][0] = "Luminescence";
 		ablockname[id][1] = "Luminescence";
 		ablockname[id][2] = "蛍の光";
+		*/
 		
 		//point: add new block name
 		
@@ -106,13 +119,39 @@ public class AndMod_AndCore {
 
 		int id = -1;
 
-		id++;
-		ablock[id] = new Block_Luminescence( ablockID[id] ).setLightOpacity( 0 ).setHardness( 0.0F ).setResistance( 0.0F )
-		.setUnlocalizedName( ablockname[id][0] ).func_111022_d( ablockname[id][0] );
+		
+		//Potion of Phoenix
+		id ++;
+		if ( aitemID[id] != 0 ) {
+			aitem[id] = new Item_Food( aitemID[id], 64, 0, 0, false, true )
+			//.addPotionEffect( Potion.heal.id, 20 * 60 * 60, 4, 1.0F )
+			.addPotionEffect( Potion.field_76434_w.id, 20 * 60 * 60, 255, 1.0F )
+			.setContainer( new ItemStack( Item.glassBottle ) ).setAlwaysEdible()
+			.setCreativeTab( CreativeTabs.tabMisc )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
 
-		GameRegistry.registerBlock( ablock[id], ablockname[id][0] );
-		LanguageRegistry.addName( ablock[id], ablockname[id][1] );
-		LanguageRegistry.instance().addNameForObject( ablock[id], "ja_JP", ablockname[id][2] );
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+	
+		}
+		
+		
+		//Angelic Circle
+		id ++;
+		if ( aitemID[id] != 0 ) {
+			aitem[id] = new Item_SpecialArmor( aitemID[id], ObjectHeader.toLowerCase() + "textures/armor/halo.png", "", EnumArmorMaterial.DIAMOND, 0 )
+			.addEffect( Potion.heal.id, 4, Item_SpecialArmor.FLAG_ANYTIME )
+			.addEffect( Item_SpecialArmor.EFFECT_RESISTALL, 0 | Item_SpecialArmor.AMP_RESIST_UNBREAKABLE, Item_SpecialArmor.FLAG_ANYTIME )
+			.setCreativeTab( CreativeTabs.tabMisc )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+	
+		}
+
 	
 		
 	}

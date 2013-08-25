@@ -55,8 +55,9 @@ public class Item_Levistone extends ItemArmor {
 						world.newExplosion( eplayer, eplayer.posX - r * MathHelper.sin( x * (float)Math.PI / 180.0F ) * MathHelper.cos( y * (float)Math.PI / 180.0F ) , eplayer.posY - r * MathHelper.sin( y * (float)Math.PI / 180.0F ), eplayer.posZ + r * MathHelper.cos( x * (float)Math.PI / 180.0F ) * MathHelper.cos( y * (float)Math.PI / 180.0F ), power, false, isBreakable );
 					
 				
-				world.newExplosion( eplayer, eplayer.posX, eplayer.posY, eplayer.posZ, 4.0F, false, isBreakable );
-				eplayer.addPotionEffect( new PotionEffect( Potion.blindness.id, 20 * 180, 0 ) );
+				world.newExplosion( eplayer, eplayer.posX, eplayer.posY, eplayer.posZ, 5.0F, false, isBreakable );
+				if ( !eplayer.capabilities.isCreativeMode )
+					eplayer.addPotionEffect( new PotionEffect( Potion.blindness.id, 20 * 180, 0 ) );
 				
 				items.damageItem( 16, eplayer );
 			} else {			

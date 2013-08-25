@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
+import cpw.mods.fml.common.IFuelHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
@@ -15,8 +16,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 @Mod(
 		modid	= "AndanteMod_Util",
 		name	= "And Utility",
-		version	= "1.6.2.0" /*,
-		dependencies = "after:AndanteMod_AncientTool" */
+		version	= "1.6.2.1"
 		)
 @NetworkMod(
 		clientSideRequired = true,
@@ -24,19 +24,14 @@ import cpw.mods.fml.common.registry.GameRegistry;
 		)
 
 
-public class AndMod_Util {
+public class AndMod_Util implements IFuelHandler {
 
 	private int fm = OreDictionary.WILDCARD_VALUE;
 
-
-
+	
 
 	@Mod.EventHandler
-	public void init(FMLInitializationEvent event) {
-
-		Handler_FuelUtil fuelh = new Handler_FuelUtil();
-
-
+	public void init( FMLInitializationEvent event ) {
 
 		//info: キノコシチュー;同種でもいいが３個必要
 		GameRegistry.addShapelessRecipe( new ItemStack( Item.bowlSoup, 1 ),
@@ -138,22 +133,6 @@ public class AndMod_Util {
 				"sss",
 				" s ",
 				's', new ItemStack( Block.tallGrass, 1, fm ) ) ;
-
-
-		//info: 燃料の追加 - 現在は Handler_FuelUtil 内に格納されています
-		/*
-		fuelh.addFuel( Item.seeds.itemID,		-1, 200 / 4		);
-		fuelh.addFuel( Block.leaves.blockID,	-1, 200 / 2		);
-		fuelh.addFuel( Block.deadBush.blockID,	-1, 200			);
-		fuelh.addFuel( Block.tallGrass.blockID,	-1, 200 / 2		);
-		fuelh.addFuel( Item.reed.itemID,		-1, 200 / 2		);
-		fuelh.addFuel( Item.wheat.itemID,		-1, 200 * 3 / 4	);
-		fuelh.addFuel( Item.bowlEmpty.itemID,	-1, 200			);
-		fuelh.addFuel( Item.blazePowder.itemID,	-1, 200 * 6		);
-		fuelh.addFuel( Item.magmaCream.itemID,	-1, 200 * 12	);
-		fuelh.addFuel( Item.doorWood.itemID,	-1, 200 * 4		);
-		fuelh.addFuel( Item.boat.itemID,		-1, 200 * 4		);
-		*/
 		
 
 		//info: ネザーウォートを赤石粉に;9つでクラフトに変更
@@ -202,11 +181,47 @@ public class AndMod_Util {
 		//point: add new recipes
 
 
-
-		GameRegistry.registerFuelHandler( fuelh );
+		//info: 燃料の追加
+		GameRegistry.registerFuelHandler( new AndMod_Util() );
 	}
 
 
 
+
+
+
+	@Override
+	public int getBurnTime( ItemStack fuel ) {
+		
+		if ( fuel.itemID == Item.seeds.itemID )
+			return 200 / 4;
+		else if ( fuel.itemID == Block.leaves.blockID )
+			return 200 / 2;
+		else if ( fuel.itemID == Block.deadBush.blockID )
+			return 200;
+		else if ( fuel.itemID == Block.tallGrass.blockID )
+			return 200 / 2;
+		else if ( fuel.itemID == Block.cloth.blockID )
+			return 200;
+		else if ( fuel.itemID == Item.reed.itemID )
+			return 200 / 2;
+		else if ( fuel.itemID == Item.wheat.itemID )
+			return 200 * 3 / 4;
+		else if ( fuel.itemID == Item.bowlEmpty.itemID )
+			return 200;
+		else if ( fuel.itemID == Item.blazePowder.itemID )
+			return 200 * 6;
+		else if ( fuel.itemID == Item.magmaCream.itemID )
+			return 200 * 12;
+		else if ( fuel.itemID == Item.doorWood.itemID )
+			return 200 * 4;
+		else if ( fuel.itemID == Item.boat.itemID )
+			return 200 * 4;
+		else if ( fuel.itemID == Block.field_111038_cB.blockID )
+			return (int)( 200 * 7.5 );
+		
+		
+		return 0;
+	}
 
 }
