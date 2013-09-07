@@ -3,6 +3,7 @@ package andmod.AndCore;
 import java.util.logging.Level;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.Property;
@@ -18,7 +19,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 @Mod(
 		modid	= "AndanteMod_AndCore",
 		name	= "AndCore",
-		version	= "1.6.2.3"
+		version	= "1.6.2.4"
 		)
 @NetworkMod(
 		clientSideRequired = true,
@@ -120,6 +121,10 @@ public class AndMod_AndCore {
 
 
 
+	public static boolean isJapanese() {
+		return Minecraft.getMinecraft().gameSettings.language.equals( "ja_JP" );
+	}
+	
 
 	public static int getItemIDforCraft( String name ) {
 		name = ObjectHeader + name;

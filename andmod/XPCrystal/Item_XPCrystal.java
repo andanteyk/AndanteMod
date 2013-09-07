@@ -45,7 +45,9 @@ public class Item_XPCrystal extends Item {
 				eplayer.dropPlayerItem( emptyItem );
 			
 			//fixme:　音が鳴りません
-			world.playSoundAtEntity( eplayer, "random.orb", 0.1F, 0.5F * ( ( itemRand.nextFloat() - itemRand.nextFloat() ) * 0.7F + 1.8F ) );		
+			world.playSoundAtEntity( eplayer, "random.orb", 0.1F, 0.5F * ( ( itemRand.nextFloat() - itemRand.nextFloat() ) * 0.7F + 1.8F ) );
+			//eplayer.playSound( "random.orb", 0.1F, 0.5F * ( ( itemRand.nextFloat() - itemRand.nextFloat() ) * 0.7F + 1.8F ) );
+			     
 			
 		} else if( eplayer.experienceTotal > 0 ) {
 			//経験値を溜めます。

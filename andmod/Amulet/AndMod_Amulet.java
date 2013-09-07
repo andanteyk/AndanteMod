@@ -26,7 +26,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 @Mod(
 		modid	= "AndanteMod_Amulet",
 		name	= "Amulet",
-		version	= "1.6.2.0",
+		version	= "1.6.2.1",
 		dependencies = "required-after:AndanteMod_AndCore"
 		)
 @NetworkMod(
@@ -181,7 +181,7 @@ public class AndMod_Amulet {
 		//Iron Chain
 		id ++;
 		if ( aitemID[id] != 0 ) {
-			aitem[id] = new Item_Base( aitemID[id], 128 ).setCreativeTab( CreativeTabs.tabMaterials )
+			aitem[id] = new Item_Base( aitemID[id], 64 ).setCreativeTab( CreativeTabs.tabMaterials )
 			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
 
 			GameRegistry.registerItem( aitem[id], aitemname[id][0] );

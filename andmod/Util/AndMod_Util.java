@@ -16,7 +16,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 @Mod(
 		modid	= "AndanteMod_Util",
 		name	= "And Utility",
-		version	= "1.6.2.1"
+		version	= "1.6.2.2"
 		)
 @NetworkMod(
 		clientSideRequired = true,
@@ -170,10 +170,13 @@ public class AndMod_Util implements IFuelHandler {
 		Block.blocksList[ Block.waterlily.blockID ] =
 				Block.blocksList[ Block.waterlily.blockID ].setHardness( 0.2F );
 
-		//info: コマンドブロックをクリエイティブタブに登録
+		//info: ブロックをクリエイティブタブに登録
 		Block.blocksList[ Block.commandBlock.blockID ] =
 				Block.blocksList[ Block.commandBlock.blockID ].setCreativeTab( CreativeTabs.tabRedstone );
-
+		Block.blocksList[ Block.dragonEgg.blockID ] =
+				Block.blocksList[ Block.dragonEgg.blockID ].setCreativeTab( CreativeTabs.tabDecorations );
+		
+		
 		//info: スイカを還元
 		GameRegistry.addShapelessRecipe( new ItemStack( Item.melon, 9, 0 ), 
 			new ItemStack( Block.melon, 1, 0 ) ) ;

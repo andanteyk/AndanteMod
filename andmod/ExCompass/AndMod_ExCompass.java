@@ -1,18 +1,14 @@
-package andmod.DebugTools;
+package andmod.ExCompass;
 
 import java.util.logging.Level;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.EnumArmorMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.Property;
 import net.minecraftforge.oredict.OreDictionary;
-import andmod.AndCore.Item_Food;
-import andmod.AndCore.Item_SpecialArmor;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -22,10 +18,9 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 @Mod(
-		modid	= "AndanteMod_DebugTools",
-		name	= "Debug Tools",
-		version	= "1.6.2.0",
-		dependencies = "required-after:AndanteMod_AndCore"
+		modid	= "AndanteMod_ExCompass",
+		name	= "ExCompass",
+		version	= "1.6.2.0"
 		)
 @NetworkMod(
 		clientSideRequired = true,
@@ -34,53 +29,45 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 
 
 
-public class AndMod_DebugTools {
+public class AndMod_ExCompass {
 
 	//point: class
 
-	public static int aitemqty = 2;
+	public static int aitemqty = 3;
 	public static int[] aitemID = new int[aitemqty];
 	public static Item[] aitem = new Item[aitemqty];
 	public static String[][] aitemname = new String[aitemqty][3];
-	public int aitemIDdefault = 24004;
+	public int aitemIDdefault = 23648;
 
-	public static int ablockqty = 0;
-	public static int[] ablockID = new int[ablockqty];
-	public static Block[] ablock = new Block[ablockqty];
-	public static String[][] ablockname = new String[ablockqty][3];
-	public int ablockIDdefault = 2366;
-	
-	public static String ObjectHeader = "DebugTools:";
+	public static String ObjectHeader = "ExCompass:";
 
 	private int fm = OreDictionary.WILDCARD_VALUE;
-
+	
+	
+	private int clockDisplayMode = 0;
+	
 
 	@Mod.EventHandler
 	public void preInit( FMLPreInitializationEvent event ) {
 
 		int id = -1;
 
-		
+
 		id++;
-		aitemname[id][0] = "PhoenixPotion";
-		aitemname[id][1] = "Potion of Phoenix";
-		aitemname[id][2] = "蓬莱の薬";
+		aitemname[id][0] = "MemorableCompass";
+		aitemname[id][1] = "Memorable Compass";
+		aitemname[id][2] = "記憶のコンパス";
 		id++;
-		aitemname[id][0] = "Halo";
-		aitemname[id][1] = "Angelic Circle";
-		aitemname[id][2] = "天使の輪";
-		
+		aitemname[id][0] = "EnderCompass";
+		aitemname[id][1] = "Ender Compass";
+		aitemname[id][2] = "エンダーコンパス";
+		id++;
+		aitemname[id][0] = "LunarClock";
+		aitemname[id][1] = "Lunar Clock";
+		aitemname[id][2] = "月時計";
+
 		//point: add new item name
 
-		/*
-		id ++;
-		ablockname[id][0] = "Luminescence";
-		ablockname[id][1] = "Luminescence";
-		ablockname[id][2] = "蛍の光";
-		*/
-		
-		//point: add new block name
-		
 
 		Configuration cfg = new Configuration( event.getSuggestedConfigurationFile() );
 		try	{
@@ -91,13 +78,12 @@ public class AndMod_DebugTools {
 				itemProp.comment = "ItemID - " + aitemname[i][1];
 				aitemID[i] = itemProp.getInt();
 			}
-			
-			for( int i = 0; i < ablockID.length; i++ ) {
-				Property blockProp = cfg.getBlock( "BlockID_" + ablockname[i][0], ablockIDdefault + i );
-				blockProp.comment = "BlockID - " + ablockname[i][1];
-				ablockID[i] = blockProp.getInt();
-			}
 
+			Property prop = cfg.get( "Clock", "clockDisplayMode", clockDisplayMode );
+			prop.comment = "Specify the time format. [0-2] 0=24h, 1=12h(AM/PM), 2=raw data." ;
+			clockDisplayMode = prop.getInt();
+			if ( clockDisplayMode < 0 ) clockDisplayMode = 0;
+			if ( clockDisplayMode > 2 ) clockDisplayMode = 2;
 
 		} catch ( Exception e ) {
 			FMLLog.log( Level.SEVERE, e, "AndMod_" + ObjectHeader + "Error has occured." );
@@ -106,8 +92,6 @@ public class AndMod_DebugTools {
 
 		for( int i = 0; i < aitemqty; i++ )
 			aitemname[i][0] = ObjectHeader + aitemname[i][0];
-		for( int i = 0; i < ablockqty; i++ )
-			ablockname[i][0] = ObjectHeader + ablockname[i][0];
 
 	}
 
@@ -119,41 +103,68 @@ public class AndMod_DebugTools {
 
 		int id = -1;
 
-		
-		//Potion of Phoenix
+		//Memorable Compass
 		id ++;
 		if ( aitemID[id] != 0 ) {
-			aitem[id] = new Item_Food( aitemID[id], 64, 0, 0, false, true )
-			//.addPotionEffect( Potion.heal.id, 20 * 60 * 60, 4, 1.0F )
-			.addPotionEffect( Potion.field_76434_w.id, 20 * 60 * 60, 255, 1.0F )
-			.setContainer( new ItemStack( aitemID[id] + 256, 1, 0 ) ).setAlwaysEdible()
-			.setCreativeTab( CreativeTabs.tabMisc )
+			aitem[id] = new Item_Compass( aitemID[id] ).setCreativeTab( CreativeTabs.tabTools )
 			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
 
 			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
 			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
 			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
-	
+
+
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					" c ",
+					"cbc",
+					" c ",
+					'c', new ItemStack( Block.blockLapis, 1, 0 ),
+					'b', new ItemStack( Item.compass, 1, 0 ) );
 		}
-		
-		
-		//Angelic Circle
+
+
+		//Ender Compass
 		id ++;
 		if ( aitemID[id] != 0 ) {
-			aitem[id] = new Item_SpecialArmor( aitemID[id], ObjectHeader.toLowerCase() + "textures/armor/halo.png", "", EnumArmorMaterial.DIAMOND, 0 )
-			.addEffect( Potion.heal.id, 4, Item_SpecialArmor.FLAG_ANYTIME )
-			.addEffect( Item_SpecialArmor.EFFECT_RESISTALL, 0 | Item_SpecialArmor.AMP_RESIST_UNBREAKABLE, Item_SpecialArmor.FLAG_ANYTIME )
-			.setCreativeTab( CreativeTabs.tabMisc )
+			aitem[id] = new Item_CompassEnder( aitemID[id], 4 - 1 ).setCreativeTab( CreativeTabs.tabTools )
 			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
 
 			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
 			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
 			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
-	
+
+
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					" c ",
+					"cbc",
+					" c ",
+					'c', new ItemStack( Item.enderPearl, 1, 0 ),
+					'b', new ItemStack( Item.compass, 1, 0 ) );
+			
 		}
 
-	
-		
+
+		//Lunar Clock
+		id ++;
+		if ( aitemID[id] != 0 ) {
+			aitem[id] = new Item_Clock( aitemID[id], clockDisplayMode ).setCreativeTab( CreativeTabs.tabTools )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+					" c ",
+					"cbc",
+					" c ",
+					'c', new ItemStack( Block.blockNetherQuartz, 1, fm ),
+					'b', new ItemStack( Item.pocketSundial, 1, 0 ) );
+			
+		}
+
+
 	}
 
 
@@ -167,13 +178,5 @@ public class AndMod_DebugTools {
 			if ( aitemname[i][0].equals( name ) ) return aitemID[i] + 256;
 		return 0;
 	}
-	
-	public static int getBlockID( String name ) {
-		name = ObjectHeader + name;
-		
-		for ( int i = 0; i < ablockname.length; i ++ ) 
-			if ( ablockname[i][0].equals( name ) ) return ablockID[i];
-		return 0;
-	}
-		
+
 }
