@@ -20,13 +20,12 @@ public class Item_Compass extends Item {
 
 	@SideOnly( Side.CLIENT )
 	protected Icon[] iconList;
-	
+
 
 	public Item_Compass( int itemID ) {
 		super( itemID );
 
 		setMaxStackSize( 1 );
-		iconList = new Icon[32];
 	}
 
 
@@ -34,6 +33,8 @@ public class Item_Compass extends Item {
 	@SideOnly( Side.CLIENT )
 	public void registerIcons( IconRegister ireg ) {
 		//super.registerIcons( ireg );
+
+		iconList = new Icon[32];
 
 		for ( int i = 0; i < iconList.length; i ++ )
 			iconList[i] = ireg.registerIcon( getUnlocalizedName().replace( "item.", "" ) + "_" + i );
@@ -80,6 +81,7 @@ public class Item_Compass extends Item {
 					( isSameWorld( items, eplayer.worldObj ) ? "; " + String.format( "%.2f", (float)Math.sqrt( ( bx * bx ) + ( by * by ) + ( bz * bz ) ) )  + " m" : "" ) );
 			list.add( ( isSameWorld( items, eplayer.worldObj ) ? "" : EnumChatFormatting.RED ) +
 					"Dimension: " + dim );
+			
 			//list.add( "angle=" + nbt.getDouble("angle") + ", delta=" + nbt.getDouble("delta") );
 		}
 	}
@@ -114,8 +116,9 @@ public class Item_Compass extends Item {
 
 		return nbt != null && world.provider.dimensionId == nbt.getInteger( "dim" );
 	}
-	
 
+
+	@SideOnly( Side.CLIENT )
 	protected int getIconIndex( ItemStack items, World world, double px, double pz, double yaw ) {
 		int max = iconList.length;
 
@@ -160,20 +163,21 @@ public class Item_Compass extends Item {
 	}
 
 
+	@SideOnly( Side.CLIENT )
 	@Override
 	public Icon getIcon( ItemStack items, int pass ) {
-		
+
 		Minecraft mc = Minecraft.getMinecraft();
-		
+
 		if ( pass == 0 ) {
 			if ( items.isOnItemFrame() )
 				return iconList[ getIconIndex( items, mc.theWorld, items.getItemFrame().posX, items.getItemFrame().posZ, -items.getItemFrame().rotationYaw ) ];
 			else {
-				
+
 				/*
 				ChunkCoordinates cc = mc.thePlayer.getBedLocation( mc.theWorld.provider.dimensionId );
 				if ( cc != null ) {
-					
+
 					ChunkCoordinates ccs = mc.thePlayer.verifyRespawnCoordinates( mc.theWorld, cc, true );
 					if ( ccs != null )
 						return iconList[ MathHelper.clamp_int( MathHelper.floor_double( Math.atan2( ccs.posZ + 0.5 - mc.thePlayer.posZ, ccs.posX + 0.5 - mc.thePlayer.posX ) * 180.0 / Math.PI * 32 / 360.0 % 32 ), 0, 31 ) ];
@@ -185,12 +189,12 @@ public class Item_Compass extends Item {
 			}
 		} else {
 			return super.getIcon( items, pass );	//呼ばれない…　はずです
-			
+
 		}
-		
+
 	}
 
-	
+
 	//これがないと正しく描画されません！
 	@Override
 	@SideOnly(Side.CLIENT)

@@ -31,8 +31,6 @@ public class Item_Clock extends Item {
 		super( itemID );
 
 		setMaxStackSize( 1 );
-		iconList = new Icon[64];
-		moonList = new Icon[8];
 
 		setMaxDamage( 0 );
 		setHasSubtypes( true );
@@ -45,6 +43,9 @@ public class Item_Clock extends Item {
 	public void registerIcons( IconRegister ireg ) {
 		//super.registerIcons( ireg );
 
+		iconList = new Icon[64];
+		moonList = new Icon[8];
+		
 		for ( int i = 0; i < iconList.length; i ++ )
 			iconList[i] = ireg.registerIcon( this.getUnlocalizedName().replace( "item.", "" ) + "_" + i );
 		for ( int i = 0; i < moonList.length; i ++ )
@@ -264,9 +265,9 @@ public class Item_Clock extends Item {
 				if ( isJapanese() ) {
 
 					if ( time == 0 )
-						eplayer.addChatMessage("[時報] 朝が来ました"); 
+						eplayer.addChatMessage("[時報] 朝が来ました");
 					if ( time == 6000 )
-						eplayer.addChatMessage("[時報] 正午です"); 
+						eplayer.addChatMessage("[時報] 正午です");
 					if ( time == 12000 )
 						eplayer.addChatMessage("[時報] 夜が来ます");
 					if ( time == 18000 )
@@ -275,11 +276,11 @@ public class Item_Clock extends Item {
 				} else {
 
 					if ( time == 0 )
-						eplayer.addChatMessage("[Time signal] Morning has come"); 
+						eplayer.addChatMessage("[Time signal] Morning has come");
 					if ( time == 6000 )
-						eplayer.addChatMessage("[Time signal] It's noon"); 
+						eplayer.addChatMessage("[Time signal] It's noon");
 					if ( time == 12000 )
-						eplayer.addChatMessage("[Time signal] Night is coming"); 
+						eplayer.addChatMessage("[Time signal] Night is coming");
 					if ( time == 18000 )
 						eplayer.addChatMessage("[Time signal] It's midnight");
 				}
@@ -324,6 +325,7 @@ public class Item_Clock extends Item {
 	}
 
 
+	@SideOnly( Side.CLIENT )
 	@Override
 	public Icon getIcon( ItemStack items, int pass ) {
 

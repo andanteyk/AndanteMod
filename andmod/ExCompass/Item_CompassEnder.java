@@ -66,7 +66,7 @@ public class Item_CompassEnder extends Item_Compass {
 
 			NBTTagCompound nbt = items.getTagCompound();
 
-			
+
 			if ( nbt == null || !isSameWorld( items, world ) )
 				doTeleportation( eplayer,
 						(int)Math.round( eplayer.posX + ( itemRand.nextDouble() - 0.5  ) * teleportRangeH ),

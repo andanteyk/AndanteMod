@@ -20,7 +20,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 @Mod(
 		modid	= "AndanteMod_ExCompass",
 		name	= "ExCompass",
-		version	= "1.6.2.0"
+		version	= "1.6.2.1"
 		)
 @NetworkMod(
 		clientSideRequired = true,
@@ -42,10 +42,10 @@ public class AndMod_ExCompass {
 	public static String ObjectHeader = "ExCompass:";
 
 	private int fm = OreDictionary.WILDCARD_VALUE;
-	
-	
+
+
 	private int clockDisplayMode = 0;
-	
+
 
 	@Mod.EventHandler
 	public void preInit( FMLPreInitializationEvent event ) {
@@ -140,7 +140,7 @@ public class AndMod_ExCompass {
 					" c ",
 					'c', new ItemStack( Item.enderPearl, 1, 0 ),
 					'b', new ItemStack( Item.compass, 1, 0 ) );
-			
+
 		}
 
 
@@ -161,7 +161,7 @@ public class AndMod_ExCompass {
 					" c ",
 					'c', new ItemStack( Block.blockNetherQuartz, 1, fm ),
 					'b', new ItemStack( Item.pocketSundial, 1, 0 ) );
-			
+
 		}
 
 

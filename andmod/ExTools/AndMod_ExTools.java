@@ -24,6 +24,7 @@ import andmod.AndCore.Entity_Arrow;
 import andmod.AndCore.Event_Arrow;
 import andmod.AndCore.Event_DispenserArrow;
 import andmod.AndCore.Event_MobEquipment;
+import andmod.AndCore.Handler_CreativeTab;
 import andmod.AndCore.Handler_Fuel;
 import andmod.AndCore.Item_Armor;
 import andmod.AndCore.Item_Arrow;
@@ -102,8 +103,9 @@ public class AndMod_ExTools {
 	private boolean addChestContents = true;
 	
 	
-	Handler_Fuel fuelh;
-	Event_MobEquipment eequip;
+	private Handler_Fuel fuelh;
+	private Event_MobEquipment eequip;
+	public static Handler_CreativeTab tabExTools = new Handler_CreativeTab( "ExTools", -1, "ExTools" );
 	
 	
 	@Mod.EventHandler
@@ -1907,11 +1909,10 @@ public class AndMod_ExTools {
 
 
 		
-		//point: arrow register
+		//point: register
 		registerArrows();
-		
 		registerHammerRecipe();
-
+		registerCreativeTabs();
 
 		GameRegistry.registerFuelHandler( fuelh );
 		MinecraftForge.EVENT_BUS.register( eequip );
@@ -8902,6 +8903,20 @@ public class AndMod_ExTools {
 		if ( addChestContents )
 			ChestGenHooks.addItem( category, new WeightedRandomChestContent( items, min, max, weight ) );
 	}
+	
+	
+	private void registerCreativeTabs() {
+		for ( Item i : aitem ) {
+			if ( i != null ) {
+				if ( tabExTools.iconID == -1 && i instanceof Item_Sword )
+					tabExTools.iconID = i.itemID;
+				
+				i.setCreativeTab( tabExTools );
+			}
+		}
+			
+	}
+	
 
 
 	public static int getItemID( String name ) {
