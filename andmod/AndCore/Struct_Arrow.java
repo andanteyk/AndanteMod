@@ -30,7 +30,8 @@ public class Struct_Arrow {
 	public static final int EFFECT_SHARPNESS			= 0x108;	//追加でダメージを与えます。
 	public static final int EFFECT_SMITE				= 0x109;	//ゾンビに対して高いダメージを与えます。
 	public static final int EFFECT_BANEOFARTHROPODS		= 0x10a;	//虫に対して高いダメージを与えます。
-
+	public static final int EFFECT_ASSASSINATION		= 0x10b;	//ダメージを「プレイヤーが与えた」扱いにしません。
+	
 
 	public Struct_Arrow() {
 		arrowID = 0;

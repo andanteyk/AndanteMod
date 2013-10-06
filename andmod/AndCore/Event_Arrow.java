@@ -23,21 +23,67 @@ public class Event_Arrow {
 	}
 
 	
-	protected int hasArrow( EntityPlayer eplayer ) {
+	public static int hasArrow( EntityPlayer eplayer ) {
+		/*
 		for ( int i = 0; i < eplayer.inventory.getSizeInventory() - 4; i ++ ) {
 			ItemStack items = eplayer.inventory.getStackInSlot( i );
 			if ( items == null ) continue;
 			for ( int j = 0; j < IDList.size(); j ++ )
-				if ( items.itemID == IDList.get( j ) && ( items.getMaxDamage() <= 0 || items.getItemDamage() < items.getMaxDamage() ) )
+				if ( items.itemID == IDList.get( j ) && ( (IArrow)items.getItem() ).getArrowID( items ) != 0 )
 					return items.itemID;
 
+		}*/
+		
+		for ( int i = 0; i < eplayer.inventory.getSizeInventory() - 4; i ++ ) {
+			ItemStack items = eplayer.inventory.getStackInSlot( i );
+			if ( items == null ) continue;
+			
+			for ( int j = 0; j < IDList.size(); j ++ ) {
+				if ( items.itemID == IDList.get( j ) ) {
+			
+					if ( items.getItem() instanceof IArrow ) {
+						if ( ( (IArrow)items.getItem() ).canConsumeArrow( items ) )
+							return ( (IArrow)items.getItem() ).getArrowID( items );
+					
+					} else {
+						if ( items.stackSize >= 1 )
+							return items.itemID;
+					}
+				}
+			}
 		}
+		
 
 		return 0;
 	}
 
 
-	protected void consumeArrow( int itemID, EntityPlayer eplayer ) {
+	public static boolean consumeArrow( int arrowID, EntityPlayer eplayer ) {
+		
+		for ( int i = 0; i < eplayer.inventory.getSizeInventory() - 4; i ++ ) {
+			ItemStack items = eplayer.inventory.getStackInSlot( i );
+			if ( items == null ) continue;
+			
+			if ( items.getItem() instanceof IArrow ) {
+				IArrow arrow = (IArrow)items.getItem();
+				if ( arrowID == arrow.getArrowID( items ) && arrow.canConsumeArrow( items ) ) {
+					eplayer.inventory.setInventorySlotContents( i, arrow.consumeArrow( items ) );
+					return true;
+				}
+		
+			} else {
+				if ( arrowID == items.itemID ) {
+					items.stackSize --;
+					if ( items.stackSize <= 0 )
+						eplayer.inventory.setInventorySlotContents( i, null );
+					return true;
+				}
+			}
+		}
+		
+		return false;
+		
+		/*
 		if ( Item.itemsList[itemID].getMaxDamage() <= 0 )
 			eplayer.inventory.consumeInventoryItem( itemID );
 		else
@@ -48,8 +94,9 @@ public class Event_Arrow {
 					break;
 				}
 			}
+		*/
 	}
-
+	
 
 	@ForgeSubscribe
 	public void onArrowNock( ArrowNockEvent e ) {
@@ -111,6 +158,7 @@ public class Event_Arrow {
 			Entity_Arrow earrow = new Entity_Arrow( e.entityPlayer.worldObj, e.entityPlayer, strength * 2.0 * velocity * arrow.velocity, e.bow.itemID, arrowID );
 			earrow.setDamage( power + arrow.power );
 			earrow.setIsCritical( strength == 1.0 );
+			knockback += arrow.knockback;
 
 
 			//enchantment
@@ -143,7 +191,8 @@ public class Event_Arrow {
 				earrow.canBePickedUp = 2;
 			else
 				consumeArrow( arrowID, e.entityPlayer );
-
+				
+			
 
 			if ( !e.entityPlayer.worldObj.isRemote ) e.entityPlayer.worldObj.spawnEntityInWorld( earrow );
 

@@ -11,7 +11,6 @@ public class Handler_CreativeTab extends CreativeTabs {
 		super( label );
 		this.iconID = iconID;
 		this.title = title;
-		// TODO 自動生成されたコンストラクター・スタブ
 	}
 	
 

@@ -55,7 +55,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 @Mod(
 		modid	= "AndanteMod_ExTools",
 		name	= "ExTools",
-		version	= "1.6.2.1",
+		version	= "1.6.2.3",
 		dependencies = "required-after:AndanteMod_AndCore"
 		)
 @NetworkMod(
@@ -69,7 +69,7 @@ public class AndMod_ExTools {
 
 	//point: class
 
-	public static int aitemqty = 23;
+	public static int aitemqty = 24;
 	public static int[] aitemID = new int[aitemqty * 16];
 	public static Item[] aitem = new Item[aitemqty * 16];
 	public static String[][] aitemname = new String[aitemqty * 16][3];
@@ -182,6 +182,9 @@ public class AndMod_ExTools {
 		id ++;
 		atypename[id] = "Ghast";
 		aitemIDdefault[id] = 24046;
+		id ++;
+		atypename[id] = "Poison";
+		aitemIDdefault[id] = 24078;
 		
 
 		
@@ -1041,8 +1044,8 @@ public class AndMod_ExTools {
 		aitemname[id][1] = "Golden Arrow";
 		aitemname[id][2] = "金の矢";
 		id++;
-		aitemname[id][0] = "PoisonArrow";
-		aitemname[id][1] = "Poison Arrow";
+		aitemname[id][0] = "VenomArrow";
+		aitemname[id][1] = "Venom Arrow";
 		aitemname[id][2] = "毒矢";
 		id++;
 		aitemname[id][0] = "ParalysisArrow";
@@ -1088,6 +1091,10 @@ public class AndMod_ExTools {
 		aitemname[id][0] = "TorchArrow";
 		aitemname[id][1] = "Torch Arrow";
 		aitemname[id][2] = "松明の矢";
+		id++;
+		aitemname[id][0] = "AssassinationArrow";
+		aitemname[id][1] = "Arrow of Assassination";
+		aitemname[id][2] = "暗殺の矢";
 
 		id = id / 16 * 16 + 15;
 		id++;
@@ -1405,6 +1412,60 @@ public class AndMod_ExTools {
 		aitemname[id][1] = "Ghast Arrow";
 		aitemname[id][2] = "ガストの矢";
 		
+		id = id / 16 * 16 + 15;
+		id++;
+		aitemname[id][0] = "PoisonSteel";
+		aitemname[id][1] = "Poison Steel";
+		aitemname[id][2] = "毒鋼";
+		id++;
+		aitemname[id][0] = "PoisonSword";
+		aitemname[id][1] = "Poison Sword";
+		aitemname[id][2] = "毒鋼の剣";
+		id++;
+		aitemname[id][0] = "PoisonShovel";
+		aitemname[id][1] = "Poison Shovel";
+		aitemname[id][2] = "毒鋼のショベル";
+		id++;
+		aitemname[id][0] = "PoisonPickaxe";
+		aitemname[id][1] = "Poison Pickaxe";
+		aitemname[id][2] = "毒鋼のツルハシ";
+		id++;
+		aitemname[id][0] = "PoisonAxe";
+		aitemname[id][1] = "Poison Axe";
+		aitemname[id][2] = "毒鋼の斧";
+		id++;
+		aitemname[id][0] = "PoisonHoe";
+		aitemname[id][1] = "Poison Hoe";
+		aitemname[id][2] = "毒鋼のクワ";
+		id++;
+		aitemname[id][0] = "PoisonHammer";
+		aitemname[id][1] = "Poison Hammer";
+		aitemname[id][2] = "毒鋼のハンマー";
+		id++;
+		aitemname[id][0] = "PoisonHelmet";
+		aitemname[id][1] = "Poison Helmet";
+		aitemname[id][2] = "毒鋼のヘルメット";
+		id++;
+		aitemname[id][0] = "PoisonChestplate";
+		aitemname[id][1] = "Poison Chestplate";
+		aitemname[id][2] = "毒鋼のチェストプレート";
+		id++;
+		aitemname[id][0] = "PoisonLeggings";
+		aitemname[id][1] = "Poison Leggings";
+		aitemname[id][2] = "毒鋼のレギンス";
+		id++;
+		aitemname[id][0] = "PoisonBoots";
+		aitemname[id][1] = "Poison Boots";
+		aitemname[id][2] = "毒鋼のブーツ";
+		id++;
+		aitemname[id][0] = "PoisonBow";
+		aitemname[id][1] = "Poison Bow";
+		aitemname[id][2] = "毒鋼の弓";
+		id++;
+		aitemname[id][0] = "PoisonArrow";
+		aitemname[id][1] = "Poison Arrow";
+		aitemname[id][2] = "毒鋼の矢";
+		
 		//point: add new item name
 
 		
@@ -1512,6 +1573,9 @@ public class AndMod_ExTools {
 		id ++;
 		ArmorTexture[id][0] = header + "ghast_1.png";
 		ArmorTexture[id][1] = header + "ghast_2.png";
+		id ++;
+		ArmorTexture[id][0] = header + "poison_1.png";
+		ArmorTexture[id][1] = header + "poison_2.png";
 
 
 
@@ -1904,6 +1968,10 @@ public class AndMod_ExTools {
 		id += 16; armorid ++;
 		
 		
+		if ( isEnabled( "Poison" ) )
+			registerPoisonTools( id, armorid );
+		id += 16; armorid ++;
+		
 		//point: add new item
 
 
@@ -1933,6 +2001,8 @@ public class AndMod_ExTools {
 		eequip.addMobWeaponEquipment( new ItemStack( Item.swordDiamond ), Event_MobEquipment.FLAG_NETHER    & Event_MobEquipment.FLAG_SWORDMAN, 0.01 );
 		eequip.addMobWeaponEquipment( new ItemStack( Item.swordGold ), Event_MobEquipment.FLAG_OVERWORLD & Event_MobEquipment.FLAG_SWORDMAN, 0.05 );
 		eequip.addMobWeaponEquipment( new ItemStack( Item.swordGold ), Event_MobEquipment.FLAG_NETHER    & Event_MobEquipment.FLAG_SWORDMAN, 0.05 );
+		eequip.addMobWeaponEquipment( new ItemStack( Item.bow ), Event_MobEquipment.FLAG_WITHERSKELETON, 0.01 );
+		
 		
 		//Iron Shovel
 		Item.itemsList[Item.shovelIron.itemID] = new Item_Spade( Item.shovelIron.itemID - 256, EnumToolMaterial.IRON ).setUnlocalizedName( "shovelIron" ).func_111206_d( "iron_shovel" );
@@ -6680,11 +6750,12 @@ public class AndMod_ExTools {
 		
 		
 		//todo: Deprecated
-		//Poison Arrow
+		//Venom Arrow
 		id ++;
 		
 		aitem[id] = new Item_Arrow( aitemID[id], 64 ).setParameters( 0.8, 0.4, 0.0, 0.01, ObjectHeader.toLowerCase() + "textures/entity/" + aitemname[id][0].substring( ObjectHeader.length() ) + ".png" )
-		.addEffect( Potion.poison.id, 1, 6 * 20, 0.8F )
+		.addEffect( Potion.poison.id, 0, 5 * 20, 0.8F )
+		.addEffect( Potion.weakness.id, 0, 30 * 20, 0.5F )
 		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
 
 		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
@@ -6695,7 +6766,7 @@ public class AndMod_ExTools {
 		BlockDispenser.dispenseBehaviorRegistry.putObject( aitem[id], new Event_DispenserArrow() );
 		
 		//from Splash Potion of Poison I
-		GameRegistry.addRecipe( new ItemStack( aitem[id], 4 ),
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 8 ),
 				"h",
 				"s",
 				"f",
@@ -6703,7 +6774,7 @@ public class AndMod_ExTools {
 				's', new ItemStack ( Item.stick, 1, 0 ),
 				'f', Item.feather );
 		//from Splash Potion of Poison II
-		GameRegistry.addRecipe( new ItemStack( aitem[id], 8 ),
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 16 ),
 				"h",
 				"s",
 				"f",
@@ -6711,7 +6782,7 @@ public class AndMod_ExTools {
 				's', new ItemStack ( Item.stick, 1, 0 ),
 				'f', Item.feather );
 		//from Splash Potion of Poison I extended
-		GameRegistry.addRecipe( new ItemStack( aitem[id], 8 ),
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 16 ),
 				"h",
 				"s",
 				"f",
@@ -7053,6 +7124,29 @@ public class AndMod_ExTools {
 				's', new ItemStack ( Item.stick, 1, 0 ),
 				'f', Item.feather );
 		
+		
+		//Arrow of Assassination
+		id ++;
+		
+		aitem[id] = new Item_Arrow( aitemID[id], 64 ).setParameters( 1.0, 2.0, 0.0, 0.05, ObjectHeader.toLowerCase() + "textures/entity/" + aitemname[id][0].substring( ObjectHeader.length() ) + ".png" )
+		.addEffect( Struct_Arrow.EFFECT_ASSASSINATION, 0, 0, 1.0F )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+		
+		BlockDispenser.dispenseBehaviorRegistry.putObject( aitem[id], new Event_DispenserArrow() );
+		
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 4 ),
+				"h",
+				"s",
+				"f",
+				'h', new ItemStack ( Block.torchRedstoneActive, 1, 0 ),
+				's', new ItemStack ( Item.stick, 1, 0 ),
+				'f', Item.feather );
+		
 	}
 	
 
@@ -7387,7 +7481,7 @@ public class AndMod_ExTools {
 	private void registerPumpkinTools( int id, int armorid ) {
 		
 		
-		EnumToolMaterial TMPumpkin = EnumHelper.addToolMaterial( "PUMPKIN", 2, 121, 1.8F, 0.0F, 2 );
+		EnumToolMaterial TMPumpkin = EnumHelper.addToolMaterial( "PUMPKIN", 2, 99, 1.8F, 0.0F, 2 );
 		TMPumpkin.customCraftingMaterial = new ItemStack( Block.pumpkin, 1, 0 ).getItem();
 		
 		
@@ -7496,7 +7590,7 @@ public class AndMod_ExTools {
 		//Pumpkin Hammer
 		id ++;
 
-		aitem[id] = new Item_Hammer( aitemID[id], TMPumpkin ).setMaxDamage( (int)( 64 * 2 ) - 1 )
+		aitem[id] = new Item_Hammer( aitemID[id], TMPumpkin ).setMaxDamage( (int)( 64 * 1.5 ) - 1 )
 		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
 
 		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
@@ -7517,7 +7611,7 @@ public class AndMod_ExTools {
 
 
 		armorid ++;
-		EnumArmorMaterial AMPumpkin = EnumHelper.addArmorMaterial( "PUMPKIN", 4, new int[] { 1, 3, 3, 1 }, 2 );
+		EnumArmorMaterial AMPumpkin = EnumHelper.addArmorMaterial( "PUMPKIN", 3, new int[] { 1, 3, 3, 1 }, 2 );
 		AMPumpkin.customCraftingMaterial = new ItemStack( Block.pumpkin, 1, 0 ).getItem();
 		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
 				Event_MobEquipment.FLAG_OVERWORLD, 0.075 );
@@ -7647,7 +7741,7 @@ public class AndMod_ExTools {
 	//point: Lantern Tools
 	private void registerLanternTools( int id, int armorid ) {
 		
-		EnumToolMaterial TMLantern = EnumHelper.addToolMaterial( "LANTERN", 3, 91, 2.7F, 0.4F, 4 );
+		EnumToolMaterial TMLantern = EnumHelper.addToolMaterial( "LANTERN", 3, 74, 2.7F, 0.4F, 4 );
 		TMLantern.customCraftingMaterial = new ItemStack( Block.pumpkinLantern, 1, 0 ).getItem();
 		
 		
@@ -7757,7 +7851,7 @@ public class AndMod_ExTools {
 		//Lantern Hammer
 		id ++;
 
-		aitem[id] = new Item_Hammer( aitemID[id], TMLantern ).setMaxDamage( (int)( 64 * 1.5 ) - 1 )
+		aitem[id] = new Item_Hammer( aitemID[id], TMLantern ).setMaxDamage( (int)( 64 * 1 ) - 1 )
 		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
 
 		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
@@ -7778,7 +7872,7 @@ public class AndMod_ExTools {
 
 
 		armorid ++;
-		EnumArmorMaterial AMLantern = EnumHelper.addArmorMaterial( "LANTERN", 3, new int[] { 2, 3, 3, 1 }, 4 );
+		EnumArmorMaterial AMLantern = EnumHelper.addArmorMaterial( "LANTERN", 2, new int[] { 2, 3, 3, 1 }, 4 );
 		AMLantern.customCraftingMaterial = new ItemStack( Block.pumpkinLantern, 1, 0 ).getItem();
 		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
 				Event_MobEquipment.FLAG_OVERWORLD, 0.05 );
@@ -8730,6 +8824,295 @@ public class AndMod_ExTools {
 		
 	}
 	
+	
+	//point: Poison Tools
+	private void registerPoisonTools( int id, int armorid ) {
+		
+		
+		//Poison steel
+		id ++;
+
+		aitem[id] = new Item_Base( aitemID[id], 64 ).setCreativeTab( CreativeTabs.tabMaterials )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+		
+		GameRegistry.addShapelessRecipe( new ItemStack( aitem[id] ), 
+				new ItemStack( Item.ingotIron ), 
+				new ItemStack( Item.spiderEye ),
+				new ItemStack( Item.spiderEye ),
+				new ItemStack( Item.spiderEye ) );
+		
+				
+				
+		EnumToolMaterial TMPoison = EnumHelper.addToolMaterial( "POISON", 2, 225, 7.0F, 2.0F, 12 );
+		TMPoison.customCraftingMaterial = new ItemStack( getItemIDforCraft( "PoisonSteel" ), 1, 0 ).getItem();
+		
+		
+		//Poison Sword
+		id ++;
+
+		aitem[id] = new Item_SpecialSword( aitemID[id], TMPoison )
+		.addEffect( Potion.poison.id, 1, 60, 0.2F )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_OVERWORLD & Event_MobEquipment.FLAG_SWORDMAN, 0.05 );
+		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_NETHER    & Event_MobEquipment.FLAG_SWORDMAN, 0.05 );
+		
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				"e",
+				"e",
+				"s",
+				'e', new ItemStack( getItemIDforCraft( "PoisonSteel" ), 1, 0 ),
+				's', new ItemStack( Item.stick, 1, 0 ) );
+
+		
+
+		//Poison Shovel
+		id ++;
+
+		aitem[id] = new Item_Spade( aitemID[id], TMPoison )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				"e",
+				"s",
+				"s",
+				'e', new ItemStack( getItemIDforCraft( "PoisonSteel" ), 1, 0 ),
+				's', new ItemStack( Item.stick, 1, 0 ) );
+		
+		
+
+		//Poison Pickaxe
+		id ++;
+
+		aitem[id] = new Item_Pickaxe( aitemID[id], TMPoison )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				"eee",
+				" s ",
+				" s ",
+				'e', new ItemStack( getItemIDforCraft( "PoisonSteel" ), 1, 0 ),
+				's', new ItemStack( Item.stick, 1, 0 ) );
+
+		
+
+		//Poison Axe
+		id ++;
+
+		aitem[id] = new Item_Axe( aitemID[id], TMPoison )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				"ee",
+				"es",
+				" s",
+				'e', new ItemStack( getItemIDforCraft( "PoisonSteel" ), 1, 0 ),
+				's', new ItemStack( Item.stick, 1, 0 ) );
+
+
+		
+		//Poison Hoe
+		id ++;
+
+		aitem[id] = new Item_Hoe( aitemID[id], TMPoison )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				"ee",
+				"s ",
+				"s ",
+				'e', new ItemStack( getItemIDforCraft( "PoisonSteel" ), 1, 0 ),
+				's', new ItemStack( Item.stick, 1, 0 ) );
+
+
+		
+		//Poison Hammer
+		id ++;
+
+		aitem[id] = new Item_Hammer( aitemID[id], TMPoison ).setMaxDamage( (int)( 64 * 3.5 ) - 1 )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				" s ",
+				"eee",
+				" s ",
+				'e', new ItemStack( getItemIDforCraft( "PoisonSteel" ), 1, 0 ),
+				's', new ItemStack( Item.stick, 1, 0 ) );
+
+
+
+
+
+
+		armorid ++;
+		EnumArmorMaterial AMPoison = EnumHelper.addArmorMaterial( "POISON", 14, new int[] { 2, 6, 5, 2 }, 12 );
+		AMPoison.customCraftingMaterial = new ItemStack( getItemIDforCraft( "PoisonSteel" ), 1, 0 ).getItem();
+		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
+				Event_MobEquipment.FLAG_OVERWORLD, 0.05 );
+		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
+				Event_MobEquipment.FLAG_NETHER,    0.05 );
+		//checkme
+		
+		//Poison Helmet
+		id ++;
+
+		aitem[id] = new Item_SpecialArmor( aitemID[id], ArmorTexture[armorid], AMPoison, 0 )
+		.addEffect( Item_SpecialArmor.EFFECT_COUNTERSTATUS + Potion.poison.id, 100 | ( 1 << Item_SpecialArmor.AMP_AMPLIFIERSHIFT ) | ( 60 << Item_SpecialArmor.AMP_DURATIONSHIFT ), Item_SpecialArmor.FLAG_ANYTIME )
+		.addEffect( Item_SpecialArmor.EFFECT_RESISTSTATUS + Potion.poison.id, 1000, Item_SpecialArmor.FLAG_FULLEQ )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				"sss",
+				"s s",
+				's', new ItemStack( getItemIDforCraft( "PoisonSteel" ), 1, 0 ) );
+
+
+
+		//Poison Chestplate
+		id ++;
+
+		aitem[id] = new Item_SpecialArmor( aitemID[id], ArmorTexture[armorid], AMPoison, 1 )
+		.addEffect( Item_SpecialArmor.EFFECT_COUNTERSTATUS + Potion.poison.id, 100 | ( 1 << Item_SpecialArmor.AMP_AMPLIFIERSHIFT ) | ( 60 << Item_SpecialArmor.AMP_DURATIONSHIFT ), Item_SpecialArmor.FLAG_ANYTIME )
+		.addEffect( Item_SpecialArmor.EFFECT_RESISTSTATUS + Potion.poison.id, 1000, Item_SpecialArmor.FLAG_FULLEQ )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				"s s",
+				"sss",
+				"sss",
+				's', new ItemStack( getItemIDforCraft( "PoisonSteel" ), 1, 0 ) );
+
+
+		
+		//Poison Leggings
+		id ++;
+
+		aitem[id] = new Item_SpecialArmor( aitemID[id], ArmorTexture[armorid], AMPoison, 2 )
+		.addEffect( Item_SpecialArmor.EFFECT_COUNTERSTATUS + Potion.poison.id, 100 | ( 1 << Item_SpecialArmor.AMP_AMPLIFIERSHIFT ) | ( 60 << Item_SpecialArmor.AMP_DURATIONSHIFT ), Item_SpecialArmor.FLAG_ANYTIME )
+		.addEffect( Item_SpecialArmor.EFFECT_RESISTSTATUS + Potion.poison.id, 1000, Item_SpecialArmor.FLAG_FULLEQ )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+		GameRegistry.addRecipe(new ItemStack( aitem[id], 1 ),
+				"sss",
+				"s s",
+				"s s",
+				's', new ItemStack( getItemIDforCraft( "PoisonSteel" ), 1, 0 ) );
+
+		
+
+		//Poison Boots
+		id ++;
+
+		aitem[id] = new Item_SpecialArmor( aitemID[id], ArmorTexture[armorid], AMPoison, 3 )
+		.addEffect( Item_SpecialArmor.EFFECT_COUNTERSTATUS + Potion.poison.id, 100 | ( 1 << Item_SpecialArmor.AMP_AMPLIFIERSHIFT ) | ( 60 << Item_SpecialArmor.AMP_DURATIONSHIFT ), Item_SpecialArmor.FLAG_ANYTIME )
+		.addEffect( Item_SpecialArmor.EFFECT_RESISTSTATUS + Potion.poison.id, 1000, Item_SpecialArmor.FLAG_FULLEQ )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				"s s",
+				"s s",
+				's', new ItemStack( getItemIDforCraft( "PoisonSteel" ), 1, 0 ) );
+				
+
+		//Poison Bow
+		id ++;
+
+		aitem[id] = new Item_Bow( aitemID[id], TMPoison ).setParameters( 0.8F, 1.1F, 0.2F, 0.0F ).setCraftingMaterial( getItemIDforCraft( "PoisonSteel" ) )
+		.addEffect( Potion.poison.id, 1, 120, 0.2F )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				" st",
+				"s t",
+				" st",
+				's', new ItemStack ( getItemIDforCraft( "PoisonSteel" ), 1, 0 ),
+				't', Item.silk );
+
+
+
+		//Poison Arrow
+		id++;
+
+		aitem[id] = new Item_Arrow( aitemID[id], 64 ).setParameters( 1.1, 2.0, 0.0, 0.06, ObjectHeader.toLowerCase() + "textures/entity/" + aitemname[id][0].substring( ObjectHeader.length() ) + ".png" )
+		.addEffect( Potion.poison.id, 1, 120, 0.8F )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+		BlockDispenser.dispenseBehaviorRegistry.putObject( aitem[id], new Event_DispenserArrow() );
+		
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 4 ),
+				"h",
+				"s",
+				"f",
+				'h', new ItemStack ( getItemIDforCraft( "PoisonSteel" ), 1, 0 ),
+				's', new ItemStack ( Item.stick, 1, 0 ),
+				'f', Item.feather );
+
+		
+	}
 
 
 	
@@ -8763,7 +9146,7 @@ public class AndMod_ExTools {
 			earrow.addArrow( getItemIDforCraft( "IronArrow" ) );
 			earrow.addArrow( getItemIDforCraft( "DiamondArrow" ) );
 			earrow.addArrow( getItemIDforCraft( "GoldenArrow" ) );
-			earrow.addArrow( getItemIDforCraft( "PoisonArrow" ) );
+			earrow.addArrow( getItemIDforCraft( "VenomArrow" ) );
 			earrow.addArrow( getItemIDforCraft( "ParalysisArrow" ) );
 			earrow.addArrow( getItemIDforCraft( "HealingArrow" ) );
 			earrow.addArrow( getItemIDforCraft( "CursedArrow" ) );
@@ -8774,7 +9157,8 @@ public class AndMod_ExTools {
 			earrow.addArrow( getItemIDforCraft( "CreeperArrow" ) );
 			earrow.addArrow( getItemIDforCraft( "IncendiaryArrow" ) );
 			earrow.addArrow( getItemIDforCraft( "MagicalArrow" ) );
-			earrow.addArrow( getItemIDforCraft( "TorchArrow" ) );	
+			earrow.addArrow( getItemIDforCraft( "TorchArrow" ) );
+			earrow.addArrow( getItemIDforCraft( "AssassinationArrow" ) );
 		}
 		if ( isEnabled( "Blaze" ) ) earrow.addArrow( getItemIDforCraft( "BlazeArrow" ) );
 		if ( isEnabled( "Pumpkin" ) ) earrow.addArrow( getItemIDforCraft( "PumpkinArrow" ) );
@@ -8782,6 +9166,7 @@ public class AndMod_ExTools {
 		if ( isEnabled( "Cactus" ) ) earrow.addArrow( getItemIDforCraft( "CactusArrow" ) );
 		if ( isEnabled( "Glowstone" ) ) earrow.addArrow( getItemIDforCraft( "GlowstoneArrow" ) );
 		if ( isEnabled( "Ghast" ) ) earrow.addArrow( getItemIDforCraft( "GhastArrow" ) );
+		if ( isEnabled( "Poison" ) ) earrow.addArrow( getItemIDforCraft( "PoisonArrow" ) );
 		
 		MinecraftForge.EVENT_BUS.register( earrow );
 
@@ -8893,6 +9278,18 @@ public class AndMod_ExTools {
 			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "GlowstoneChestplate" ),	1, fm ), new ItemStack( Item.glowstone, 32, 0 ), 2 | Item_Hammer.FLAG_UNREPAIRABLE );
 			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "GlowstoneLeggings" ), 	1, fm ), new ItemStack( Item.glowstone, 28, 0 ), 2 | Item_Hammer.FLAG_UNREPAIRABLE );
 			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "GlowstoneBoots" ), 		1, fm ), new ItemStack( Item.glowstone, 16, 0 ), 2 | Item_Hammer.FLAG_UNREPAIRABLE );
+		}
+		
+		if ( isEnabled( "Poison" ) ) {
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "PoisonSword" ), 		1, fm ), new ItemStack( getItemIDforCraft( "PoisonSteel" ), 2, 0 ), 2 );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "PoisonShovel" ), 	1, fm ), new ItemStack( getItemIDforCraft( "PoisonSteel" ), 1, 0 ), 2 );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "PoisonPickaxe" ), 	1, fm ), new ItemStack( getItemIDforCraft( "PoisonSteel" ), 3, 0 ), 2 );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "PoisonAxe" ),		1, fm ), new ItemStack( getItemIDforCraft( "PoisonSteel" ), 3, 0 ), 2 );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "PoisonHoe" ), 		1, fm ), new ItemStack( getItemIDforCraft( "PoisonSteel" ), 2, 0 ), 2 );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "PoisonHelmet" ), 	1, fm ), new ItemStack( getItemIDforCraft( "PoisonSteel" ), 5, 0 ), 2 );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "PoisonChestplate" ),	1, fm ), new ItemStack( getItemIDforCraft( "PoisonSteel" ), 8, 0 ), 2 );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "PoisonLeggings" ), 	1, fm ), new ItemStack( getItemIDforCraft( "PoisonSteel" ), 7, 0 ), 2 );
+			Item_Hammer.addRepairingRecipe( new ItemStack( getItemIDforCraft( "PoisonBoots" ), 		1, fm ), new ItemStack( getItemIDforCraft( "PoisonSteel" ), 4, 0 ), 2 );
 		}
 	}
 	

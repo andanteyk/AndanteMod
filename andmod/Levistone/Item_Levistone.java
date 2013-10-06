@@ -1,5 +1,7 @@
 package andmod.Levistone;
 
+import java.lang.reflect.Field;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumArmorMaterial;
@@ -10,6 +12,8 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.ChunkProviderHell;
+import net.minecraft.world.gen.ChunkProviderServer;
 
 public class Item_Levistone extends ItemArmor {
 	
@@ -61,8 +65,48 @@ public class Item_Levistone extends ItemArmor {
 				
 				items.damageItem( 16, eplayer );
 			} else {			
+				
+				
 	            ChunkPosition cpos = world.findClosestStructure( "Stronghold", (int)eplayer.posX, (int)eplayer.posY, (int)eplayer.posZ );
-	
+	            //cpos = null;	//DEBUG
+	            
+	            
+	            if ( cpos == null && world.provider.dimensionId == -1 && world.getChunkProvider() instanceof ChunkProviderServer ) {
+	            	Class<ChunkProviderServer> c = ChunkProviderServer.class;
+	            	try {
+	            		Field f = c.getDeclaredField( "currentChunkProvider" );
+	            		f.setAccessible( true );
+	            		ChunkProviderHell cph = (ChunkProviderHell)f.get( world.getChunkProvider() );
+		            	cpos = cph.genNetherBridge.getNearestInstance( world, (int)eplayer.posX, (int)eplayer.posY, (int)eplayer.posZ );
+	            		
+	            	} catch ( Exception e ) {
+						//nothing
+					}
+	            	
+	            }
+	            
+	            /*
+	            //dungeon detection( jungle/desert temple, witch's house )
+	            if ( cpos == null && world.getChunkProvider() instanceof ChunkProviderServer ) {
+	            	Class<ChunkProviderServer> c = ChunkProviderServer.class;
+	            	try {
+	            		Field f = c.getDeclaredField( "currentChunkProvider" );
+	            		f.setAccessible( true );
+	            		ChunkProviderGenerate cph = (ChunkProviderGenerate) f.get( world.getChunkProvider() );
+	            		f = ChunkProviderGenerate.class.getDeclaredField( "scatteredFeatureGenerator" );
+	            		f.setAccessible( true );
+	            		MapGenScatteredFeature mgsf = (MapGenScatteredFeature) f.get( cph );
+	            		cpos = mgsf.getNearestInstance( world, (int)eplayer.posX, (int)eplayer.posY, (int)eplayer.posZ );
+	            		
+	            	} catch (Exception e) {
+						// TODO 自動生成された catch ブロック
+						e.printStackTrace();
+					} finally {}
+	            	
+	            }
+	            */
+	            
+	            
 	            if ( cpos != null ) {
 	            	
 	            	double px = cpos.x - eplayer.posX;

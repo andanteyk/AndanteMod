@@ -26,7 +26,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 @Mod(
 		modid	= "AndanteMod_Amulet",
 		name	= "Amulet",
-		version	= "1.6.2.1",
+		version	= "1.6.2.2",
 		dependencies = "required-after:AndanteMod_AndCore"
 		)
 @NetworkMod(
@@ -189,7 +189,7 @@ public class AndMod_Amulet {
 			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 			
-			GameRegistry.addRecipe( new ItemStack( aitem[id], 4 ),
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 8 ),
 					" i ",
 					"i i",
 					" i ",

@@ -22,7 +22,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 @Mod(
 		modid	= "AndanteMod_Levistone",
 		name	= "Levistone",
-		version	= "1.6.2.1"
+		version	= "1.6.2.2"
 		)
 @NetworkMod(
 		clientSideRequired = true,

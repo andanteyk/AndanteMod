@@ -335,8 +335,8 @@ public class Entity_Arrow extends EntityArrow implements IProjectile
 					double dmg = ( speed * damage );		//point: ダメージの設定
 					boolean hitEnder =  mop.entityHit instanceof EntityEnderman   && ( getArrowProperty().hasEffectID( Struct_Arrow.EFFECT_ENDERSTRIKE ) || getBowProperty().hasEffectID( Struct_Arrow.EFFECT_ENDERSTRIKE ) );
 					boolean canHit = !( mop.entityHit instanceof EntityEnderman ) || ( getArrowProperty().hasEffectID( Struct_Arrow.EFFECT_ENDERSTRIKE ) || getBowProperty().hasEffectID( Struct_Arrow.EFFECT_ENDERSTRIKE ) );
-
-
+					boolean isAssassination = getArrowProperty().hasEffectID( Struct_Arrow.EFFECT_ASSASSINATION ) || getBowProperty().hasEffectID( Struct_Arrow.EFFECT_ASSASSINATION );
+					
 					if ( getIsCritical() )
 						dmg += rand.nextDouble() * ( dmg / 2.0 + 2.0 );
 
@@ -355,7 +355,7 @@ public class Entity_Arrow extends EntityArrow implements IProjectile
 					//§ エンダーマンにも当たるように処理　「弓矢属性の直接攻撃ダメージ」として処理しています
 					DamageSource damagesource = null;
 
-					if ( shootingEntity == null )
+					if ( shootingEntity == null || isAssassination )
 						if ( hitEnder )
 							damagesource = new EntityDamageSource( "arrow", this );
 						else

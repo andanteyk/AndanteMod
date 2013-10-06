@@ -4,12 +4,16 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockSand;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.util.IProgressUpdate;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 
 public class World_ChunkProvider implements IChunkProvider {
 
@@ -23,10 +27,12 @@ public class World_ChunkProvider implements IChunkProvider {
 		rand = new Random( seed );
 	}
 
+	
 	@Override
 	public boolean chunkExists( int cx, int cz ) {
 		return true;	//checkme
 	}
+	
 
 	@Override
 	public Chunk provideChunk( int cx, int cz ) {
@@ -55,70 +61,90 @@ public class World_ChunkProvider implements IChunkProvider {
 			}	
 		}
 		
-		
-		return new Chunk( worldObj, blocks, meta, cx, cz );
+		Chunk chunk = new Chunk( worldObj, blocks, meta, cx, cz );
+		chunk.resetRelightChecks();
+		return chunk;
 	}
 
+	
 	@Override
 	public Chunk loadChunk( int cx, int cz ) {
 		return provideChunk( cx, cz );
 	}
 
+	
 	@Override
 	public void populate( IChunkProvider icp, int cx, int cz ) {
-		// TODO 自動生成されたメソッド・スタブ
+		BlockSand.fallInstantly = true;
+        MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Pre( icp, worldObj, worldObj.rand, cx, cz, false ) );
+
+        //TODO: biome decoration!
+        
+        MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Post( icp, worldObj, worldObj.rand, cx, cz, false ) );
+        BlockSand.fallInstantly = false;
 
 	}
+	
 
 	@Override
 	public boolean saveChunks( boolean flag, IProgressUpdate iprogressupdate ) {
 		return true;
 	}
 
+	
 	@Override
 	public boolean unloadQueuedChunks() {
 		//checkme
 		return false;
 	}
+	
 
 	@Override
 	public boolean canSave() {
 		
 		return true;
 	}
+	
 
 	@Override
-	public String makeString() {
-		return "MysteriousDungeon_ChunkProvider";
+	public String makeString() {	//checkme
+		//return "MysteriousDungeon_ChunkProvider";
+		return "RandomLevelSource";
 	}
 
+	
 	@Override
-	public List getPossibleCreatures( EnumCreatureType enumcreaturetype, int bx, int by, int bz ) {
+	public List getPossibleCreatures( EnumCreatureType ecreature, int bx, int by, int bz ) {
 		// TODO 自動生成されたメソッド・スタブ
-		return null;
+		//return null;
+		
+		BiomeGenBase biomegen = worldObj.getBiomeGenForCoords( bx, bz );
+		return biomegen.getSpawnableList( ecreature );
 	}
 
+	
 	@Override
 	public ChunkPosition findClosestStructure( World world, String name, int bx, int by, int bz ) {
 		// TODO 自動生成されたメソッド・スタブ
 		return null;
 	}
+	
 
 	@Override
 	public int getLoadedChunkCount() {
 		//checkme
 		return 0;
 	}
+	
 
 	@Override
 	public void recreateStructures( int bx, int bz ) {
 		// TODO 自動生成されたメソッド・スタブ
-
 	}
+	
 
 	@Override
 	public void func_104112_b() {
-		
 	}
 
 }

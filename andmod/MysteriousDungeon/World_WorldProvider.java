@@ -68,26 +68,31 @@ public class World_WorldProvider extends WorldProvider {
 	public boolean isDaytime() {
 		return false;
 	}
+	
 
 	@Override
 	public Vec3 getSkyColor( Entity cameraEntity, float partialTicks ) {
 		return worldObj.getWorldVec3Pool().getVecFromPool( 0.0, 0.0, 0.0 );
 	}
+	
 
 	@Override
 	public float getStarBrightness( float par1 ) {
 		return 0.0F;
 	}
 
+	
 	@Override
 	public void calculateInitialWeather() {
 	}
+	
 
 	@Override
 	public boolean canBlockFreeze( int x, int y, int z, boolean byWater ) {
 		return false;
 	}
 
+	
 	@Override
 	public ChunkCoordinates getSpawnPoint() {
 		// TODO 自動生成されたメソッド・スタブ
@@ -99,6 +104,7 @@ public class World_WorldProvider extends WorldProvider {
 	public boolean canDoLightning( Chunk chunk ) {
 		return false;
 	}
+	
 
 	@Override
 	public IRenderHandler getSkyRenderer() {
@@ -106,6 +112,7 @@ public class World_WorldProvider extends WorldProvider {
 		return new Render_Empty();
 	}
 
+	
 	@Override
 	public IRenderHandler getCloudRenderer() {
 		return new Render_Empty();
@@ -116,30 +123,36 @@ public class World_WorldProvider extends WorldProvider {
 		return worldObj.getWorldVec3Pool().getVecFromPool( 0.0, 0.0, 0.0 );
 	}
 
+	
 	@Override
 	public Vec3 getFogColor( float angle, float par2 ) {
 		return worldObj.getWorldVec3Pool().getVecFromPool( 0.0, 0.0, 0.0 );
 	}
 
+	
 	@Override
 	public boolean getWorldHasVoidParticles() {
 		return false;
 	}
 
+	
 	@Override
 	public void updateWeather() {
 	}
 
+	
 	@Override
 	public long getSeed() {
 		return Long.reverse( worldObj.getWorldInfo().getSeed() );	//checkme
 	}
 
+	
 	@Override
 	public double getHorizon() {
 		return 127.0;		//checkme
 	}
 
+	
 	@Override
 	protected void registerWorldChunkManager() {
 		worldChunkMgr = new World_ChunkManager( new World_BiomeGen( AndMod_MysteriousDungeon.biomeID ) );
@@ -147,24 +160,17 @@ public class World_WorldProvider extends WorldProvider {
 		hasNoSky = true;
 	}
 
+	
 	@Override
 	public IChunkProvider createChunkGenerator() {
 		return new World_ChunkProvider( worldObj, worldObj.getSeed() );
 	}
 
+	
 	@Override
 	public int getActualHeight() {
 		// TODO 自動生成されたメソッド・スタブ
 		return 256;
 	}
-
-
-	@Override
-	public int getHeight() {
-		// TODO 自動生成されたメソッド・スタブ
-		return super.getHeight();
-	}
-
-	
 
 }

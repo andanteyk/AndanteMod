@@ -1,8 +1,10 @@
 package andmod.MysteriousDungeon;
 
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeDecorator;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -14,6 +16,7 @@ public class World_BiomeGen extends BiomeGenBase {
 
 		setBiomeName( "Mysterious Dungeon" );
 		setColor( 0x00FFFF );	//checkme
+		waterColorMultiplier = 0x00FFFF;
 		setMinMaxHeight( -2.0F, 1.0F );	//checkme
 		setTemperatureRainfall( 0.2F, 0.0F );	//checkme
 		setDisableRain();
@@ -39,8 +42,13 @@ public class World_BiomeGen extends BiomeGenBase {
 		// TODO 自動生成されたメソッド・スタブ
 		super.decorate(par1World, par2Random, par3, par4);
 	}
-	
-	
-	
 
+
+	@Override
+	public List getSpawnableList(EnumCreatureType par1EnumCreatureType) {
+		// TODO 自動生成されたメソッド・スタブ
+		return super.getSpawnableList(par1EnumCreatureType);
+	}
+	
+	
 }

@@ -20,10 +20,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 @Mod(
 		modid	= "AndanteMod_XPCrystal",
 		name	= "XP Crystal",
-		version	= "1.6.2.0"
-		/*
-		, dependencies = "after:AndanteMod_GlassTool"
-		 */
+		version	= "1.6.2.1"
 		)
 @NetworkMod(
 		clientSideRequired = true,
@@ -150,7 +147,7 @@ public class AndMod_XPCrystal {
 					"cbc",
 					" c ",
 					'c', new ItemStack( Block.glass ),
-					'b', new ItemStack( Item.appleGold, 1, fm ) );
+					'b', new ItemStack( Item.goldenCarrot, 1, fm ) );
 		}
 
 
@@ -208,7 +205,14 @@ public class AndMod_XPCrystal {
 			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
 			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
-
+			
+			GameRegistry.addRecipe( new ItemStack( aitem[id], 1, aitem[id].getMaxDamage() ),
+					" c ",
+					"cbc",
+					" c ",
+					'c', new ItemStack( Block.blockNetherQuartz, 1, fm ),
+					'b', new ItemStack( Block.enchantmentTable ) );
+			
 			//note: このクリスタルのみ、作成時には最大チャージされます
 			GameRegistry.addRecipe( new ItemStack( aitem[id], 1, 0 ),
 					" c ",

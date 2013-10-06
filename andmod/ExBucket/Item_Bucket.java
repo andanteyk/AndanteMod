@@ -59,6 +59,7 @@ public class Item_Bucket extends Item implements IFuelHandler {
 		if ( burnTick > 0 ) GameRegistry.registerFuelHandler( this );
 		
 		setCreativeTab( CreativeTabs.tabMisc );
+		setNoRepair();
 	}
 
 
@@ -72,11 +73,13 @@ public class Item_Bucket extends Item implements IFuelHandler {
 	@Override
 	public ItemStack onItemRightClick( ItemStack items, World world, EntityPlayer eplayer ) {
 
+		
 		if ( contents.itemID == Item.bucketMilk.itemID ) {
 			eplayer.setItemInUse( items, getMaxItemUseDuration( items ) );
 			return items;
 		}
 		
+	
 		double shift = 1.0;
 		double px = eplayer.prevPosX + ( eplayer.posX - eplayer.prevPosX ) * shift;
 		double py = eplayer.prevPosY + ( eplayer.posY - eplayer.prevPosY ) * shift + 1.62D - eplayer.yOffset;
@@ -90,7 +93,7 @@ public class Item_Bucket extends Item implements IFuelHandler {
 			return items;
 			
 		} else {
-
+			
 			if ( mopos.typeOfHit == EnumMovingObjectType.TILE ) {
 				int bx = mopos.blockX;
 				int by = mopos.blockY;
@@ -221,7 +224,7 @@ public class Item_Bucket extends Item implements IFuelHandler {
 			if ( ( FlagList.get( i ) & FLAG_COW ) != 0 && eliv instanceof EntityCow ) {
 				
 				if ( contents.itemID == 0 ) {
-					ItemStack ret = new ItemStack( ContainerList.get( i ).itemID, items.stackSize, ContainerList.get( i ).getMaxDamage() - 1 );
+					ItemStack ret = new ItemStack( ContainerList.get( i ).itemID, items.stackSize, 0 /*ContainerList.get( i ).getMaxDamage() - 1*/ );
 					//if ( --items.stackSize <= 0 )
 						eplayer.inventory.setInventorySlotContents( eplayer.inventory.currentItem, ret );
 					//if ( !eplayer.inventory.addItemStackToInventory( ret ) ) eplayer.dropPlayerItem( ret );

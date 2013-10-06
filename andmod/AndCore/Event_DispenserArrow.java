@@ -12,41 +12,44 @@ import net.minecraft.world.World;
 
 public class Event_DispenserArrow extends BehaviorProjectileDispense {
 
-	protected boolean isQuiver;
-	
 	
 	/**
 	 * ディスペンサーから矢を撃つためのイベントを定義します。
 	 */
-	public Event_DispenserArrow() {
-		isQuiver = false;
+	public Event_DispenserArrow() {	
 	}
 	
-	
-	/**
-	 * ディスペンサーから矢を撃つためのイベントを定義します。
-	 * @param isQuiver	矢筒の場合は、trueを設定してください。
-	 */
-	public Event_DispenserArrow( boolean isQuiver ) {
-		this.isQuiver = isQuiver;
-	}
-
 	
 	@Override
 	public ItemStack dispenseStack( IBlockSource bsource, ItemStack items ) {
 		
-		if ( isQuiver && items.getItemDamage() >= items.getMaxDamage() ) return items;
+		int arrowID;
+		
+		
+		if ( items.getItem() instanceof IArrow ) {
+			arrowID = ( (IArrow) items.getItem() ).getArrowID( items ); 
+			
+			if ( !( (IArrow) items.getItem() ).canConsumeArrow( items ) )
+				return items;
+			
+		} else arrowID = items.itemID;
+			
 		
         World world = bsource.getWorld();
         IPosition iposition = BlockDispenser.getIPositionFromBlockSource( bsource );
         EnumFacing enumfacing = BlockDispenser.getFacing( bsource.getBlockMetadata() );
-        Entity_Arrow earrow = getProjectileEntity( world, iposition, items.itemID );
+        Entity_Arrow earrow = getProjectileEntity( world, iposition, arrowID );
         
-        earrow.setThrowableHeading( enumfacing.getFrontOffsetX(), enumfacing.getFrontOffsetY() + 0.1F, enumfacing.getFrontOffsetZ(), getSpeed( items.itemID ), getWobbling( items.itemID ) );
+        earrow.setThrowableHeading( enumfacing.getFrontOffsetX(), enumfacing.getFrontOffsetY() + 0.1F, enumfacing.getFrontOffsetZ(), getSpeed( arrowID ), getWobbling( arrowID ) );
         world.spawnEntityInWorld( earrow );
         
-        if ( isQuiver ) items.setItemDamage( items.getItemDamage() + 1 );
-        else items.splitStack( 1 );
+        if ( items.getItem() instanceof IArrow ) {
+        	items = ( (IArrow) items.getItem() ).consumeArrow( items );
+        	if ( items == null ) return new ItemStack( arrowID, 0, 0 );		//nullを返すとエラー落ちするので、ダミーアイテムを返しています
+        
+        } else {
+        	items.splitStack( 1 );
+        }
         
         return items;
     }
@@ -63,7 +66,7 @@ public class Event_DispenserArrow extends BehaviorProjectileDispense {
 
 
 	protected Entity_Arrow getProjectileEntity( World world, IPosition iposition, int arrowID ) {
-		if ( arrowID <= 0 || isQuiver ) arrowID = Item.arrow.itemID;
+		//if ( arrowID <= 0 || isQuiver ) arrowID = Item.arrow.itemID;
 		Entity_Arrow earrow = new Entity_Arrow( world, iposition.getX(), iposition.getY(), iposition.getZ(), arrowID );
 		earrow.canBePickedUp = 1;
         return earrow;
@@ -76,8 +79,8 @@ public class Event_DispenserArrow extends BehaviorProjectileDispense {
 	 * @return			ブレの度合いを返します。既定値は6.0です。
 	 */
 	protected double getWobbling( int arrowID ) {
-		if ( arrowID <= 0 || arrowID == Item.arrow.itemID || isQuiver ) return 6.0;
-		else return ( (Item_Arrow)Item.itemsList[arrowID] ).getVelocity() * 6.0;	//fixme
+		if ( arrowID <= 0 || arrowID == Item.arrow.itemID ) return 6.0;
+		else return ( (Item_Arrow)Item.itemsList[arrowID] ).getVelocity() + 5.0;	//fixme
 	}
 	
 	
@@ -87,7 +90,7 @@ public class Event_DispenserArrow extends BehaviorProjectileDispense {
 	 * @return			速度を返します。既定値は1.1です。	
 	 */
 	protected double getSpeed( int arrowID ) {
-		if ( arrowID <= 0 || arrowID == Item.arrow.itemID || isQuiver ) return 1.1;
+		if ( arrowID <= 0 || arrowID == Item.arrow.itemID ) return 1.1;
 		else return ( (Item_Arrow)Item.itemsList[arrowID] ).getVelocity() * 1.1;	//fixme
 	}
 	

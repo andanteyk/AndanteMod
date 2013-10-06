@@ -38,7 +38,7 @@ public class AndMod_DebugTools {
 
 	//point: class
 
-	public static int aitemqty = 2;
+	public static int aitemqty = 3;
 	public static int[] aitemID = new int[aitemqty];
 	public static Item[] aitem = new Item[aitemqty];
 	public static String[][] aitemname = new String[aitemqty][3];
@@ -69,6 +69,10 @@ public class AndMod_DebugTools {
 		aitemname[id][0] = "Halo";
 		aitemname[id][1] = "Angelic Circle";
 		aitemname[id][2] = "天使の輪";
+		id++;
+		aitemname[id][0] = "WallBreaker";
+		aitemname[id][1] = "Wall Breaker";
+		aitemname[id][2] = "どこでもいける";
 		
 		//point: add new item name
 
@@ -142,6 +146,7 @@ public class AndMod_DebugTools {
 		if ( aitemID[id] != 0 ) {
 			aitem[id] = new Item_SpecialArmor( aitemID[id], ObjectHeader.toLowerCase() + "textures/armor/halo.png", "", EnumArmorMaterial.DIAMOND, 0 )
 			.addEffect( Potion.heal.id, 4, Item_SpecialArmor.FLAG_ANYTIME )
+			.addEffect( Potion.field_76443_y.id, 4, Item_SpecialArmor.FLAG_ANYTIME )
 			.addEffect( Item_SpecialArmor.EFFECT_RESISTALL, 0 | Item_SpecialArmor.AMP_RESIST_UNBREAKABLE, Item_SpecialArmor.FLAG_ANYTIME )
 			.setCreativeTab( CreativeTabs.tabMisc )
 			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
@@ -150,6 +155,19 @@ public class AndMod_DebugTools {
 			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
 			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 	
+		}
+		
+		
+		//Wall Breaker
+		id ++;
+		if ( aitemID[id] != 0 ) {
+			aitem[id] = new Item_WallBreaker( aitemID[id] )
+			.setCreativeTab( CreativeTabs.tabMisc )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 		}
 
 	

@@ -4,16 +4,22 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.ICraftingHandler;
 
-public class Item_Container extends Item implements IRecipe {
+public class Item_Container extends Item implements IRecipe, ICraftingHandler {
 
 	private ItemStack contents = new ItemStack( 0, 1, 0 );
-
+	private ItemStack material;
+	private int increment;
+	private boolean extending;
+	
 
 	public Item_Container( int itemID, int durability, ItemStack contents ) {
 		super( itemID );
@@ -22,6 +28,9 @@ public class Item_Container extends Item implements IRecipe {
 		setNoRepair();
 		setMaxDamage( durability );
 		this.contents = contents;
+		
+		material = new ItemStack( Item.leather );
+		increment = 64;
 	}
 
 
@@ -139,16 +148,16 @@ public class Item_Container extends Item implements IRecipe {
 	
 	@Override
 	public boolean hasContainerItem() {
-		return true;
+		return !extending;
 	}
 	
 	
 	@Override
 	public ItemStack getContainerItemStack( ItemStack items ) {
-		if ( items != null && items.itemID == itemID )
+		if ( items != null && items.itemID == itemID && !extending )
 			items.setItemDamage( items.getItemDamage() + 1 );
 
-		return items;
+		return items;	//checkme
 	}
 
 
@@ -156,6 +165,7 @@ public class Item_Container extends Item implements IRecipe {
 	public boolean matches( InventoryCrafting inv, World world ) {
 		
 		ItemStack items = null;
+		boolean mtr = false;
 		
 		for ( int i = 0; i < inv.getSizeInventory(); i ++ ) {
 			ItemStack itemt = inv.getStackInSlot( i );
@@ -163,13 +173,15 @@ public class Item_Container extends Item implements IRecipe {
 			if ( itemt != null ) {
 				if ( itemt.itemID == itemID && items == null ) 
 					items = itemt;
+				else if ( itemt.itemID == material.itemID )
+					mtr = true;
 				else return false;
 			}
 		}
 		
 		
 		if ( items != null ) {
-			return items.getItemDamage() < items.getMaxDamage();
+			return mtr || items.getItemDamage() < items.getMaxDamage();
 		}
 		
 		return false;
@@ -178,13 +190,47 @@ public class Item_Container extends Item implements IRecipe {
 	
 	@Override
 	public ItemStack getCraftingResult( InventoryCrafting inv ) {
-		return contents.copy();
+		//return contents.copy();
+		int materialCount = 0;
+		ItemStack items = null;
+		
+		
+		for ( int i = 0; i < inv.getSizeInventory(); i ++ ) {
+			ItemStack itemt = inv.getStackInSlot( i );
+			if ( itemt == null ) continue;
+			
+			if ( itemt.itemID == itemID )
+				items = itemt.copy();
+			else if ( itemt.itemID == material.itemID )
+				materialCount ++;
+			
+		}
+		
+		
+		if ( items == null ) return null;
+		if ( materialCount == 0 ) {
+			//release
+			extending = false;
+			if ( items.getItemDamage() < items.getMaxDamage() ) {
+				return contents.copy();
+			}
+			
+		} else {
+			//extend
+			extending = true;
+			setMaxDamage( items, items.getMaxDamage() + materialCount * increment );
+			items.setItemDamage( items.getItemDamage() + materialCount * increment );
+			return items;
+		}
+		
+		
+		return null;	
 	}
 
 
 	@Override
 	public int getRecipeSize() {
-		return 1;
+		return 9;
 	}
 
 
@@ -193,5 +239,60 @@ public class Item_Container extends Item implements IRecipe {
 		return null;
 	}
 
+
+	
+	
+	private void initNBT( ItemStack items ) {
+		NBTTagCompound nbt = items.getTagCompound();
+		if ( nbt == null ) {
+			nbt = new NBTTagCompound();
+			items.setTagCompound( nbt );
+		}
+		
+		nbt.setInteger( "maxStack", getMaxDamage() );
+	}
+	
+	
+	@Override
+	public int getMaxDamage( ItemStack items ) {
+		NBTTagCompound nbt = items.getTagCompound();
+		if ( nbt == null ) {
+			initNBT( items );
+			nbt = items.getTagCompound();
+		}
+		
+		return nbt.getInteger( "maxStack" );
+	}
+
+	
+	public void setMaxDamage( ItemStack items, int max ) {
+		NBTTagCompound nbt = items.getTagCompound();
+		if ( nbt == null ) {
+			initNBT( items );
+			nbt = items.getTagCompound();
+		}
+		
+		nbt.setInteger( "maxStack", max );
+	}
+
+
+
+	@Override
+	public void onCrafting( EntityPlayer eplayer, ItemStack items, IInventory inv ) {
+		for ( int i = 0; i < inv.getSizeInventory(); i ++ ) {
+			ItemStack itemt = inv.getStackInSlot( i );
+			if ( itemt != null && itemt.itemID == material.itemID ) {
+				extending = true;
+				return;
+			}
+		}
+		
+		extending = false;
+	}
+
+
+	@Override
+	public void onSmelting( EntityPlayer eplayer, ItemStack items ) {}
+	
 	
 }

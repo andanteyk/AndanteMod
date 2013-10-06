@@ -9,6 +9,7 @@ public class World_BiomeDecorator extends BiomeDecorator {
 		super( biomegen );
 		
 	}
+	
 
 	@Override
 	protected void decorate() {

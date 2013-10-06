@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-public class Item_Arrow extends Item {
+public class Item_Arrow extends Item implements IArrow {
 
 	public Struct_Arrow property;
 
@@ -20,7 +20,7 @@ public class Item_Arrow extends Item {
 		super( itemID );
 
 		setMaxStackSize( maxStack );
-		setCreativeTab(CreativeTabs.tabCombat);
+		setCreativeTab( CreativeTabs.tabCombat );
 	}
 
 	/**
@@ -103,6 +103,31 @@ public class Item_Arrow extends Item {
 		
 		//投げられないほうがいいと思いますです
 		//eplayer.setItemInUse( items, getMaxItemUseDuration( items ) );
+		
+		return items;
+	}
+
+	
+	
+	@Override
+	public int getArrowID( ItemStack items ) {
+		if ( items == null ) return 0;
+		return itemID;
+	}
+
+	@Override
+	public boolean canConsumeArrow( ItemStack items ) {
+		if ( items == null ) return false;
+		return items.stackSize > 0;
+	}
+
+	@Override
+	public ItemStack consumeArrow( ItemStack items ) {
+		if ( items == null ) return items;
+		
+		items.stackSize --;
+		if ( items.stackSize <= 0 )
+			items = null;
 		
 		return items;
 	}

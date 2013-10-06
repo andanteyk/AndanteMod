@@ -16,7 +16,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 @Mod(
 		modid	= "AndanteMod_Util",
 		name	= "And Utility",
-		version	= "1.6.2.2"
+		version	= "1.6.2.3"
 		)
 @NetworkMod(
 		clientSideRequired = true,
@@ -175,6 +175,10 @@ public class AndMod_Util implements IFuelHandler {
 				Block.blocksList[ Block.commandBlock.blockID ].setCreativeTab( CreativeTabs.tabRedstone );
 		Block.blocksList[ Block.dragonEgg.blockID ] =
 				Block.blocksList[ Block.dragonEgg.blockID ].setCreativeTab( CreativeTabs.tabDecorations );
+		Block.blocksList[ Block.portal.blockID ] =
+				Block.blocksList[ Block.portal.blockID ].setCreativeTab( CreativeTabs.tabDecorations );
+		Block.blocksList[ Block.endPortal.blockID ] =
+				Block.blocksList[ Block.endPortal.blockID ].setCreativeTab( CreativeTabs.tabDecorations );
 		
 		
 		//info: スイカを還元

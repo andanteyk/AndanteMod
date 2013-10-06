@@ -23,7 +23,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 @Mod(
 		modid	= "AndanteMod_Quiver",
 		name	= "Quiver",
-		version	= "1.6.2.1",
+		version	= "1.6.2.2",
 		dependencies = "required-after:AndanteMod_AndCore"
 		)
 @NetworkMod(
@@ -95,7 +95,7 @@ public class AndMod_Quiver {
 		//Quiver
 		id ++;
 		if ( aitemID[id] != 0 ) {
-			aitem[id] = new Item_Quiver( aitemID[id], 256, new ItemStack( Item.arrow ) ).setCreativeTab( CreativeTabs.tabTools )
+			aitem[id] = new Item_Quiver( aitemID[id], 256 ).setCreativeTab( CreativeTabs.tabCombat )
 			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( "quiver" );
 
 			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
@@ -103,7 +103,7 @@ public class AndMod_Quiver {
 			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 			
-			BlockDispenser.dispenseBehaviorRegistry.putObject( aitem[id], new Event_DispenserArrow( true ) );
+			BlockDispenser.dispenseBehaviorRegistry.putObject( aitem[id], new Event_DispenserArrow() );
 			GameRegistry.addRecipe( (IRecipe)aitem[id] );
 			
 			GameRegistry.addRecipe( new ItemStack( aitem[id], 1, aitem[id].getMaxDamage() - 1 ),

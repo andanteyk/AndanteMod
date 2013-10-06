@@ -175,6 +175,7 @@ public class Item_Hammer extends ItemPickaxe implements ICraftingHandler, IFuelH
 	 * ハンマーで修復・破壊可能なアイテムを追加します。
 	 * @param material	修復・破壊可能アイテム。ハンマーを含めると動作に支障をきたします。
 	 * @param result	破壊時に返されるアイテム。
+	 * @param flag		修復・破壊可能なハンマーの最低採掘レベル。　また、FLAG系定数をORで指定できます。
 	 */
 	public static void addRepairingRecipe( ItemStack material, ItemStack result, int flag ) {
 		MaterialList.add( material );
