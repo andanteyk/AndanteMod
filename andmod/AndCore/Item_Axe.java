@@ -91,7 +91,7 @@ public class Item_Axe extends ItemAxe {
 
 		//一括伐採用
 		if ( eliv instanceof EntityPlayer )
-			if ( processCutAll(items, world, id, bx, by, bz, (EntityPlayer)eliv) )
+			if ( processCutAll( items, world, id, bx, by, bz, (EntityPlayer)eliv ) )
 				return true;
 
 
@@ -104,7 +104,7 @@ public class Item_Axe extends ItemAxe {
 
 	//note: 葉っぱとスイカも効率破壊の対象になります
 	@Override
-	public float getStrVsBlock(ItemStack items, Block block) {
+	public float getStrVsBlock( ItemStack items, Block block ) {
 		return block != null && ( block.blockMaterial == Material.wood || block.blockMaterial == Material.plants || block.blockMaterial == Material.leaves || block.blockMaterial == Material.vine || block.blockMaterial == Material.pumpkin ) ? efficiencyOnProperMaterial : super.getStrVsBlock( items, block );
 	}
 
@@ -126,7 +126,7 @@ public class Item_Axe extends ItemAxe {
 	 * @return trueなら処理を中断、falseなら処理を続行します。
 	 */
 	@Override
-	public boolean onBlockStartBreak(ItemStack items, int bx, int by, int bz, EntityPlayer eplayer) {
+	public boolean onBlockStartBreak( ItemStack items, int bx, int by, int bz, EntityPlayer eplayer ) {
 
 		if ( eplayer.capabilities.isCreativeMode )
 			return processCutAll(items, eplayer.worldObj, eplayer.worldObj.getBlockId(bx, by, bz), bx, by, bz, eplayer);
@@ -135,7 +135,7 @@ public class Item_Axe extends ItemAxe {
 	}
 
 
-	protected boolean processCutAll (ItemStack items, World world, int bid, int bx, int by, int bz, EntityPlayer eplayer) {
+	protected boolean processCutAll( ItemStack items, World world, int bid, int bx, int by, int bz, EntityPlayer eplayer ) {
 
 		Block b = Block.blocksList[bid];
 
@@ -165,7 +165,7 @@ public class Item_Axe extends ItemAxe {
 
 
 
-	protected void breakBlock ( World world, EntityPlayer eplayer, int bx, int by, int bz, int depth ) {
+	protected void breakBlock( World world, EntityPlayer eplayer, int bx, int by, int bz, int depth ) {
 
 		Block b = Block.blocksList[world.getBlockId(bx, by, bz)];
 

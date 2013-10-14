@@ -14,6 +14,15 @@ public class Item_Base extends Item {
 	 * 無機能のアイテムを追加します。
 	 * @param itemID	アイテムのID。
 	 */
+	public Item_Base( int itemID ) {
+		super( itemID );
+	}
+	
+	/**
+	 * 無機能のアイテムを追加します。
+	 * @param itemID	アイテムのID。
+	 * @param maxStack	最大スタック数。
+	 */
 	public Item_Base( int itemID, int maxStack ) {
 		super( itemID );
 

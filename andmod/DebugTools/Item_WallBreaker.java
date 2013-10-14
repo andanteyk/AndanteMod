@@ -4,6 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 public class Item_WallBreaker extends Item {
@@ -16,9 +17,9 @@ public class Item_WallBreaker extends Item {
 	@Override
 	public void onUpdate( ItemStack items, World world, Entity entity, int index, boolean onhand ) {
 		if ( !world.isRemote && onhand ) {
-			int px = (int)( entity.posX - 0.5 );
-			int py = (int)entity.posY;
-			int pz = (int)( entity.posZ - 0.5 );
+			int px = MathHelper.floor_double( entity.posX );
+			int py = MathHelper.floor_double( entity.posY );
+			int pz = MathHelper.floor_double( entity.posZ );
 			int bound = 3;
 			
 			for ( int x = -bound; x <= bound; x ++ ) {

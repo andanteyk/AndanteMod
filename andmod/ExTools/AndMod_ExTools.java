@@ -55,7 +55,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 @Mod(
 		modid	= "AndanteMod_ExTools",
 		name	= "ExTools",
-		version	= "1.6.2.3",
+		version	= "1.6.2.4",
 		dependencies = "required-after:AndanteMod_AndCore"
 		)
 @NetworkMod(
@@ -69,7 +69,7 @@ public class AndMod_ExTools {
 
 	//point: class
 
-	public static int aitemqty = 24;
+	public static int aitemqty = 25;
 	public static int[] aitemID = new int[aitemqty * 16];
 	public static Item[] aitem = new Item[aitemqty * 16];
 	public static String[][] aitemname = new String[aitemqty * 16][3];
@@ -185,6 +185,9 @@ public class AndMod_ExTools {
 		id ++;
 		atypename[id] = "Poison";
 		aitemIDdefault[id] = 24078;
+		id ++;
+		atypename[id] = "Ice";
+		aitemIDdefault[id] = 24094;
 		
 
 		
@@ -1466,6 +1469,67 @@ public class AndMod_ExTools {
 		aitemname[id][1] = "Poison Arrow";
 		aitemname[id][2] = "毒鋼の矢";
 		
+		id = id / 16 * 16 + 15;
+		id++;
+		aitemname[id][0] = "IceStick";
+		aitemname[id][1] = "Icicle";
+		aitemname[id][2] = "つらら";
+		id++;
+		aitemname[id][0] = "IceSword";
+		aitemname[id][1] = "Ice Sword";
+		aitemname[id][2] = "氷の剣";
+		id++;
+		aitemname[id][0] = "IceShovel";
+		aitemname[id][1] = "Ice Shovel";
+		aitemname[id][2] = "氷のショベル";
+		id++;
+		aitemname[id][0] = "IcePickaxe";
+		aitemname[id][1] = "Ice Pickaxe";
+		aitemname[id][2] = "氷のツルハシ";
+		id++;
+		aitemname[id][0] = "IceAxe";
+		aitemname[id][1] = "Ice Axe";
+		aitemname[id][2] = "氷の斧";
+		id++;
+		aitemname[id][0] = "IceHoe";
+		aitemname[id][1] = "Ice Hoe";
+		aitemname[id][2] = "氷のクワ";
+		id++;
+		aitemname[id][0] = "IceHammer";
+		aitemname[id][1] = "Ice Hammer";
+		aitemname[id][2] = "氷のハンマー";
+		id++;
+		aitemname[id][0] = "IceHelmet";
+		aitemname[id][1] = "Ice Helmet";
+		aitemname[id][2] = "氷のヘルメット";
+		id++;
+		aitemname[id][0] = "IceChestplate";
+		aitemname[id][1] = "Ice Chestplate";
+		aitemname[id][2] = "氷のチェストプレート";
+		id++;
+		aitemname[id][0] = "IceLeggings";
+		aitemname[id][1] = "Ice Leggings";
+		aitemname[id][2] = "氷のレギンス";
+		id++;
+		aitemname[id][0] = "IceBoots";
+		aitemname[id][1] = "Ice Boots";
+		aitemname[id][2] = "氷のブーツ";
+		id++;
+		aitemname[id][0] = "IceShears";
+		aitemname[id][1] = "Ice Shears";
+		aitemname[id][2] = "氷のハサミ";
+		id++;
+		aitemname[id][0] = "IceBow";
+		aitemname[id][1] = "Ice Bow";
+		aitemname[id][2] = "氷の弓";
+		id++;
+		aitemname[id][0] = "IceArrow";
+		aitemname[id][1] = "Ice Arrow";
+		aitemname[id][2] = "氷の矢";
+		id++;
+		aitemname[id][0] = "IceSwordCursed";
+		aitemname[id][1] = "Ice Sword";
+		aitemname[id][2] = "アイスソード";
 		//point: add new item name
 
 		
@@ -1576,6 +1640,9 @@ public class AndMod_ExTools {
 		id ++;
 		ArmorTexture[id][0] = header + "poison_1.png";
 		ArmorTexture[id][1] = header + "poison_2.png";
+		id ++;
+		ArmorTexture[id][0] = header + "ice_1.png";
+		ArmorTexture[id][1] = header + "ice_2.png";
 
 
 
@@ -1645,6 +1712,11 @@ public class AndMod_ExTools {
 			prop = cfg.get( "Axe", "breakLimit", Item_Axe.breakLimit );
 			prop.comment = "Specify the limits of the number of harvesting. [1-] Note: The number is too large to cause delay or freeze.";
 			Item_Axe.breakLimit = prop.getInt();
+			
+			
+			prop = cfg.get( "Hoe", "canUseExtendedMode", Item_Hoe.canUseExtendedMode );
+			prop.comment = "Specify that extended function of hoes is available. [true/false]";
+			Item_Hoe.canUseExtendedMode = prop.getBoolean( Item_Hoe.canUseExtendedMode );
 			
 			
 
@@ -1972,6 +2044,11 @@ public class AndMod_ExTools {
 			registerPoisonTools( id, armorid );
 		id += 16; armorid ++;
 		
+		
+		if ( isEnabled( "Ice" ) )
+			registerIceTools( id, armorid );
+		id += 16; armorid ++;
+		
 		//point: add new item
 
 
@@ -2095,7 +2172,7 @@ public class AndMod_ExTools {
 		//Glass Stick
 		id ++;
 
-		aitem[id] = new Item_Base( aitemID[id], 64 ).setCreativeTab( CreativeTabs.tabMaterials )
+		aitem[id] = new Item_Base( aitemID[id], 64 ).setFull3D().setCreativeTab( CreativeTabs.tabMaterials )
 		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
 
 		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
@@ -2479,7 +2556,7 @@ public class AndMod_ExTools {
 		//Ancient Stick
 		id ++;
 
-		aitem[id] = new Item_Base( aitemID[id], 64 ).setCreativeTab( CreativeTabs.tabMaterials )
+		aitem[id] = new Item_Base( aitemID[id], 64 ).setFull3D().setCreativeTab( CreativeTabs.tabMaterials )
 		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
 
 		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
@@ -8985,7 +9062,7 @@ public class AndMod_ExTools {
 				Event_MobEquipment.FLAG_OVERWORLD, 0.05 );
 		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
 				Event_MobEquipment.FLAG_NETHER,    0.05 );
-		//checkme
+
 		
 		//Poison Helmet
 		id ++;
@@ -9114,6 +9191,328 @@ public class AndMod_ExTools {
 		
 	}
 
+	
+	//point: Ice Tools
+	private void registerIceTools( int id, int armorid ) {
+		
+		
+		//Ice Stick
+		id ++;
+
+		aitem[id] = new Item_Base( aitemID[id] ).setFull3D()
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 4 ),
+				"e",
+				"e",
+				'e', new ItemStack( Block.ice, 1, 0 ) );
+
+				
+		EnumToolMaterial TMIce = EnumHelper.addToolMaterial( "ICE", 2, 127, 6.4F, 2.4F, 8 );
+		TMIce.customCraftingMaterial = new ItemStack( Block.ice, 1, 0 ).getItem();
+		
+		
+		//Ice Sword
+		id ++;
+
+		aitem[id] = new Item_SpecialSword( aitemID[id], TMIce )
+		.addEffect( Potion.moveSlowdown.id, 6, 20 * 5, 0.1F )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_OVERWORLD    & Event_MobEquipment.FLAG_SWORDMAN, 0.025 );
+		
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				"e",
+				"e",
+				"s",
+				'e', new ItemStack( Block.ice, 1, 0 ),
+				's', new ItemStack( getItemIDforCraft( "IceStick" ), 1, 0 ) );
+
+		
+
+		//Ice Shovel
+		id ++;
+
+		aitem[id] = new Item_Spade( aitemID[id], TMIce )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				"e",
+				"s",
+				"s",
+				'e', new ItemStack( Block.ice, 1, 0 ),
+				's', new ItemStack( getItemIDforCraft( "IceStick" ), 1, 0 ) );
+		
+		
+
+		//Ice Pickaxe
+		id ++;
+
+		aitem[id] = new Item_Pickaxe( aitemID[id], TMIce )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				"eee",
+				" s ",
+				" s ",
+				'e', new ItemStack( Block.ice, 1, 0 ),
+				's', new ItemStack( getItemIDforCraft( "IceStick" ), 1, 0 ) );
+
+		
+
+		//Ice Axe
+		id ++;
+
+		aitem[id] = new Item_Axe( aitemID[id], TMIce )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				"ee",
+				"es",
+				" s",
+				'e', new ItemStack( Block.ice, 1, 0 ),
+				's', new ItemStack( getItemIDforCraft( "IceStick" ), 1, 0 ) );
+
+
+		
+		//Ice Hoe
+		id ++;
+
+		aitem[id] = new Item_Hoe( aitemID[id], TMIce )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				"ee",
+				"s ",
+				"s ",
+				'e', new ItemStack( Block.ice, 1, 0 ),
+				's', new ItemStack( getItemIDforCraft( "IceStick" ), 1, 0 ) );
+
+
+		
+		//Ice Hammer
+		id ++;
+
+		aitem[id] = new Item_Hammer( aitemID[id], TMIce ).setMaxDamage( (int)( 64 * 37.5 ) - 1 )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				" s ",
+				"eee",
+				" s ",
+				'e', new ItemStack( Block.ice, 1, 0 ),
+				's', new ItemStack( getItemIDforCraft( "IceStick" ), 1, 0 ) );
+
+
+
+
+
+
+		armorid ++;
+		EnumArmorMaterial AMIce = EnumHelper.addArmorMaterial( "ICE", 8, new int[] { 2, 5, 4, 2 }, 8 );
+		AMIce.customCraftingMaterial = new ItemStack( Block.ice, 1, 0 ).getItem();
+		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
+				Event_MobEquipment.FLAG_OVERWORLD,    0.025 );
+		
+		
+		//Ice Helmet
+		id ++;
+
+		aitem[id] = new Item_SpecialArmor( aitemID[id], ArmorTexture[armorid], AMIce, 0 )
+		.addEffect( Item_SpecialArmor.EFFECT_RESISTFIRE, 100 | Item_SpecialArmor.AMP_RESIST_UNBREAKABLE, Item_SpecialArmor.FLAG_ANYTIME )
+		.addEffect( Item_SpecialArmor.EFFECT_EXTINGUISHMENT, 1000, Item_SpecialArmor.FLAG_FULLEQ )
+		.addEffect( Item_SpecialArmor.EFFECT_FREEZE, 0, Item_SpecialArmor.FLAG_FULLEQ )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				"sss",
+				"s s",
+				's', new ItemStack( Block.ice, 1, 0 ) );
+
+
+
+		//Ice Chestplate
+		id ++;
+
+		aitem[id] = new Item_SpecialArmor( aitemID[id], ArmorTexture[armorid], AMIce, 1 )
+		.addEffect( Item_SpecialArmor.EFFECT_RESISTFIRE, 100 | Item_SpecialArmor.AMP_RESIST_UNBREAKABLE, Item_SpecialArmor.FLAG_ANYTIME )
+		.addEffect( Item_SpecialArmor.EFFECT_EXTINGUISHMENT, 1000, Item_SpecialArmor.FLAG_FULLEQ )
+		.addEffect( Item_SpecialArmor.EFFECT_FREEZE, 0, Item_SpecialArmor.FLAG_FULLEQ )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				"s s",
+				"sss",
+				"sss",
+				's', new ItemStack( Block.ice, 1, 0 ) );
+
+
+		
+		//Ice Leggings
+		id ++;
+
+		aitem[id] = new Item_SpecialArmor( aitemID[id], ArmorTexture[armorid], AMIce, 2 )
+		.addEffect( Item_SpecialArmor.EFFECT_RESISTFIRE, 100 | Item_SpecialArmor.AMP_RESIST_UNBREAKABLE, Item_SpecialArmor.FLAG_ANYTIME )
+		.addEffect( Item_SpecialArmor.EFFECT_EXTINGUISHMENT, 1000, Item_SpecialArmor.FLAG_FULLEQ )
+		.addEffect( Item_SpecialArmor.EFFECT_FREEZE, 0, Item_SpecialArmor.FLAG_FULLEQ )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+		GameRegistry.addRecipe(new ItemStack( aitem[id], 1 ),
+				"sss",
+				"s s",
+				"s s",
+				's', new ItemStack( Block.ice, 1, 0 ) );
+
+		
+
+		//Ice Boots
+		id ++;
+
+		aitem[id] = new Item_SpecialArmor( aitemID[id], ArmorTexture[armorid], AMIce, 3 )
+		.addEffect( Item_SpecialArmor.EFFECT_RESISTFIRE, 100 | Item_SpecialArmor.AMP_RESIST_UNBREAKABLE, Item_SpecialArmor.FLAG_ANYTIME )
+		.addEffect( Item_SpecialArmor.EFFECT_EXTINGUISHMENT, 1000, Item_SpecialArmor.FLAG_FULLEQ )
+		.addEffect( Item_SpecialArmor.EFFECT_FREEZE, 0, Item_SpecialArmor.FLAG_FULLEQ )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				"s s",
+				"s s",
+				's', new ItemStack( Block.ice, 1, 0 ) );
+
+		
+		
+		//Ice Shears
+		id ++;
+
+		aitem[id] = new Item_Shears( aitemID[id], TMIce )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				" s",
+				"s ",
+				's', new ItemStack( Block.ice, 1, 0 ) );
+
+				
+
+		//Ice Bow
+		id ++;
+
+		aitem[id] = new Item_Bow( aitemID[id], TMIce ).setParameters( 1.5F, 1.1F, 0.0F, 0.0F ).setCraftingMaterial( Block.ice.blockID )
+		.addEffect( Potion.moveSlowdown.id, 6, 20 * 5, 0.2F )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				" st",
+				"s t",
+				" st",
+				's', new ItemStack( getItemIDforCraft( "IceStick" ), 1, 0 ),
+				't', Item.silk );
+
+
+
+		//Ice Arrow
+		id++;
+
+		aitem[id] = new Item_Arrow( aitemID[id], 64 ).setParameters( 1.1, 2.2, 0.0, 0.04, ObjectHeader.toLowerCase() + "textures/entity/" + aitemname[id][0].substring( ObjectHeader.length() ) + ".png" )
+		.addEffect( Potion.moveSlowdown.id, 6, 20 * 5, 0.2F )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+
+		BlockDispenser.dispenseBehaviorRegistry.putObject( aitem[id], new Event_DispenserArrow() );
+		
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 4 ),
+				"h",
+				"s",
+				"f",
+				'h', new ItemStack ( Block.ice, 1, 0 ),
+				's', new ItemStack ( getItemIDforCraft( "IceStick" ), 1, 0 ),
+				'f', Item.feather );
+
+		
+		//Ice Sword(Cursed)
+		id ++;
+
+		aitem[id] = new Item_IceSword( aitemID[id], TMIce )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+
+		
+		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_OVERWORLD    & Event_MobEquipment.FLAG_SWORDMAN, 0.01 );
+	
+	}
+	
 
 	
 	private void registerArrows() {
@@ -9167,6 +9566,7 @@ public class AndMod_ExTools {
 		if ( isEnabled( "Glowstone" ) ) earrow.addArrow( getItemIDforCraft( "GlowstoneArrow" ) );
 		if ( isEnabled( "Ghast" ) ) earrow.addArrow( getItemIDforCraft( "GhastArrow" ) );
 		if ( isEnabled( "Poison" ) ) earrow.addArrow( getItemIDforCraft( "PoisonArrow" ) );
+		if ( isEnabled( "Ice" ) ) earrow.addArrow( getItemIDforCraft( "IceArrow" ) );
 		
 		MinecraftForge.EVENT_BUS.register( earrow );
 

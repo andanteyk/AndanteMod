@@ -19,7 +19,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 @Mod(
 		modid	= "AndanteMod_AndCore",
 		name	= "AndCore",
-		version	= "1.6.2.6"
+		version	= "1.6.2.7"
 		)
 @NetworkMod(
 		clientSideRequired = true,

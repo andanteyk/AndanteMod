@@ -2,6 +2,7 @@ package andmod.AndCore;
 
 import java.util.ArrayList;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumArmorMaterial;
@@ -35,6 +36,7 @@ public class Item_SpecialArmor extends Item_Armor implements ISpecialArmor {
 	public static final int EFFECT_GRAVITY			=  256 + 8;		//重力を増大させます。
 	public static final int EFFECT_FEATHERFALLING	=  256 + 9;		//落下速度を緩和します。
 	public static final int EFFECT_LUMINESCENCE		=  256 + 10;	//発光させます。
+	public static final int EFFECT_FREEZE			=  256 + 11;	//凍結させます。具体的には、足元の水源を氷に、溶岩源を黒曜石に、溶岩流を石に変化させます。
 	public static final int EFFECT_INVINCIBLE		=  384 + 0;		//あらゆるダメージに対し、抵抗力を得ます。
 	public static final int EFFECT_RESISTALL		=  384 + 1;		//鎧で防御可能なダメージに対し、抵抗力を得ます。
 	public static final int EFFECT_RESISTFALLING	=  384 + 2;		//落下やテレポートのダメージに対し、抵抗力を得ます。
@@ -96,6 +98,7 @@ public class Item_SpecialArmor extends Item_Armor implements ISpecialArmor {
 		gravity					重力増加率(/1000)
 		featherFalling			重力軽減率(/1000)
 		luminescence			発光ブロックのメタデータ
+		freeze					(なし)
 		resist***				防御率(/1000)(0=無敵) | resist_unbreakable | resist_weakness; 防御率に負値を指定しない!(代わりにresist_weaknessを使う)
 		512-767(resistEffect)	確率
 		counterStatus-+256		確率 | 効果時間<<durationShift | 効果レベル<<amplifierShift
@@ -338,6 +341,40 @@ public class Item_SpecialArmor extends Item_Armor implements ISpecialArmor {
 								world.setBlock( bx, by, bz, AndMod_AndCore.getBlockID( "Luminescence" ), amp | 12, 2 );
 							}
 						} break;
+						
+					case EFFECT_FREEZE:
+						{
+							int bx = MathHelper.floor_double( eplayer.posX ), by = MathHelper.floor_double( eplayer.posY ), bz = MathHelper.floor_double( eplayer.posZ );
+							for ( int y = -1; y <= 0; y ++ ) {
+								for ( int x = 0; x <= 0; x ++ ) {
+									for ( int z = 0; z <= 0; z ++ ) {
+										
+										int bid = world.getBlockId( bx + x, by + y, bz + z );
+										int meta = world.getBlockMetadata( bx + x, by + y, bz + z );
+										
+										if ( ( bid == Block.waterStill.blockID || bid == Block.waterMoving.blockID ) ) {
+											if ( meta == 0 ) {
+												world.setBlock( bx + x, by + y, bz + z, Block.ice.blockID, 0, 3 );
+											} else {
+												//world.setBlock( bx + x, by + y, bz + z, Block.snow.blockID, 7 - meta, 3 );
+											}
+										}
+										if ( bid == Block.lavaStill.blockID || bid == Block.lavaMoving.blockID ) {
+											if ( meta == 0 ) {
+												world.setBlock( bx + x, by + y, bz + z, Block.obsidian.blockID, 0, 3 );
+											} else {
+												world.setBlock( bx + x, by + y, bz + z, Block.stone.blockID, 0, 3 );
+											}
+										}
+										if ( bid == Block.fire.blockID ) {
+											world.setBlockToAir( bx + x, by + y, bz + z );
+										}
+										
+									}
+								}
+							}
+						}
+						break;
 					}
 
 				

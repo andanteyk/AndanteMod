@@ -16,13 +16,16 @@ public class Item_Hoe extends ItemHoe {
 
 	protected int enchantability;
 	protected int harvestLevel;
+	
+	/** 拡張機能の使用可否。アイテム宣言よりも先に設定してください。 */
+	public static boolean canUseExtendedMode = true;
 
 
 	public Item_Hoe( int itemID, EnumToolMaterial material ) {
 		super( itemID, material );
 
 		enchantability = material.getEnchantability();
-		harvestLevel = material.getHarvestLevel();
+		harvestLevel = canUseExtendedMode ? material.getHarvestLevel() : 0;
 	}
 
 
@@ -30,7 +33,8 @@ public class Item_Hoe extends ItemHoe {
 		super( itemID, material );
 
 		this.enchantability = enchantability;
-		this.harvestLevel = harvestLevel;
+		this.harvestLevel = canUseExtendedMode ? material.getHarvestLevel() : 0;
+		setMaxDamage( durability );
 	}
 
 

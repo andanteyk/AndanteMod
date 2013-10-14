@@ -195,6 +195,21 @@ public class Item_Container extends Item implements IRecipe, ICraftingHandler {
 		ItemStack items = null;
 		
 		
+		{	/* 苦肉の策です。
+			 * 詳細はQuiverを参照してください。
+			 */
+			StackTraceElement stack[] = ( new Throwable() ).getStackTrace();
+			if ( stack.length >= 4 && ( stack[3].getMethodName().equals( "decrStackSize" ) || stack[3].getMethodName().equals( "func_70298_a" ) ) ) {
+				return null;
+			}
+			
+			/*//for de-bug
+			for ( int i = 0; i < stack.length; i ++ )
+				System.out.println( stack[i].getMethodName() );
+			*/
+		}
+		
+		
 		for ( int i = 0; i < inv.getSizeInventory(); i ++ ) {
 			ItemStack itemt = inv.getStackInSlot( i );
 			if ( itemt == null ) continue;

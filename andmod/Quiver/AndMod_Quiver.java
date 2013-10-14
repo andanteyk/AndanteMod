@@ -8,22 +8,27 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.common.Configuration;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Property;
 import net.minecraftforge.oredict.OreDictionary;
+import andmod.AndCore.Entity_Arrow;
 import andmod.AndCore.Event_Arrow;
 import andmod.AndCore.Event_DispenserArrow;
+import andmod.AndCore.Proxy_Common;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
+import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 @Mod(
 		modid	= "AndanteMod_Quiver",
 		name	= "Quiver",
-		version	= "1.6.2.2",
+		version	= "1.6.2.3",
 		dependencies = "required-after:AndanteMod_AndCore"
 		)
 @NetworkMod(
@@ -47,6 +52,14 @@ public class AndMod_Quiver {
 
 	private int fm = OreDictionary.WILDCARD_VALUE;
 
+	
+	@Mod.Instance( "AndanteMod_Quiver" )
+	public static AndMod_Quiver instance;
+
+	@SidedProxy( clientSide = "andmod.AndCore.Proxy_Client", serverSide = "andmod.AndCore.Proxy_Common" )
+	public static Proxy_Common proxy;
+	
+	
 
 	@Mod.EventHandler
 	public void preInit( FMLPreInitializationEvent event ) {
@@ -112,11 +125,16 @@ public class AndMod_Quiver {
 					" l ",
 					'l', new ItemStack( Item.leather, 1, 0 ),
 					't', new ItemStack( Item.arrow, 1, 0 ) );
-			
-			e.addArrow( aitem[id].itemID );
 		
+			e.addArrow( aitem[id].itemID );
 		}
 
+		
+		//checkme: it may cause dupe!
+		MinecraftForge.EVENT_BUS.register( e );
+
+		EntityRegistry.registerModEntity( Entity_Arrow.class, ObjectHeader + "ExArrow", 0, instance, 250, 1, true );
+		proxy.registerArrowRenderer( Entity_Arrow.class );
 	}
 
 

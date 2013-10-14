@@ -2,6 +2,8 @@ package andmod.Util;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityEggInfo;
+import net.minecraft.entity.EntityList;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
@@ -16,7 +18,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 @Mod(
 		modid	= "AndanteMod_Util",
 		name	= "And Utility",
-		version	= "1.6.2.3"
+		version	= "1.6.2.4"
 		)
 @NetworkMod(
 		clientSideRequired = true,
@@ -186,8 +188,30 @@ public class AndMod_Util implements IFuelHandler {
 			new ItemStack( Block.melon, 1, 0 ) ) ;
 
 		//point: add new recipes
-
-
+		
+		
+		//info: スポーンエッグ拡張
+		EntityList.entityEggs.put( 53, new EntityEggInfo( 53, 0x00AFAF, 0x799C65 ) );	//Giant
+		EntityList.entityEggs.put( 63, new EntityEggInfo( 63, 0x161616, 0x00003A ) );	//Ender Dragon
+		EntityList.entityEggs.put( 64, new EntityEggInfo( 64, 0x141414, 0xC1C1C1 ) );	//Wither
+		EntityList.entityEggs.put( 97, new EntityEggInfo( 97, 0xEEFFFF, 0xE3901D ) );	//Snow Golem
+		EntityList.entityEggs.put( 99, new EntityEggInfo( 99, 0xE0E0E0, 0xCACACA ) );	//Iron Golem
+		
+		GameRegistry.addRecipe( new ItemStack( Item.monsterPlacer, 1, 97 ),
+				"p",
+				"s",
+				"s",
+				'p', new ItemStack( Block.pumpkin ), 
+				's', new ItemStack( Block.blockSnow ) ) ;
+		
+		GameRegistry.addRecipe( new ItemStack( Item.monsterPlacer, 1, 99 ),
+				" p ",
+				"sss",
+				" s ",
+				'p', new ItemStack( Block.pumpkin ), 
+				's', new ItemStack( Block.blockIron ) ) ;
+		
+		
 		//info: 燃料の追加
 		GameRegistry.registerFuelHandler( new AndMod_Util() );
 	}

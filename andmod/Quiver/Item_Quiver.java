@@ -274,6 +274,30 @@ public class Item_Quiver extends Item implements IRecipe, ICraftingHandler, IArr
 		int materialCount = 0;
 		ItemStack items = null;
 		
+		{	/* 苦肉の策です。
+			 * クラフトした瞬間にスロットの左上からアイテムが減少するのですが、その減少による変化を検知しレシピを再判定してしまうため、
+			 * 実際に期待された動作を行わないことがあります。
+			 * この場合、変数extendingで拡張(クラフトスロットに残らない)か取り出し(クラフトスロットに残る)を判定しているので、
+			 * 再判定されると拡張するはずが再判定により取り出し扱いとなり、複製バグが発生する可能性があります。
+			 * 
+			 * なお、現在「矢筒を2個以上置いてから撤去した時」に一時的にクラフト不能になる不具合がありますが、
+			 * 置きなおすと治るので無視しています。
+			 */
+			StackTraceElement stack[] = ( new Throwable() ).getStackTrace();
+			
+			/*/
+			//for de-bug
+			System.out.println( " -------- StackTrace : " + stack.length + " -------- " );
+			for ( int i = 0; i < stack.length; i ++ )
+				System.out.println( stack[i].getMethodName() );
+			//*/
+			
+			if ( stack.length >= 4 && ( stack[3].getMethodName().equals( "decrStackSize" ) || stack[3].getMethodName().equals( "func_70298_a" ) ) ) {
+				return null;
+			}
+			
+		}
+		
 		
 		for ( int i = 0; i < inv.getSizeInventory(); i ++ ) {
 			ItemStack itemt = inv.getStackInSlot( i );
