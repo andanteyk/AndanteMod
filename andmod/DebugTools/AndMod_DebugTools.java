@@ -38,7 +38,7 @@ public class AndMod_DebugTools {
 
 	//point: class
 
-	public static int aitemqty = 3;
+	public static int aitemqty = 4;
 	public static int[] aitemID = new int[aitemqty];
 	public static Item[] aitem = new Item[aitemqty];
 	public static String[][] aitemname = new String[aitemqty][3];
@@ -73,6 +73,10 @@ public class AndMod_DebugTools {
 		aitemname[id][0] = "WallBreaker";
 		aitemname[id][1] = "Wall Breaker";
 		aitemname[id][2] = "どこでもいける";
+		id++;
+		aitemname[id][0] = "TenguClog";
+		aitemname[id][1] = "Tengu's Clog";
+		aitemname[id][2] = "天狗の下駄";
 		
 		//point: add new item name
 
@@ -170,6 +174,21 @@ public class AndMod_DebugTools {
 			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 		}
 
+		
+		//Tengu's Clog
+		id ++;
+		if ( aitemID[id] != 0 ) {
+			aitem[id] = new Item_SpecialArmor( aitemID[id], ObjectHeader.toLowerCase() + "textures/armor/halo.png", "", EnumArmorMaterial.DIAMOND, 3 )
+			.addEffect( Potion.moveSpeed.id, 30, Item_SpecialArmor.FLAG_ANYTIME )
+			.addEffect( Potion.jump.id, 5, Item_SpecialArmor.FLAG_ANYTIME )
+			.setCreativeTab( CreativeTabs.tabMisc )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+	
+		}
 	
 		
 	}

@@ -48,6 +48,9 @@ public class Item_Levistone extends ItemArmor {
 		
 		if ( !world.isRemote ) {
 			
+			int bx = MathHelper.floor_double( eplayer.posX ), by = MathHelper.floor_double( eplayer.posY ), bz = MathHelper.floor_double( eplayer.posZ );
+			
+			
 			if ( items.getItemDamage() + 16 > items.getMaxDamage() ) {
 				//バルス!!
 				eplayer.addChatMessage( "バルス!" );
@@ -67,7 +70,7 @@ public class Item_Levistone extends ItemArmor {
 			} else {			
 				
 				
-	            ChunkPosition cpos = world.findClosestStructure( "Stronghold", (int)eplayer.posX, (int)eplayer.posY, (int)eplayer.posZ );
+	            ChunkPosition cpos = world.findClosestStructure( "Stronghold", bx, by, bz );
 	            //cpos = null;	//DEBUG
 	            
 	            
@@ -77,7 +80,7 @@ public class Item_Levistone extends ItemArmor {
 	            		Field f = c.getDeclaredField( "currentChunkProvider" );
 	            		f.setAccessible( true );
 	            		ChunkProviderHell cph = (ChunkProviderHell)f.get( world.getChunkProvider() );
-		            	cpos = cph.genNetherBridge.getNearestInstance( world, (int)eplayer.posX, (int)eplayer.posY, (int)eplayer.posZ );
+		            	cpos = cph.genNetherBridge.getNearestInstance( world, bx, by, bz );
 	            		
 	            	} catch ( Exception e ) {
 						//nothing

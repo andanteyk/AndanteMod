@@ -64,7 +64,7 @@ public class AndMod_StoneMask {
 
 		id++;
 		aitemname[id][0] = "StoneMask";
-		aitemname[id][1] = "StoneMask";
+		aitemname[id][1] = "Stone Mask";
 		aitemname[id][2] = "石仮面";
 		
 
