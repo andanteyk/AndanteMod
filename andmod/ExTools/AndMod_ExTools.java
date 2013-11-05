@@ -55,7 +55,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 @Mod(
 		modid	= "AndanteMod_ExTools",
 		name	= "ExTools",
-		version	= "1.6.2.4",
+		version	= "1.6.2.5",
 		dependencies = "required-after:AndanteMod_AndCore"
 		)
 @NetworkMod(
@@ -2971,7 +2971,7 @@ public class AndMod_ExTools {
 
 
 		armorid ++;
-		EnumArmorMaterial AMCoal = EnumHelper.addArmorMaterial( "COAL", 18, new int[] { 2, 6, 4, 2 }, 8 );
+		EnumArmorMaterial AMCoal = EnumHelper.addArmorMaterial( "COAL", 20, new int[] { 2, 6, 4, 2 }, 8 );
 		AMCoal.customCraftingMaterial = new ItemStack( Block.field_111034_cE, 1, 0 ).getItem();
 		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
 				Event_MobEquipment.FLAG_OVERWORLD, 0.05 );
@@ -3262,7 +3262,8 @@ public class AndMod_ExTools {
 		id ++;
 
 		aitem[id] = new Item_SpecialArmor( aitemID[id], ArmorTexture[armorid], AMObsidian, 0 )
-		.addEffect( Item_SpecialArmor.EFFECT_RESISTEXPLOSION, 250, Item_SpecialArmor.FLAG_ANYTIME ).addEffect( Item_SpecialArmor.EFFECT_RESISTEXPLOSION, 0, Item_SpecialArmor.FLAG_FULLEQ )
+		.addEffect( Item_SpecialArmor.EFFECT_RESISTEXPLOSION, 100, Item_SpecialArmor.FLAG_ANYTIME )
+		.addEffect( Item_SpecialArmor.EFFECT_HEAVINESS, 0, Item_SpecialArmor.FLAG_ANYTIME )
 		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
 
 		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
@@ -3281,7 +3282,8 @@ public class AndMod_ExTools {
 		id ++;
 
 		aitem[id] = new Item_SpecialArmor( aitemID[id], ArmorTexture[armorid], AMObsidian, 1 )
-		.addEffect( Item_SpecialArmor.EFFECT_RESISTEXPLOSION, 250, Item_SpecialArmor.FLAG_ANYTIME ).addEffect( Item_SpecialArmor.EFFECT_RESISTEXPLOSION, 0, Item_SpecialArmor.FLAG_FULLEQ )
+		.addEffect( Item_SpecialArmor.EFFECT_RESISTEXPLOSION, 100, Item_SpecialArmor.FLAG_ANYTIME )
+		.addEffect( Item_SpecialArmor.EFFECT_HEAVINESS, 0, Item_SpecialArmor.FLAG_ANYTIME )
 		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
 
 		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
@@ -3301,7 +3303,8 @@ public class AndMod_ExTools {
 		id ++;
 
 		aitem[id] = new Item_SpecialArmor( aitemID[id], ArmorTexture[armorid], AMObsidian, 2 )
-		.addEffect( Item_SpecialArmor.EFFECT_RESISTEXPLOSION, 250, Item_SpecialArmor.FLAG_ANYTIME ).addEffect( Item_SpecialArmor.EFFECT_RESISTEXPLOSION, 0, Item_SpecialArmor.FLAG_FULLEQ )
+		.addEffect( Item_SpecialArmor.EFFECT_RESISTEXPLOSION, 100, Item_SpecialArmor.FLAG_ANYTIME )
+		.addEffect( Item_SpecialArmor.EFFECT_HEAVINESS, 0, Item_SpecialArmor.FLAG_ANYTIME )
 		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
 
 		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
@@ -3321,7 +3324,8 @@ public class AndMod_ExTools {
 		id ++;
 
 		aitem[id] = new Item_SpecialArmor( aitemID[id], ArmorTexture[armorid], AMObsidian, 3 )
-		.addEffect( Item_SpecialArmor.EFFECT_RESISTEXPLOSION, 250, Item_SpecialArmor.FLAG_ANYTIME ).addEffect( Item_SpecialArmor.EFFECT_RESISTEXPLOSION, 0, Item_SpecialArmor.FLAG_FULLEQ )
+		.addEffect( Item_SpecialArmor.EFFECT_RESISTEXPLOSION, 100, Item_SpecialArmor.FLAG_ANYTIME )
+		.addEffect( Item_SpecialArmor.EFFECT_HEAVINESS, 0, Item_SpecialArmor.FLAG_ANYTIME )
 		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
 
 		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
@@ -3844,7 +3848,7 @@ public class AndMod_ExTools {
 
 
 		armorid ++;
-		EnumArmorMaterial AMLapisLazuli = EnumHelper.addArmorMaterial( "LAPISLAZULI", 24, new int[] { 2, 7, 5, 2 }, 25 );
+		EnumArmorMaterial AMLapisLazuli = EnumHelper.addArmorMaterial( "LAPISLAZULI", 28, new int[] { 2, 7, 5, 2 }, 25 );
 		AMLapisLazuli.customCraftingMaterial = new ItemStack( Block.blockLapis, 1, 0 ).getItem();
 		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
 				Event_MobEquipment.FLAG_OVERWORLD, 0.05 );
@@ -4121,7 +4125,7 @@ public class AndMod_ExTools {
 
 
 		armorid ++;
-		EnumArmorMaterial AMRedstone = EnumHelper.addArmorMaterial( "REDSTONE", 20, new int[] { 3, 7, 5, 3 }, 12 );
+		EnumArmorMaterial AMRedstone = EnumHelper.addArmorMaterial( "REDSTONE", 25, new int[] { 3, 7, 5, 3 }, 12 );
 		AMRedstone.customCraftingMaterial = new ItemStack( Block.blockRedstone, 1, 0 ).getItem();
 		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
 				Event_MobEquipment.FLAG_OVERWORLD, 0.05 );
@@ -5138,7 +5142,7 @@ public class AndMod_ExTools {
 	private void registerFlintTools( int id, int armorid ) {
 		
 
-		EnumToolMaterial TMFlint = EnumHelper.addToolMaterial( "FLINT", 2, 48, 7.0F, 2.7F, 24 );
+		EnumToolMaterial TMFlint = EnumHelper.addToolMaterial( "FLINT", 2, 48, 10.8F, 2.7F, 24 );
 		TMFlint.customCraftingMaterial = new ItemStack( Item.flint, 1, 0 ).getItem();
 		
 		
@@ -5679,7 +5683,7 @@ public class AndMod_ExTools {
 	private void registerStarTools( int id, int armorid ) {
 		
 		
-		EnumToolMaterial TMStar = EnumHelper.addToolMaterial( "STAR", 3, 5183, 16.0F, 6.0F, 24 );
+		EnumToolMaterial TMStar = EnumHelper.addToolMaterial( "STAR", 3, 6561, 16.0F, 6.0F, 24 );
 		TMStar.customCraftingMaterial = new ItemStack( Item.netherStar, 1, fm ).getItem();
 		
 		
@@ -5804,7 +5808,7 @@ public class AndMod_ExTools {
 		//Star Hammer
 		id ++;
 
-		aitem[id] = new Item_Hammer( aitemID[id], TMStar ).setMaxDamage( (int)( 64 * 81 ) - 1 )
+		aitem[id] = new Item_Hammer( aitemID[id], TMStar ).setMaxDamage( (int)( 64 * 102.5 ) - 1 )
 		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
 
 		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
@@ -5826,7 +5830,7 @@ public class AndMod_ExTools {
 
 
 		armorid ++;
-		EnumArmorMaterial AMStar = EnumHelper.addArmorMaterial( "STAR", 123, new int[] { 5, 11, 9, 5 }, 24 );
+		EnumArmorMaterial AMStar = EnumHelper.addArmorMaterial( "STAR", 144, new int[] { 5, 11, 9, 5 }, 24 );
 		AMStar.customCraftingMaterial = new ItemStack( Item.netherStar, 1, 0 ).getItem();
 		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
 				Event_MobEquipment.FLAG_OVERWORLD, 0.001 );
@@ -7391,7 +7395,7 @@ public class AndMod_ExTools {
 
 
 		armorid ++;
-		EnumArmorMaterial AMBlaze = EnumHelper.addArmorMaterial( "BLAZE", 16, new int[] { 3, 6, 5, 2 }, 20 );
+		EnumArmorMaterial AMBlaze = EnumHelper.addArmorMaterial( "BLAZE", 18, new int[] { 3, 6, 5, 2 }, 20 );
 		AMBlaze.customCraftingMaterial = new ItemStack( getItemIDforCraft( "BlazeQuartz" ), 1, 0 ).getItem();
 		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
 				Event_MobEquipment.FLAG_NETHER,    0.05 );
@@ -8084,7 +8088,7 @@ public class AndMod_ExTools {
 	//point: Cactus Tools
 	private void registerCactusTools( int id, int armorid ) {
 		
-		EnumToolMaterial TMCactus = EnumHelper.addToolMaterial( "CACTUS", 2, 86, 5.4F, 1.8F, 3 );
+		EnumToolMaterial TMCactus = EnumHelper.addToolMaterial( "CACTUS", 2, 86, 8.0F, 1.8F, 3 );
 		TMCactus.customCraftingMaterial = new ItemStack( Block.cactus, 1, fm ).getItem();
 		
 		

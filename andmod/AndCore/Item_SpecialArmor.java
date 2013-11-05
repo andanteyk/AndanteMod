@@ -37,6 +37,7 @@ public class Item_SpecialArmor extends Item_Armor implements ISpecialArmor {
 	public static final int EFFECT_FEATHERFALLING	=  256 + 9;		//落下速度を緩和します。
 	public static final int EFFECT_LUMINESCENCE		=  256 + 10;	//発光させます。
 	public static final int EFFECT_FREEZE			=  256 + 11;	//凍結させます。具体的には、足元の水源を氷に、溶岩源を黒曜石に、溶岩流を石に変化させます。
+	public static final int EFFECT_HEAVINESS		=  256 + 12;	//ダッシュできなくなります。
 	public static final int EFFECT_INVINCIBLE		=  384 + 0;		//あらゆるダメージに対し、抵抗力を得ます。
 	public static final int EFFECT_RESISTALL		=  384 + 1;		//鎧で防御可能なダメージに対し、抵抗力を得ます。
 	public static final int EFFECT_RESISTFALLING	=  384 + 2;		//落下やテレポートのダメージに対し、抵抗力を得ます。
@@ -375,6 +376,11 @@ public class Item_SpecialArmor extends Item_Armor implements ISpecialArmor {
 							}
 						}
 						break;
+						
+						case EFFECT_HEAVINESS:
+							if ( eplayer.isSprinting() )
+								eplayer.setSprinting( false );
+							break;
 					}
 
 				

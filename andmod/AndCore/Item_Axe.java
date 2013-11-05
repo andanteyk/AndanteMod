@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumToolMaterial;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 public class Item_Axe extends ItemAxe {
@@ -129,8 +130,8 @@ public class Item_Axe extends ItemAxe {
 	public boolean onBlockStartBreak( ItemStack items, int bx, int by, int bz, EntityPlayer eplayer ) {
 
 		if ( eplayer.capabilities.isCreativeMode )
-			return processCutAll(items, eplayer.worldObj, eplayer.worldObj.getBlockId(bx, by, bz), bx, by, bz, eplayer);
-		else return super.onBlockStartBreak(items, bx, by, bz, eplayer);
+			return processCutAll( items, eplayer.worldObj, eplayer.worldObj.getBlockId( bx, by, bz ), bx, by, bz, eplayer );
+		else return super.onBlockStartBreak( items, bx, by, bz, eplayer );
 
 	}
 
@@ -139,23 +140,23 @@ public class Item_Axe extends ItemAxe {
 
 		Block b = Block.blocksList[bid];
 
-		debugPrint( "processCatAll was called; id=" + bid + ", " + (b == null) + ", " + ( b == null ? true : !eplayer.canHarvestBlock(b)) + ", " + (toolMaterial.getHarvestLevel() < 2));
+		debugPrint( "processCatAll was called; id=" + bid + ", " + ( b == null ) + ", " + ( b == null ? true : !eplayer.canHarvestBlock( b ) ) + ", " + ( toolMaterial.getHarvestLevel() < 2 ) );
 
 
-		if ( b == null || !eplayer.canHarvestBlock(b) || toolMaterial.getHarvestLevel() < 2 || !getCanCutAll(eplayer) ) return false;
+		if ( b == null || !eplayer.canHarvestBlock( b ) || toolMaterial.getHarvestLevel() < 2 || !getCanCutAll( eplayer ) ) return false;
 		else if ( b.blockMaterial == Material.wood || ( canCutLeaves && b.blockMaterial == Material.leaves ) ) {
 
 			cutCount = 0;
 			dmgCount = 0;
 			dmgLimit = items.getMaxDamage() - items.getItemDamage() + 1;
 
-			if ( Block.blocksList[world.getBlockId(bx, by, bz)] == null )
+			if ( Block.blocksList[world.getBlockId( bx, by, bz )] == null )
 				searchBlock ( eplayer.worldObj, eplayer, bx, by, bz, 0 );
 			else breakBlock ( eplayer.worldObj, eplayer, bx, by, bz, 0 );
 
 			debugPrint( cutCount + " Blocks are broken" );
 
-			items.damageItem( ( durabilityMode == 2 ? 1 : dmgCount ) * itemDamageVsBlock, eplayer);
+			items.damageItem( ( durabilityMode == 2 ? 1 : dmgCount ) * itemDamageVsBlock, eplayer );
 			if ( items.stackSize <= 0 ) eplayer.destroyCurrentEquippedItem();
 
 			return true;
@@ -167,33 +168,31 @@ public class Item_Axe extends ItemAxe {
 
 	protected void breakBlock( World world, EntityPlayer eplayer, int bx, int by, int bz, int depth ) {
 
-		Block b = Block.blocksList[world.getBlockId(bx, by, bz)];
+		Block b = Block.blocksList[world.getBlockId( bx, by, bz )];
 
 
 		if ( b == null || world.isRemote || ( durabilityMode == 1 && dmgCount >= dmgLimit ) || !( b.blockMaterial == Material.wood || ( canCutLeaves && b.blockMaterial == Material.leaves ) ) ||
 				depth >= toolMaterial.getHarvestLevel() * loopLimit || cutCount >= toolMaterial.getHarvestLevel() * breakLimit ) return;
 
-		int meta = world.getBlockMetadata(bx, by, bz);
-		debugPrint("Breaking at (" + bx + ", " + by + ", " + bz + "), id=" + b.blockID + ", meta=" + meta);
+		int meta = world.getBlockMetadata( bx, by, bz );
+		debugPrint( "Breaking at (" + bx + ", " + by + ", " + bz + "), id=" + b.blockID + ", meta=" + meta );
 
 
 		if ( showBreakingEffect )
-			world.destroyBlock(bx, by, bz, false);
+			world.destroyBlock( bx, by, bz, false );
 		else
-			world.setBlockToAir(bx, by, bz);
+			world.setBlockToAir( bx, by, bz );
 
 
 		if ( !eplayer.capabilities.isCreativeMode )
 			if ( canGatherItem )
-				b.harvestBlock(world, eplayer, (int)Math.round(eplayer.posX), (int)Math.round(eplayer.posY), (int)Math.round(eplayer.posZ), meta);
+				b.harvestBlock( world, eplayer, MathHelper.floor_double( eplayer.posX ), MathHelper.floor_double( eplayer.posY ), MathHelper.floor_double( eplayer.posZ ), meta );
 			else
-				b.harvestBlock(world, eplayer, bx, by, bz, meta);
+				b.harvestBlock( world, eplayer, bx, by, bz, meta );
 
 		cutCount ++;
 		if ( !canCutLeaves || b.blockMaterial != Material.leaves )
 			dmgCount ++;
-
-
 
 
 		searchBlock ( world, eplayer, bx, by, bz, depth );
@@ -219,7 +218,7 @@ public class Item_Axe extends ItemAxe {
 
 	protected boolean getCanCutAll( EntityPlayer eplayer ) {
 		return ( ( canCutAll == 1 &&  eplayer.isSneaking() ) ||
-				( canCutAll == 2 && !eplayer.isSneaking() ) );
+				 ( canCutAll == 2 && !eplayer.isSneaking() ) );
 	}
 
 

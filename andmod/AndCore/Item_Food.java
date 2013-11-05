@@ -32,15 +32,15 @@ public class Item_Food extends ItemFood {
 
 	/**
 	 * 食料のデータを設定します。
-	 * @param itemId		アイテムのID。
+	 * @param itemID		アイテムのID。
 	 * @param maxstack		スタック可能最大個数。
 	 * @param heal			満腹度回復量。
 	 * @param saturation	隠し満腹度（腹持ち）回復量。内部的に(満腹度*隠し満腹度*2.0)加算されます
 	 * @param canfeedDog	trueなら犬に与えることができます。
 	 * @param isDrink		trueならモーションが飲むときのものになります。falseなら食べます。
 	 */
-	public Item_Food( int itemId, int maxstack, int heal, float saturation, boolean canfeedDog, boolean isDrink ) {
-		super( itemId, heal, saturation, canfeedDog );
+	public Item_Food( int itemID, int maxstack, int heal, float saturation, boolean canfeedDog, boolean isDrink ) {
+		super( itemID, heal, saturation, canfeedDog );
 
 		maxStackSize = maxstack;
 		act = ( isDrink ? EnumAction.drink : EnumAction.eat );
@@ -48,15 +48,15 @@ public class Item_Food extends ItemFood {
 
 	/**
 	 * 食料のデータを設定します。こちらは腹持ちを直接指定できます。
-	 * @param itemId		アイテムのID。
+	 * @param itemID		アイテムのID。
 	 * @param maxstack		スタック可能最大個数。
 	 * @param heal			満腹度回復量。0を指定すると腹持ちも0になります。
 	 * @param saturation	隠し満腹度（腹持ち）回復量。
 	 * @param canfeedDog	trueなら犬に与えることができます。
 	 * @param isDrink		trueならモーションが飲むときのものになります。falseなら食べます。
 	 */
-	public Item_Food( int itemId, int maxstack, int heal, double saturationValue, boolean canfeedDog, boolean isDrink ) {
-		super( itemId, heal, (float)saturationValue / heal / 2.0F, canfeedDog );
+	public Item_Food( int itemID, int maxstack, int heal, double saturationValue, boolean canfeedDog, boolean isDrink ) {
+		super( itemID, heal, (float)saturationValue / heal / 2.0F, canfeedDog );
 
 		maxStackSize = maxstack;
 		act = ( isDrink ? EnumAction.drink : EnumAction.eat );
@@ -136,9 +136,7 @@ public class Item_Food extends ItemFood {
 				eplayer.heal( AmplifierList.get( id ) );
 				break;
 			case 2:		//悪性ステータス回復
-				for ( int i = 0; i < Potion.potionTypes.length; i ++ )
-					if ( Potion.potionTypes[i] != null && Potion.potionTypes[i].isBadEffect() )
-						eplayer.removePotionEffect( i );
+				cureBadStatus( eplayer );
 				break;
 			case 3:		//ステータス異常回復
 				eplayer.clearActivePotions();
@@ -147,6 +145,11 @@ public class Item_Food extends ItemFood {
 	}
 
 
+	protected void cureBadStatus( EntityPlayer eplayer ) {
+		for ( int i = 0; i < Potion.potionTypes.length; i ++ )
+			if ( Potion.potionTypes[i] != null && Potion.potionTypes[i].isBadEffect() )
+				eplayer.removePotionEffect( i );
+	}
 
 
 
