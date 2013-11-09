@@ -55,7 +55,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 @Mod(
 		modid	= "AndanteMod_ExTools",
 		name	= "ExTools",
-		version	= "1.6.2.5",
+		version	= "1.6.2.6",
 		dependencies = "required-after:AndanteMod_AndCore"
 		)
 @NetworkMod(
@@ -2564,10 +2564,19 @@ public class AndMod_ExTools {
 		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 
 		
-		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 4 ),
+				"g",
+				"g",
+				'g', new ItemStack( Block.stone, 1, fm ) );
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 4 ),
 				"g",
 				"g",
 				'g', new ItemStack( Block.stoneBrick, 1, fm ) );
+		GameRegistry.addRecipe( new ItemStack( Block.torchWood, 4 ),
+				"c",
+				"s",
+				'c', new ItemStack( Item.coal, 1, fm ), 
+				's', new ItemStack( aitem[id], 1, 0 ) );
 
 		
 		

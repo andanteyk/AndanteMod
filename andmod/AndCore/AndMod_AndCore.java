@@ -15,6 +15,8 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @Mod(
 		modid	= "AndanteMod_AndCore",
@@ -120,7 +122,7 @@ public class AndMod_AndCore {
 
 
 
-
+	@SideOnly( Side.CLIENT )
 	public static boolean isJapanese() {
 		return Minecraft.getMinecraft().gameSettings.language.equals( "ja_JP" );
 	}

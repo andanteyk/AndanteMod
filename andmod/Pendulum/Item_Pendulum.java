@@ -5,9 +5,12 @@ import java.lang.reflect.Field;
 import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.packet.Packet3Chat;
+import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.ChunkPosition;
@@ -32,6 +35,7 @@ public class Item_Pendulum extends Item {
 	public static boolean canTranslateEnglish = true;
 	public boolean isDevelopmentEnvironment = true;
 	protected int target;
+	protected boolean isJapanese;
 	
 	/**
 	 * 新しいペンデュラムを定義します。
@@ -46,6 +50,8 @@ public class Item_Pendulum extends Item {
 		setMaxDamage( 0 );
 		setHasSubtypes( true );
 		setCreativeTab( CreativeTabs.tabTools );
+		
+		isJapanese = canTranslateEnglish;		//ややこしいので修正してください
 		
 		Class<ChunkProviderServer> c = ChunkProviderServer.class;
     	try {
@@ -111,7 +117,11 @@ public class Item_Pendulum extends Item {
 		
 		tick = getMaxItemUseDuration( items ) - tick;
 		
-		if ( world.isRemote ) return;
+		if ( world.isRemote ) {		//FIXME: It may work in Single-Player mode, but doesn't work in Multi-Player mode. 
+			isJapanese = !canTranslateEnglish || Minecraft.getMinecraft().gameSettings.language.equals( "ja_JP" );
+			return;
+		}
+		
 		
 		if ( eplayer.capabilities.isCreativeMode ) {
 			strength = 3;
@@ -287,86 +297,94 @@ public class Item_Pendulum extends Item {
 		}
 		
 		
-		if ( cpos != null ) {
-			String msg = isJapanese() ? "ペンデュラムは頼りなげに揺れている" : "Unexpected processing! You should report to author.";
-			
-			switch ( strength ) {
-			case 0:
-				if ( distance <= 50.0 )
-					msg = getDistanceColor( distance ) + ( isJapanese() ? "すぐ近くになにかあるようだ" : "There seems to be something very close!" );
-				else if ( distance <= 100.0 )
-					msg = getDistanceColor( distance ) + ( isJapanese() ? "近くになにかあるようだ" : "There seems to be something near" );
-				else if ( distance <= 200.0 )
-					msg = getDistanceColor( distance ) + ( isJapanese() ? "あたりになにかあるようだ" : "There seems to be something in the area" );
-				else
-					msg = getDistanceColor( distance ) + ( isJapanese() ? "遠くになにかあるようだ" : "There seems to be something in the distance" );
-				break;
+		{
+			if ( cpos != null ) {
 				
-			case 1:
+				String msg = isJapanese ? "ペンデュラムは頼りなげに揺れている" : "Unexpected processing! You should report to author.";
 				
-				if ( distance < 20.0 ) {
-					msg = getDistanceColor( distance ) + ( isJapanese() ? "すぐ近くになにかあるようだ" : "There seems to be something very close!" );
+				switch ( strength ) {
+				case 0:
+					if ( distance <= 50.0 )
+						msg = getDistanceColor( distance ) + ( isJapanese ? "すぐ近くになにかあるようだ" : "There seems to be something very close!" );
+					else if ( distance <= 100.0 )
+						msg = getDistanceColor( distance ) + ( isJapanese ? "近くになにかあるようだ" : "There seems to be something near" );
+					else if ( distance <= 200.0 )
+						msg = getDistanceColor( distance ) + ( isJapanese ? "あたりになにかあるようだ" : "There seems to be something in the area" );
+					else
+						msg = getDistanceColor( distance ) + ( isJapanese ? "遠くになにかあるようだ" : "There seems to be something in the distance" );
 					break;
-				}
-				
-				if ( -45.0 <= angle && angle <= 45.0 )
-					msg = isJapanese() ? "前方の" : "to the front";
-				else if ( -135.0 <= angle && angle <= -45.0 )
-					msg = isJapanese() ? "左の" : "on the left";
-				else if ( 45.0 <= angle && angle <= 135.0 )
-					msg = isJapanese() ? "右の" : "on the right";
-				else
-					msg = isJapanese() ? "後ろの" : "to the back";
-				
-				if ( distance <= 50.0 )
-					msg = getDistanceColor( distance ) + ( isJapanese() ? msg + "すぐ近くになにかあるようだ" : "There seems to be something very close " + msg );
-				else if ( distance <= 100.0 )
-					msg = getDistanceColor( distance ) + ( isJapanese() ? msg + "近くになにかあるようだ" : "There seems to be something near " + msg );
-				else if ( distance <= 200.0 )
-					msg = getDistanceColor( distance ) + ( isJapanese() ? msg + "あたりになにかあるようだ" : "There seems to be something in the area " + msg );
-				else
-					msg = getDistanceColor( distance ) + ( isJapanese() ? msg + "遠くになにかあるようだ" : "There seems to be something in the distance " + msg );
-				
-				break;
-				
-			case 2:
-				{
-					int clk;
-					angle -= 15.0;
-					if ( angle < 0.0 ) angle += 360.0;
 					
-					clk = MathHelper.floor_double( angle / ( 360.0 / 12.0 ) );
-					if ( clk <= 0 ) clk += 12;
-					
-					distance = Math.floor( distance / 20.0 ) * 20.0;
-					
+				case 1:
 					
 					if ( distance < 20.0 ) {
-						msg = getDistanceColor( distance ) + ( isJapanese() ? "すぐ近くになにかあるようだ" : "There seems to be something very close!" );
-					} else {
-						if ( isJapanese() )
-							msg = getDistanceColor( distance ) + clk + "時方向 約" + String.format( "%1$.0f", distance ) + "m 先になにかあるようだ";
-						else 
-							msg = getDistanceColor( distance ) + "There seems to be something at about " + String.format( "%1$.0f", distance ) +  "m ahead in the direction of " + clk + " o'clock.";
-					}	
+						msg = getDistanceColor( distance ) + ( isJapanese ? "すぐ近くになにかあるようだ" : "There seems to be something very close!" );
+						break;
+					}
+					
+					if ( -45.0 <= angle && angle <= 45.0 )
+						msg = isJapanese ? "前方の" : "to the front";
+					else if ( -135.0 <= angle && angle <= -45.0 )
+						msg = isJapanese ? "左の" : "on the left";
+					else if ( 45.0 <= angle && angle <= 135.0 )
+						msg = isJapanese ? "右の" : "on the right";
+					else
+						msg = isJapanese ? "後ろの" : "to the back";
+					
+					if ( distance <= 50.0 )
+						msg = getDistanceColor( distance ) + ( isJapanese ? msg + "すぐ近くになにかあるようだ" : "There seems to be something very close " + msg );
+					else if ( distance <= 100.0 )
+						msg = getDistanceColor( distance ) + ( isJapanese ? msg + "近くになにかあるようだ" : "There seems to be something near " + msg );
+					else if ( distance <= 200.0 )
+						msg = getDistanceColor( distance ) + ( isJapanese ? msg + "あたりになにかあるようだ" : "There seems to be something in the area " + msg );
+					else
+						msg = getDistanceColor( distance ) + ( isJapanese ? msg + "遠くになにかあるようだ" : "There seems to be something in the distance " + msg );
+					
+					break;
+					
+				case 2:
+					{
+						int clk;
+						angle -= 15.0;
+						if ( angle < 0.0 ) angle += 360.0;
+						
+						clk = MathHelper.floor_double( angle / ( 360.0 / 12.0 ) );
+						if ( clk <= 0 ) clk += 12;
+						
+						distance = Math.floor( distance / 20.0 ) * 20.0;
+						
+						
+						if ( distance < 20.0 ) {
+							msg = getDistanceColor( distance ) + ( isJapanese ? "すぐ近くになにかあるようだ" : "There seems to be something very close!" );
+						} else {
+							if ( isJapanese )
+								msg = getDistanceColor( distance ) + clk + "時方向 約" + String.format( "%1$.0f", distance ) + "m 先になにかあるようだ";
+							else 
+								msg = getDistanceColor( distance ) + "There seems to be something at about " + String.format( "%1$.0f", distance ) +  "m ahead in the direction of " + clk + " o'clock.";
+						}	
+					}
+					break;
+					
+				case 3:
+					if ( isJapanese )
+						msg = getDistanceColor( distance ) + ( ( angle < 0.0 ? "左に" : "右に" ) + String.format( "%1$.0f", Math.abs( angle ) ) + "°, " + String.format( "%1$.0f", distance ) + "m 先になにかあるようだ" );
+					else 
+						msg = getDistanceColor( distance ) + "There seems to be something to " + String.format( "%1$.0f", distance ) + "m ahead, " + String.format( "%1$.0f", Math.abs( angle ) ) + "° to the " + ( angle < 0.0 ? "left" : "right" );
+					break;
 				}
-				break;
+			
+				//eplayer.addChatMessage( msg + EnumChatFormatting.RESET );
 				
-			case 3:
-				if ( isJapanese() )
-					msg = getDistanceColor( distance ) + ( ( angle < 0.0 ? "左に" : "右に" ) + String.format( "%1$.0f", Math.abs( angle ) ) + "°, " + String.format( "%1$.0f", distance ) + "m 先になにかあるようだ" );
-				else 
-					msg = getDistanceColor( distance ) + "There seems to be something to " + String.format( "%1$.0f", distance ) + "m ahead, " + String.format( "%1$.0f", Math.abs( angle ) ) + "° to the " + ( angle < 0.0 ? "left" : "right" );
-				break;
+				if ( eplayer instanceof EntityPlayerMP )
+					((EntityPlayerMP)eplayer).playerNetServerHandler.sendPacketToPlayer(new Packet3Chat(ChatMessageComponent.func_111077_e( msg + EnumChatFormatting.RESET )));
+				
+				
+			} else {
+				
+				eplayer.addChatMessage( EnumChatFormatting.DARK_PURPLE + ( isJapanese ? "反応はないようだ" : "There seems to be nothing near..." ) + EnumChatFormatting.RESET );
 			}
 		
-			eplayer.addChatMessage( msg + EnumChatFormatting.RESET );
-			
-		} else {
-			eplayer.addChatMessage( EnumChatFormatting.DARK_PURPLE + ( isJapanese() ? "反応はないようだ" : "There seems to be nothing near..." ) + EnumChatFormatting.RESET );
-			
 		}
-		
+			
 	}
 
 	
@@ -400,8 +418,4 @@ public class Item_Pendulum extends Item {
 		return items.getItemDamage() > 0;
 	}
 	
-	
-	private boolean isJapanese() {
-		return !canTranslateEnglish || Minecraft.getMinecraft().gameSettings.language.equals( "ja_JP" );
-	}
 }

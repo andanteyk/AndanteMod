@@ -18,8 +18,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 @Mod(
 		modid	= "AndanteMod_Pendulum",
 		name	= "Pendulum",
-		version	= "1.6.2.0" /*,
-		dependencies = "required-after:AndanteMod_AndCore" */
+		version	= "1.6.2.1"
 		)
 @NetworkMod(
 		clientSideRequired = true,
