@@ -1,5 +1,7 @@
 package andmod.Gummi;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.logging.Level;
 
 import net.minecraft.block.Block;
@@ -21,7 +23,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 @Mod(
 		modid	= "AndanteMod_Gummi",
 		name	= "Gummi",
-		version	= "1.6.2.0",
+		version	= "1.6.2.1",
 		dependencies = "required-after:AndanteMod_AndCore"
 		)
 @NetworkMod(
@@ -47,11 +49,19 @@ public class AndMod_Gummi {
 
 	
 	private boolean replaceVanillaLeaves = true;
+	private boolean isDevEnv = false;
 	
 
 	@Mod.EventHandler
 	public void preInit( FMLPreInitializationEvent event ) {
 
+		try {
+			Field field = Block.class.getDeclaredField( "leaves" );
+			isDevEnv = true;
+		} catch ( Exception e ) {
+			isDevEnv = false;
+		}
+		
 		int id = -1;
 
 		id++;
@@ -440,8 +450,24 @@ public class AndMod_Gummi {
 				.setRareDrop( 5, new ItemStack( getItemIDforCraft( "GoldenGrape" ), 1, 0 ) )
 				.setRareDrop( 6,  new ItemStack( getItemIDforCraft( "GoldenPeach" ), 1, 0 ) )
 				.setRareDrop( 7,  new ItemStack( getItemIDforCraft( "GoldenPineapple" ), 1, 0 ) )
-				.setHardness( 0.2F ).setLightOpacity( 1 ).setStepSound( Block.soundGrassFootstep ).setUnlocalizedName( "leaves" );
+				.setHardness( 0.2F ).setLightOpacity( 1 ).setStepSound( Block.soundGrassFootstep ).setUnlocalizedName( "leaves" ).func_111022_d( "leaves" );
 
+			try {
+				Field f = Block.class.getDeclaredField( isDevEnv ? "leaves" : "field_71952_K" );
+				f.setAccessible( true );
+				
+				Field m = Field.class.getDeclaredField( "modifiers" );
+				m.setAccessible( true );
+				m.setInt( f, f.getModifiers() & ~Modifier.FINAL );
+				
+				f.set( null, Block.blocksList[Block.leaves.blockID] );
+			
+				System.out.println( "[Replaced Leaves] Block.leaves was overridden." );
+				
+				
+			} catch ( Exception e ) {
+				System.out.println( "[Replaced Leaves] Block.leaves can't be overridden." );
+			}
 		}
 	}
 

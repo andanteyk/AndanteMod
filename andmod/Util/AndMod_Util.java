@@ -18,7 +18,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 @Mod(
 		modid	= "AndanteMod_Util",
 		name	= "And Utility",
-		version	= "1.6.2.4"
+		version	= "1.6.2.5"
 		)
 @NetworkMod(
 		clientSideRequired = true,
@@ -86,15 +86,13 @@ public class AndMod_Util implements IFuelHandler {
 			new ItemStack( Item.eyeOfEnder, 1 ) ) ;
 
 		//info: 砂利４つで火打石
-		GameRegistry.addRecipe( new ItemStack( Item.flint, 1, 0 ) ,
+		GameRegistry.addRecipe( new ItemStack( Item.flint, 1, 0 ),
 				"gg",
 				"gg",
 				'g', new ItemStack( Block.gravel, 1 ) ) ;
 
 		//info: 苗木を燃やすと枯れ木に
 		FurnaceRecipes.smelting().addSmelting( Block.sapling.blockID, new ItemStack( Block.deadBush, 1 ), 0.1F );
-
-
 
 		//info: 松明レシピの追加
 		GameRegistry.addRecipe( new ItemStack( Block.torchWood, 32, 0 ),
@@ -135,7 +133,7 @@ public class AndMod_Util implements IFuelHandler {
 				"sss",
 				" s ",
 				's', new ItemStack( Block.tallGrass, 1, fm ) ) ;
-		
+
 
 		//info: ネザーウォートを赤石粉に;9つでクラフトに変更
 		GameRegistry.addShapelessRecipe( new ItemStack( Item.redstone, 1, 0 ), 
@@ -149,10 +147,22 @@ public class AndMod_Util implements IFuelHandler {
 			new ItemStack( Item.netherStalkSeeds, 1, 0 ),
 			new ItemStack( Item.netherStalkSeeds, 1, 0 ) ) ;
 
-		
-		//info: 葉を斧で高速破壊できる
-		MinecraftForge.setBlockHarvestLevel( Block.leaves, "axe", 0 );
+		//info: 木炭->石炭ブロック->ダイヤ
+		GameRegistry.addRecipe( new ItemStack( Block.field_111034_cE, 1, 0 ), 
+				"ccc",
+				"ccc",
+				"ccc",
+				'c', new ItemStack( Item.coal, 1, fm ) ) ;
+		GameRegistry.addRecipe( new ItemStack( Item.diamond, 1, 0 ), 
+				"ccc",
+				"ccc",
+				"ccc",
+				'c', new ItemStack( Block.field_111034_cE, 1, 0 ) ) ;
 
+		//info: スイカを還元
+		GameRegistry.addShapelessRecipe( new ItemStack( Item.melon, 9, 0 ), 
+			new ItemStack( Block.melon, 1, 0 ) ) ;
+				
 		//info: エンドストーン生成
 		GameRegistry.addRecipe( new ItemStack( Block.whiteStone, 8, 0 ),
 				"sss",
@@ -161,6 +171,7 @@ public class AndMod_Util implements IFuelHandler {
 				's', new ItemStack( Block.cobblestone, 1, 0 ),
 				'e', new ItemStack( Item.enderPearl, 1, 0 ) ) ;
 
+		
 		//info: ポータルフレームを破壊可能に　回収はできません
 		Block.blocksList[ Block.endPortalFrame.blockID ] =
 				Block.blocksList[ Block.endPortalFrame.blockID ].setHardness( 50.0F ).setResistance( 2000.0F );
@@ -168,10 +179,15 @@ public class AndMod_Util implements IFuelHandler {
 		MinecraftForge.setBlockHarvestLevel( Block.endPortalFrame, "pickaxe", 3 );
 
 
+		//info: 葉を斧で高速破壊できる
+		MinecraftForge.setBlockHarvestLevel( Block.leaves, "axe", 0 );
+		
+		
 		//info: 蓮の葉を壊れにくくする　畑とかにどうぞ
 		Block.blocksList[ Block.waterlily.blockID ] =
 				Block.blocksList[ Block.waterlily.blockID ].setHardness( 0.2F );
 
+		
 		//info: ブロックをクリエイティブタブに登録
 		Block.blocksList[ Block.commandBlock.blockID ] =
 				Block.blocksList[ Block.commandBlock.blockID ].setCreativeTab( CreativeTabs.tabRedstone );
@@ -182,14 +198,7 @@ public class AndMod_Util implements IFuelHandler {
 		Block.blocksList[ Block.endPortal.blockID ] =
 				Block.blocksList[ Block.endPortal.blockID ].setCreativeTab( CreativeTabs.tabDecorations );
 		
-		
-		//info: スイカを還元
-		GameRegistry.addShapelessRecipe( new ItemStack( Item.melon, 9, 0 ), 
-			new ItemStack( Block.melon, 1, 0 ) ) ;
-
-		//point: add new recipes
-		
-		
+			
 		//info: スポーンエッグ拡張
 		EntityList.entityEggs.put( 53, new EntityEggInfo( 53, 0x00AFAF, 0x799C65 ) );	//Giant
 		EntityList.entityEggs.put( 63, new EntityEggInfo( 63, 0x161616, 0x00003A ) );	//Ender Dragon
@@ -248,7 +257,7 @@ public class AndMod_Util implements IFuelHandler {
 			return 200 * 4;
 		else if ( fuel.itemID == Item.boat.itemID )
 			return 200 * 4;
-		else if ( fuel.itemID == Block.field_111038_cB.blockID )
+		else if ( fuel.itemID == Block.field_111038_cB.blockID )		//hay
 			return (int)( 200 * 7.5 );
 		
 		

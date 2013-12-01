@@ -117,7 +117,6 @@ public class AndMod_AndCore {
 		LanguageRegistry.addName( ablock[id], ablockname[id][1] );
 		LanguageRegistry.instance().addNameForObject( ablock[id], "ja_JP", ablockname[id][2] );
 	
-		
 	}
 
 

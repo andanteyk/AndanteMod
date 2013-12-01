@@ -55,7 +55,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 @Mod(
 		modid	= "AndanteMod_ExTools",
 		name	= "ExTools",
-		version	= "1.6.2.6",
+		version	= "1.6.2.8",
 		dependencies = "required-after:AndanteMod_AndCore"
 		)
 @NetworkMod(
@@ -1785,7 +1785,7 @@ public class AndMod_ExTools {
 			LanguageRegistry.instance().addNameForObject( ablock[id], "ja_JP", ablockname[id][2] );
 			
 			
-			GameRegistry.addRecipe( new ItemStack( ablock[id], 1 ),
+			GameRegistry.addRecipe( new ItemStack( ablock[id], 16 ),
 					"sss",
 					"sss",
 					's', new ItemStack( getBlockID( "CrystalGlass" ), 1, 0 ) );
@@ -1825,7 +1825,7 @@ public class AndMod_ExTools {
 			MinecraftForge.setBlockHarvestLevel( ablock[id], "pickaxe", 3 );
 			
 			
-			GameRegistry.addRecipe( new ItemStack( ablock[id], 1 ),
+			GameRegistry.addRecipe( new ItemStack( ablock[id], 16 ),
 					"sss",
 					"sss",
 					's', new ItemStack( getBlockID( "ObsidianGlass" ), 1, 0 ) );
@@ -1836,6 +1836,7 @@ public class AndMod_ExTools {
 		if ( isEnabled( "Coal" ) ) {
 			//Coal Block
 			id ++;
+			/*/
 			ablock[id] = new Block_Base( ablockID[id], Material.rock ).setHardness( 3.0F ).setResistance( 5.0F ).setStepSound( Block.soundStoneFootstep )//.setCreativeTab( CreativeTabs.tabBlock )
 			.setUnlocalizedName( ablockname[id][0] ).func_111022_d( ablockname[id][0] );
 
@@ -1846,7 +1847,9 @@ public class AndMod_ExTools {
 			
 			Block.setBurnProperties( ablockID[id], 30, 2 );
 			fuelh.addFuel( ablockID[id], -1, 200 * 80 );
-
+			}
+			//*/
+			
 			/*
 			GameRegistry.addRecipe( new ItemStack( ablock[id], 1 ),
 					"ccc",
@@ -1859,11 +1862,18 @@ public class AndMod_ExTools {
 					"ccc",
 					'c', new ItemStack( ablock[id], 1, 0 ) );
 			*/
+			
+			/*/
 			GameRegistry.addRecipe( new ItemStack( Item.coal, 9 ),
 					"c",
 					'c', new ItemStack( ablock[id], 1, 0 ) );
 			
-			
+			GameRegistry.addRecipe( new ItemStack( Item.diamond, 1 ),
+					"ccc",
+					"ccc",
+					"ccc",
+					'c', new ItemStack( Block.field_111034_cE, 1, 0 ) );
+			//*/
 			
 		} else id += 1;
 		
@@ -3115,13 +3125,6 @@ public class AndMod_ExTools {
 				's', new ItemStack ( Item.stick, 1, 0 ),
 				'f', Item.feather );
 
-		
-		
-		GameRegistry.addRecipe( new ItemStack( Block.field_111034_cE ), 
-				"ccc", 
-				"ccc",
-				"ccc",
-				'c', new ItemStack( Item.coal, 1, fm ) );
 		
 	}
 	

@@ -38,7 +38,7 @@ public class AndMod_DebugTools {
 
 	//point: class
 
-	public static int aitemqty = 4;
+	public static int aitemqty = 5;
 	public static int[] aitemID = new int[aitemqty];
 	public static Item[] aitem = new Item[aitemqty];
 	public static String[][] aitemname = new String[aitemqty][3];
@@ -77,6 +77,10 @@ public class AndMod_DebugTools {
 		aitemname[id][0] = "TenguClog";
 		aitemname[id][1] = "Tengu's Clog";
 		aitemname[id][2] = "天狗の下駄";
+		id++;
+		aitemname[id][0] = "RenameCard";
+		aitemname[id][1] = "Rename Card";
+		aitemname[id][2] = "リネームカード";
 		
 		//point: add new item name
 
@@ -189,7 +193,19 @@ public class AndMod_DebugTools {
 			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 	
 		}
-	
+		
+		
+		//Rename Card
+		id ++;
+		if ( aitemID[id] != 0 ) {
+			aitem[id] = new Item_RenameCard( aitemID[id] )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+		}
+		
 		
 	}
 

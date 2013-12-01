@@ -28,7 +28,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 @Mod(
 		modid	= "AndanteMod_Quiver",
 		name	= "Quiver",
-		version	= "1.6.2.3",
+		version	= "1.6.2.4",
 		dependencies = "required-after:AndanteMod_AndCore"
 		)
 @NetworkMod(
@@ -129,6 +129,8 @@ public class AndMod_Quiver {
 			e.addArrow( aitem[id].itemID );
 		}
 
+		
+		e.addArrow( Item.arrow.itemID );
 		
 		//checkme: it may cause dupe!
 		MinecraftForge.EVENT_BUS.register( e );
