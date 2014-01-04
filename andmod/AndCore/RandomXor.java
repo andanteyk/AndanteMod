@@ -1,15 +1,14 @@
 package andmod.AndCore;
 
-import java.util.Date;
 
 /**
- * 乱数ジェネレータ
+ * XORShift 乱数ジェネレータ
  * @author Andante
  *
  */
 public class RandomXor {
 
-	public int x, y, z, w; 
+	public int[] seeds = new int[4]; 
 	
 	
 	/**
@@ -17,11 +16,7 @@ public class RandomXor {
 	 * 現在時刻を種として初期化されます。
 	 */
 	public RandomXor() {
-		Date date = new Date();
-		initSeed();
-		
-		x ^= (int)( date.getTime() >>> 32L );
-		w ^= (int)( date.getTime() & 0xFFFFFFFFL );
+		this( System.nanoTime() );
 	}
 	
 	/**
@@ -29,14 +24,9 @@ public class RandomXor {
 	 * @param seed	乱数の種。
 	 */
 	public RandomXor( int seed ) {
-		initSeed();
 		
-		w ^= seed;
-		
-		/*	//memo
 		for ( int i = 0; i < 4; i ++ )
 			seeds[i] = seed = 1812433253 * ( seed ^ ( seed >> 30 ) ) + i;
-		*/
 	}
 	
 	/**
@@ -44,18 +34,26 @@ public class RandomXor {
 	 * @param seed	乱数の種。
 	 */
 	public RandomXor( long seed ) {
-		initSeed();
+		this( (int)seed );
 		
-		x ^= (int)( seed >>> 32 );
-		w ^= (int)( seed & 0xFFFFFFFFL );
+		for ( int i = 0; i < 4; i ++ )
+			seeds[i] ^= seed >>> 32;
+		
+		if ( isZeroSeed() )
+			initSeed();
 	}
 	
 	
 	protected void initSeed() {
-		x = 123456789;
-		y = 362436069;
-		z = 521288629;
-		w =  88675123;
+		seeds[0] = 123456789;
+		seeds[1] = 362436069;
+		seeds[2] = 521288629;
+		seeds[3] =  88675123;
+	}
+	
+	
+	protected boolean isZeroSeed() {
+		return seeds[0] == 0 && seeds[1] == 0 && seeds[2] == 0 && seeds[3] == 0;
 	}
 	
 	
@@ -64,9 +62,9 @@ public class RandomXor {
 	 * @return	乱数値。
 	 */
 	public int next() {
-		int t = x ^ ( x << 11 );
-		x = y; y = z; z = w;
-		return w = ( w ^ ( w >>> 19 ) ) ^ ( t ^ ( t >>> 8 ) );
+		int t = seeds[0] ^ ( seeds[0] << 11 );
+		seeds[0] = seeds[1]; seeds[1] = seeds[2]; seeds[2] = seeds[3];
+		return seeds[3] = ( seeds[3] ^ ( seeds[3] >>> 19 ) ) ^ ( t ^ ( t >>> 8 ) );
 	}
 	
 	
@@ -92,7 +90,7 @@ public class RandomXor {
 	
 	
 	/**
-	 * 次の乱数を求めます。範囲は 0.0 <= x < 1.0 です。多分。
+	 * 次の乱数を求めます。範囲は 0.0 <= x < 1.0 です。
 	 * @return	乱数値。
 	 */
 	public double nextDouble() {
@@ -115,6 +113,34 @@ public class RandomXor {
 	 */
 	public boolean nextBoolean() {
 		return next() >= 0;
+	}
+	
+	
+	/**
+	 * 次の乱数を求めます。
+	 * @param probability	trueになる確率。 0.0 - 1.0 の範囲で指定してください。
+	 * @return	乱数値。
+	 */
+	public boolean nextBoolean( float probability ) {
+		return nextFloat() < probability;
+	}
+	
+	
+	/**
+	 * 次の乱数を求めます。
+	 * @param probability	trueになる確率。 0.0 - 1.0 の範囲で指定してください。
+	 * @return	乱数値。
+	 */
+	public boolean nextBoolean( double probability ) {
+		return nextDouble() < probability;
+	}
+	
+	
+	/**
+	 * 乱数を消費します。
+	 */
+	public void consume() {
+		consume( nextInt( 64, 256 ) );
 	}
 	
 	

@@ -3,6 +3,7 @@ package andmod.AndCore;
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumArmorMaterial;
@@ -38,6 +39,7 @@ public class Item_SpecialArmor extends Item_Armor implements ISpecialArmor {
 	public static final int EFFECT_LUMINESCENCE		=  256 + 10;	//発光させます。
 	public static final int EFFECT_FREEZE			=  256 + 11;	//凍結させます。具体的には、足元の水源を氷に、溶岩源を黒曜石に、溶岩流を石に変化させます。
 	public static final int EFFECT_HEAVINESS		=  256 + 12;	//ダッシュできなくなります。
+	public static final int EFFECT_AUTOENCHANTMENT	=  256 + 13;	//自動でエンチャントされます。なお、複数エンチャントすることはできません。
 	public static final int EFFECT_INVINCIBLE		=  384 + 0;		//あらゆるダメージに対し、抵抗力を得ます。
 	public static final int EFFECT_RESISTALL		=  384 + 1;		//鎧で防御可能なダメージに対し、抵抗力を得ます。
 	public static final int EFFECT_RESISTFALLING	=  384 + 2;		//落下やテレポートのダメージに対し、抵抗力を得ます。
@@ -55,8 +57,8 @@ public class Item_SpecialArmor extends Item_Armor implements ISpecialArmor {
 
 	public static final int AMP_RESIST_WEAKNESS			= 0x1000000;	//むしろダメージが増えます
 	public static final int AMP_RESIST_UNBREAKABLE		= 0x2000000;	//属性耐性のとき、耐久値が減らなくなります
-	public static final int AMP_AMPLIFIERSHIFT			= 11;
-	public static final int AMP_DURATIONSHIFT			= 19;
+	public static final int AMP_AMPLIFIERSHIFT			= 11;			//強化レベルシフト
+	public static final int AMP_DURATIONSHIFT			= 19;			//効果時間シフト
 	public static final int AMP_COUNTER_PROJECTILE		= 1 << 27;		//遠隔攻撃も反射します
 	public static final int AMP_EXPLOSION_DESTRUCTABLE	= 1 << 30;		//爆発が地形破壊するかどうか（反撃用）
 	public static final int AMP_EXPLOSION_UNSAFE		= AMP_EXPLOSION_DESTRUCTABLE >> 1;	//自分も爆発ダメージを受けるか
@@ -100,6 +102,7 @@ public class Item_SpecialArmor extends Item_Armor implements ISpecialArmor {
 		featherFalling			重力軽減率(/1000)
 		luminescence			発光ブロックのメタデータ
 		freeze					(なし)
+		autoEnchantment			エンチャントID | エンチャントレベル<<amplifierShift
 		resist***				防御率(/1000)(0=無敵) | resist_unbreakable | resist_weakness; 防御率に負値を指定しない!(代わりにresist_weaknessを使う)
 		512-767(resistEffect)	確率
 		counterStatus-+256		確率 | 効果時間<<durationShift | 効果レベル<<amplifierShift
@@ -347,8 +350,11 @@ public class Item_SpecialArmor extends Item_Armor implements ISpecialArmor {
 						{
 							int bx = MathHelper.floor_double( eplayer.posX ), by = MathHelper.floor_double( eplayer.posY ), bz = MathHelper.floor_double( eplayer.posZ );
 							for ( int y = -1; y <= 0; y ++ ) {
-								for ( int x = 0; x <= 0; x ++ ) {
-									for ( int z = 0; z <= 0; z ++ ) {
+								for ( int x = -1; x <= 1; x ++ ) {
+									for ( int z = -1; z <= 1; z ++ ) {
+										
+										if ( Math.abs( x ) + Math.abs( z ) > 1 )
+											continue;
 										
 										int bid = world.getBlockId( bx + x, by + y, bz + z );
 										int meta = world.getBlockMetadata( bx + x, by + y, bz + z );
@@ -380,6 +386,11 @@ public class Item_SpecialArmor extends Item_Armor implements ISpecialArmor {
 						case EFFECT_HEAVINESS:
 							if ( eplayer.isSprinting() )
 								eplayer.setSprinting( false );
+							break;
+						
+						case EFFECT_AUTOENCHANTMENT:
+							if ( !items.isItemEnchanted() )		//FIXME: 複数のエンチャントには対応していません
+								items.addEnchantment( Enchantment.enchantmentsList[amp & 0xFF], amp >> AMP_AMPLIFIERSHIFT );
 							break;
 					}
 

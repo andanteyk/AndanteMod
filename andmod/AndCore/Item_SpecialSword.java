@@ -134,7 +134,7 @@ public class Item_SpecialSword extends Item_Sword {
 								idrop.setItemDamage( MathHelper.clamp_int( idrop.getMaxDamage() - itemRand.nextInt( itemRand.nextInt( k ) + 1 ), 1, k ) );
 							}
 
-
+							//System.out.println( idrop.toString() );
 							defender.entityDropItem( idrop, 1.0F );
 							defender.setCurrentItemOrArmor( fg2, null );
 							if ( defender instanceof EntityLiving ) ( (EntityLiving)defender ).setCanPickUpLoot( false );

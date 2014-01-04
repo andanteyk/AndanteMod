@@ -126,7 +126,7 @@ public class World_WorldProvider extends WorldProvider {
 	
 	@Override
 	public Vec3 getFogColor( float angle, float par2 ) {
-		return worldObj.getWorldVec3Pool().getVecFromPool( 0.0, 0.0, 0.0 );
+		return worldObj.getWorldVec3Pool().getVecFromPool( 0.5, 0.5, 0.5 );
 	}
 
 	

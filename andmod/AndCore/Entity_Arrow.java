@@ -584,8 +584,6 @@ public class Entity_Arrow extends EntityArrow implements IProjectile
 	}
 
 
-
-
 	public short getBowID() {
 		return dataWatcher.getWatchableObjectShort( 17 );
 	}

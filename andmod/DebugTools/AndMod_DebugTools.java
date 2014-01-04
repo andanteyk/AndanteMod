@@ -4,6 +4,7 @@ import java.util.logging.Level;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.EnumArmorMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -38,7 +39,7 @@ public class AndMod_DebugTools {
 
 	//point: class
 
-	public static int aitemqty = 5;
+	public static int aitemqty = 7;
 	public static int[] aitemID = new int[aitemqty];
 	public static Item[] aitem = new Item[aitemqty];
 	public static String[][] aitemname = new String[aitemqty][3];
@@ -81,6 +82,14 @@ public class AndMod_DebugTools {
 		aitemname[id][0] = "RenameCard";
 		aitemname[id][1] = "Rename Card";
 		aitemname[id][2] = "リネームカード";
+		id++;
+		aitemname[id][0] = "SuperTorch";
+		aitemname[id][1] = "Super Torch";
+		aitemname[id][2] = "奇跡の松明";
+		id++;
+		aitemname[id][0] = "StarlightScope";
+		aitemname[id][1] = "Starlight Scope";
+		aitemname[id][2] = "スターライトスコープ";
 		
 		//point: add new item name
 
@@ -206,6 +215,33 @@ public class AndMod_DebugTools {
 			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 		}
 		
+		
+		//Super Torch
+		id ++;
+		if ( aitemID[id] != 0 ) {
+			aitem[id] = new Item_SuperTorch( aitemID[id] ).setCreativeTab( CreativeTabs.tabMisc )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+		}
+		
+		
+		//Starlight Scope
+		id ++;
+		if ( aitemID[id] != 0 ) {
+			aitem[id] = new Item_SpecialArmor( aitemID[id], ObjectHeader.toLowerCase() + "textures/armor/StarlightScope.png", "", EnumArmorMaterial.DIAMOND, 0 )
+			.addEffect( Potion.nightVision.id, 0, Item_SpecialArmor.FLAG_ANYTIME )
+			.addEffect( Item_SpecialArmor.EFFECT_AUTOENCHANTMENT, Enchantment.respiration.effectId | ( 3 << Item_SpecialArmor.AMP_AMPLIFIERSHIFT ), Item_SpecialArmor.FLAG_ANYTIME )
+			.setCreativeTab( CreativeTabs.tabMisc )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+	
+		}
 		
 	}
 

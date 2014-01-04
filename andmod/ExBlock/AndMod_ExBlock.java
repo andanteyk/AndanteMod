@@ -40,7 +40,7 @@ public class AndMod_ExBlock {
 	public static String[][] aitemname = new String[aitemqty][3];
 	public int aitemIDdefault = 0;
 
-	public static int ablockqty = 6;
+	public static int ablockqty = 7;
 	public static int[] ablockID = new int[ablockqty];
 	public static Block[] ablock = new Block[ablockqty];
 	public static String[][] ablockname = new String[ablockqty][3];
@@ -88,6 +88,10 @@ public class AndMod_ExBlock {
 		ablockname[id][0] = "VectorBlock";
 		ablockname[id][1] = "Vector Block";
 		ablockname[id][2] = "ベクトルブロック";
+		id ++;
+		ablockname[id][0] = "InvaderBlock";
+		ablockname[id][1] = "Invader Block";
+		ablockname[id][2] = "侵蝕ブロック";
 		
 		
 		//point: add new block name
@@ -245,6 +249,19 @@ public class AndMod_ExBlock {
 				
 		}
 		
+		
+		//Invader Block
+		id ++;
+		if ( ablockID[id] != 0 ) {
+			ablock[id] = new Block_Invader( ablockID[id] )
+			.setHardness( 1.5F ).setResistance( 10.0F ).setStepSound( Block.soundGlassFootstep ).setCreativeTab( CreativeTabs.tabBlock )
+			.setUnlocalizedName( ablockname[id][0] ).func_111022_d( ablockname[id][0] );
+	
+			GameRegistry.registerBlock( ablock[id], ablockname[id][0] );
+			LanguageRegistry.addName( ablock[id], ablockname[id][1] );
+			LanguageRegistry.instance().addNameForObject( ablock[id], "ja_JP", ablockname[id][2] );
+				
+		}
 		
 	}
 

@@ -37,6 +37,8 @@ public class AndMod_Personality {
 	public static final String ObjectHeader = "Personality:";
 	
 	private Event_Naming ename;
+	private boolean enabled = true;
+	
 	
 	@Mod.EventHandler
 	public void preInit( FMLPreInitializationEvent event ) {
@@ -52,6 +54,10 @@ public class AndMod_Personality {
 			prop.comment = "nothing";
 			ename.alwaysRenderNameTag = prop.getBoolean( false );
 			
+			prop = cfg.get( "General", "enabled", enabled );
+			prop.comment = "enabled";
+			enabled = prop.getBoolean( enabled );
+			
 			prop = cfg.get( "Twitter", "PIN", pin );
 			prop.comment = "PIN";
 			pin = prop.getString();
@@ -65,6 +71,7 @@ public class AndMod_Personality {
 		
 		//*/
 		try {
+			String parser = ",";
 			File file = new File( event.getModConfigurationDirectory().getAbsolutePath() + "\\AndanteMod_Personality_Nametable.txt" );
 			if ( !file.exists() ) {
 				file.createNewFile();
@@ -77,8 +84,21 @@ public class AndMod_Personality {
 			else {
 				BufferedReader reader = new BufferedReader( new InputStreamReader( new FileInputStream( file ), "UTF-8" ) );
 				String name;
-				while ( ( name = reader.readLine() ) != null )
+				while ( ( name = reader.readLine() ) != null ) {
+					/*/
+					name = name.trim();
+					if ( name.startsWith( "#" ) ) continue;
 					ename.addName( name );
+					/*/
+					if ( name.startsWith( "#" ) ) continue;
+					for ( String ret : name.split( parser ) ) {
+						ret.trim();
+						if ( ret.length() > 0 )
+							ename.addName( ret );
+					}
+						
+					//*/
+				}
 				
 				reader.close();
 			}
@@ -107,7 +127,7 @@ public class AndMod_Personality {
 	@Mod.EventHandler
 	public void init( FMLInitializationEvent event ) {
 		
-		if ( ename.nameList.size() > 0 )
+		if ( enabled && ename.nameList.size() > 0 )
 			MinecraftForge.EVENT_BUS.register( ename );
 	
 	}

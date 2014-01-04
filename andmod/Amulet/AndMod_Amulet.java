@@ -85,8 +85,8 @@ public class AndMod_Amulet {
 		aitemname[id][1] = "Amulet of Undine";
 		aitemname[id][2] = "水精のアミュレット";
 		id++;
-		aitemname[id][0] = "ShylpeedAmulet";
-		aitemname[id][1] = "Amulet of Shylpeed";
+		aitemname[id][0] = "SylphideAmulet";
+		aitemname[id][1] = "Amulet of Sylphide";
 		aitemname[id][2] = "風精のアミュレット";
 		id++;
 		aitemname[id][0] = "LeprechaunAmulet";

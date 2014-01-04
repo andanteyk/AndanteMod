@@ -81,7 +81,8 @@ public class Item_IceSword extends Item_Sword {
 								}
 								
 								target.addPotionEffect( new PotionEffect( Potion.moveSlowdown.id, 20, 7 ) );
-								target.addPotionEffect( new PotionEffect( Potion.jump.id, 20, 128 ) );
+								//凄い勢いで飛び跳ねるようになるのでやめます
+								//target.addPotionEffect( new PotionEffect( Potion.jump.id, 20, 128 ) );
 								
 							}
 					       

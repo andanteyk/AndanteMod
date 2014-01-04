@@ -1,6 +1,7 @@
 package andmod.AndCore;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
@@ -8,6 +9,7 @@ import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.living.LivingPackSizeEvent;
 
@@ -15,10 +17,14 @@ public class Event_MobEquipment {
 
 	private int masterProb = 100;
 
-	private ArrayList<ItemStack> ItemList = new ArrayList<ItemStack>();
-	private ArrayList<Integer> FlagList = new ArrayList<Integer>();
-	private ArrayList<Double> ProbabilityList = new ArrayList<Double>();
-
+	private ArrayList<ItemStack> WeaponList = new ArrayList<ItemStack>();
+	private ArrayList<ItemStack> ArmorList = new ArrayList<ItemStack>();
+	private ArrayList<Integer> WeaponFlagList = new ArrayList<Integer>();
+	private ArrayList<Integer> ArmorFlagList = new ArrayList<Integer>();
+	private ArrayList<Double> WeaponProbabilityList = new ArrayList<Double>();
+	private ArrayList<Double> ArmorProbabilityList = new ArrayList<Double>();
+	private int[] weaponSelectionList = null, armorSelectionList = null;
+	
 	public static final int FLAG_ZOMBIE			= 0x1;
 	public static final int FLAG_SKELETON		= 0x2;
 	public static final int FLAG_WITHERSKELETON	= 0x4;
@@ -44,9 +50,9 @@ public class Event_MobEquipment {
 	 * @param probability	装備確率。0.15が基本値です。
 	 */
 	public void addMobWeaponEquipment( ItemStack weapon, int flag, double probability ) {
-		ItemList.add( weapon );
-		FlagList.add( flag );
-		ProbabilityList.add( probability );
+		WeaponList.add( weapon );
+		WeaponFlagList.add( flag );
+		WeaponProbabilityList.add( probability );
 	}
 
 
@@ -60,12 +66,12 @@ public class Event_MobEquipment {
 	 * @param probability	装備確率。0.15が基本値です。
 	 */
 	public void addMobArmorEquipment( ItemStack helmet, ItemStack chestplate, ItemStack leggings, ItemStack boots, int flag, double probability ) {
-		ItemList.add( helmet );
-		ItemList.add( chestplate );
-		ItemList.add( leggings );
-		ItemList.add( boots );
-		FlagList.add( flag | FLAG_ISARMOR );
-		ProbabilityList.add( probability );
+		ArmorList.add( helmet );
+		ArmorList.add( chestplate );
+		ArmorList.add( leggings );
+		ArmorList.add( boots );
+		ArmorFlagList.add( flag | FLAG_ISARMOR );
+		ArmorProbabilityList.add( probability );
 	}
 
 
@@ -84,8 +90,39 @@ public class Event_MobEquipment {
 	public void onLivingPackSize( LivingPackSizeEvent e ) {
 		if ( e.entityLiving == null ) return;
 
-
+		int equipped = 0;
 		int cur = 0;
+		EntityLivingBase eliv = e.entityLiving;
+		World world = e.entityLiving.worldObj;
+		
+		
+		if ( weaponSelectionList == null )
+			weaponSelectionList = new int[ WeaponFlagList.size() ];
+		if ( armorSelectionList == null )
+			armorSelectionList = new int[ ArmorFlagList.size() ];
+		
+		initSelection( weaponSelectionList, world.rand );
+		initSelection(  armorSelectionList, world.rand );
+		
+		
+		for ( int i = 0; i < WeaponFlagList.size(); i ++ ) {
+			int index = weaponSelectionList[i];
+			
+			if ( canEquip( eliv, WeaponFlagList.get( index ), WeaponProbabilityList.get( index ) ) ) {
+				if ( tryToEquipWeapon( WeaponList.get( index ), WeaponFlagList.get( index ), eliv ) )
+					break;
+			}
+		}
+		
+		for ( int i = 0; i < ArmorFlagList.size(); i ++ ) {
+			int index = armorSelectionList[i];
+			
+			if ( canEquip( eliv, ArmorFlagList.get( index ), ArmorProbabilityList.get( index ) ) ) {
+				tryToEquipArmor( new ItemStack[]{ ArmorList.get( index * 4 + 0 ), ArmorList.get( index * 4 + 1 ), ArmorList.get( index * 4 + 2 ), ArmorList.get( index * 4 + 3 ) }, ArmorFlagList.get( index ), eliv );
+			}
+		}
+		
+		/*
 		for ( int i = 0; i < FlagList.size(); i ++ ) {
 
 			int flag = FlagList.get( i );
@@ -99,10 +136,11 @@ public class Event_MobEquipment {
 					 ( ( flag & FLAG_ZOMBIEPIGMAN ) != 0 && e.entityLiving instanceof EntityPigZombie ) ||
 					 ( ( flag & FLAG_ANYMOB ) != 0 ) ) {
 
-					if ( ( flag & FLAG_ISARMOR ) != 0 )
-						tryToEquipArmor( new ItemStack[]{ ItemList.get( cur ), ItemList.get( cur + 1 ), ItemList.get( cur + 2 ), ItemList.get( cur + 3 ) }, flag, e.entityLiving );
-					else
-						tryToEquipWeapon( ItemList.get( cur ), flag, e.entityLiving );
+					if ( ( flag & FLAG_ISARMOR ) != 0 && ( equipped & 2 ) == 0 ) 
+						equipped |= tryToEquipArmor( new ItemStack[]{ ItemList.get( cur ), ItemList.get( cur + 1 ), ItemList.get( cur + 2 ), ItemList.get( cur + 3 ) }, flag, e.entityLiving ) ? 2 : 0;
+					else if ( ( equipped & 1 ) == 0 )
+						equipped |= tryToEquipWeapon( ItemList.get( cur ), flag, e.entityLiving ) ? 1 : 0;
+					
 				}
 			}
 			
@@ -110,24 +148,41 @@ public class Event_MobEquipment {
 
 			cur ++;
 		}
+		*/
 	}
 
 
+	private boolean canEquip( EntityLivingBase eliv, int flag, double probability ) {
+		return ( ( ( flag & FLAG_ZOMBIE ) != 0 && eliv instanceof EntityZombie && !( eliv instanceof EntityPigZombie ) ) ||
+			 	 ( ( flag & FLAG_SKELETON ) != 0 && eliv instanceof EntitySkeleton && ( (EntitySkeleton)eliv ).getSkeletonType() == 0 ) ||
+				 ( ( flag & FLAG_WITHERSKELETON ) != 0 && eliv instanceof EntitySkeleton && ( (EntitySkeleton)eliv ).getSkeletonType() == 1 ) || 
+				 ( ( flag & FLAG_ZOMBIEPIGMAN ) != 0 && eliv instanceof EntityPigZombie ) ||
+				 ( ( flag & FLAG_ANYMOB ) != 0 ) ) && 
+				 eliv.worldObj.rand.nextDouble() < masterProb / 100.0 * probability * eliv.worldObj.func_110746_b( eliv.posX, eliv.posY, eliv.posZ );
+	}
 
+	
+	
+	
 	/**
 	 * 武器の装備を試みます。
 	 * @param items		装備させる武器。
 	 * @param flag		フラグ。
 	 * @param eliv		装備させるmob。
+	 * @return			装備に成功したか。
 	 */
-	private void tryToEquipWeapon( ItemStack items, int flag, EntityLivingBase eliv ) {
+	private boolean tryToEquipWeapon( ItemStack items, int flag, EntityLivingBase eliv ) {
 		
 		if ( ( flag & FLAG_NONOVERRIDABLE ) == 0 || eliv.getCurrentItemOrArmor( 0 ) == null ) {
-			eliv.setCurrentItemOrArmor( 0, items );
+			eliv.setCurrentItemOrArmor( 0, items.copy() );
 			
 			if ( ( flag & FLAG_DISABLEENCHANT ) == 0 ) 
 				enchantWeapon( eliv );
+			
+			return true;
 		}
+		
+		return false;
 	}
 
 
@@ -136,20 +191,24 @@ public class Event_MobEquipment {
 	 * @param armor		装備させる鎧の配列。
 	 * @param flag		フラグ。
 	 * @param eliv		装備させるmob。
+	 * @return			装備に成功したか。
 	 */
-	private void tryToEquipArmor( ItemStack[] armor, int flag, EntityLivingBase eliv ) {
+	private boolean tryToEquipArmor( ItemStack[] armor, int flag, EntityLivingBase eliv ) {
 		
 		if ( ( flag & FLAG_NONOVERRIDABLE ) == 0 || 
 				( eliv.getCurrentItemOrArmor( 1 ) == null && eliv.getCurrentItemOrArmor( 2 ) == null && eliv.getCurrentItemOrArmor( 3 ) == null && eliv.getCurrentItemOrArmor( 4 ) == null ) ) {	
 			for ( int i = 3; i >= 0; i -- ) {
 				if ( i < 3 && eliv.worldObj.rand.nextFloat() < ( eliv.worldObj.difficultySetting == 3 ? 0.1F : 0.25F ) ) break;
 	
-				eliv.setCurrentItemOrArmor( i + 1, armor[3 - i] );
+				eliv.setCurrentItemOrArmor( i + 1, armor[3 - i].copy() );
 				if ( ( flag & FLAG_DISABLEENCHANT ) == 0 )
 					enchantArmor( eliv, i );
 			}
+			
+			return true;
 		}
 		
+		return false;
 	}
 	
 	
@@ -181,4 +240,20 @@ public class Event_MobEquipment {
         
 	}
 
+	
+	/** 判定配列を初期化、シャッフルします */
+	private void initSelection( int[] selection, Random rand ) {
+		
+		for ( int i = 0; i < selection.length; i ++ )
+			selection[i] = i;
+		
+		for( int i = selection.length - 1; i > 0; i -- ) {
+			int t = rand.nextInt( i + 1 );
+			
+			int a = selection[t];
+			selection[t] = selection[i];
+			selection[i] = a;
+		}
+	}
+	
 }
