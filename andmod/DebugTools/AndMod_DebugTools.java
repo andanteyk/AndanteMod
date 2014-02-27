@@ -90,7 +90,12 @@ public class AndMod_DebugTools {
 		aitemname[id][0] = "StarlightScope";
 		aitemname[id][1] = "Starlight Scope";
 		aitemname[id][2] = "スターライトスコープ";
-		
+		/*
+		id++;
+		aitemname[id][0] = "CommandBlockPortable";
+		aitemname[id][1] = "Portable Command Block";
+		aitemname[id][2] = "ポータブルコマンドブロック";
+		*/
 		//point: add new item name
 
 		/*
@@ -242,6 +247,22 @@ public class AndMod_DebugTools {
 			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
 	
 		}
+		
+		
+		/*
+		//Command Block Portable
+		id ++;
+		if ( aitemID[id] != 0 ) {
+			aitem[id] = new Item_CommandBlockPortable( aitemID[id] )
+			.setCreativeTab( CreativeTabs.tabMisc )
+			.setUnlocalizedName( aitemname[id][0] ).func_111206_d( "command_block" );
+
+			GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+			LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+			LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+	
+		}
+		*/
 		
 	}
 

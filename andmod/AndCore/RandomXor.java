@@ -154,6 +154,43 @@ public class RandomXor {
 	}
 
 	
+	/**
+	 * 次の乱数を求めます。
+	 * @param bytes		乱数を格納するbyte配列。
+	 */
+	public void nextBytes( byte[] bytes ) {
+		
+		int t = 0;
+		
+		for ( int i = 0; i < bytes.length; i ++ ) {
+			if ( ( i & 3 ) == 0 )
+				t = next();
+			bytes[i] = (byte)( t & 0xFF );
+			t >>>= 8;
+		}
+
+	}
+	
+	
+	/**
+	 * 次の乱数を求めます。nextIntよりも理論上確率的に正確です。
+	 * 実装はRandom.nextIntを参考にしました。
+	 * @param max	最大値。常に正である必要があります。
+	 * @return		乱数値。
+	 */
+	public int nextIntStrict( int max ) {
+		if ( max <= 0 )
+			throw new IllegalArgumentException( "'max' must be positive." );
+		
+		int val, ret;
+		do {
+			val = next();
+			ret = val % max;
+		} while ( val - ret + ( max + 1 ) < 0 );	//maxで割り切れない末端をやり直します。
+		
+		return ret;
+	}
+	
 	/*	//for test!
 	public void print() {
 		File file = new File( "test.txt" );

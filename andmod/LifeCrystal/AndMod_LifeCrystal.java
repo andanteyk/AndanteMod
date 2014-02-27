@@ -20,7 +20,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 @Mod(
 		modid	= "AndanteMod_LifeCrystal",
 		name	= "Life Crystal",
-		version	= "1.6.2.0"
+		version	= "1.6.2.1"
 		)
 @NetworkMod(
 		clientSideRequired = true,
@@ -43,6 +43,8 @@ public class AndMod_LifeCrystal {
 
 	private int fm = OreDictionary.WILDCARD_VALUE;
 
+	
+	private boolean canResurrect = true;
 
 	@Mod.EventHandler
 	public void preInit( FMLPreInitializationEvent event ) {
@@ -76,6 +78,11 @@ public class AndMod_LifeCrystal {
 				ItemProp.comment = "ItemID - " + aitemname[i][1];
 				aitemID[i] = ItemProp.getInt();
 			}
+			
+			
+			Property prop = cfg.get( "General", "canResurrect", canResurrect );
+			prop.comment = "";
+			canResurrect = prop.getBoolean( canResurrect );
 
 		} catch ( Exception e ) {
 			FMLLog.log( Level.SEVERE, e, "AndMod_" + ObjectHeader + "Error has occured." );
@@ -118,7 +125,7 @@ public class AndMod_LifeCrystal {
 					'b', new ItemStack( Item.appleRed, 1, 0 ) );
 			GameRegistry.addShapelessRecipe( new ItemStack( aitem[id], 1, 0 ),
 					new ItemStack( aitem[id], 1, fm ),
-					new ItemStack( Item.goldNugget, 1, 0 ) );
+					new ItemStack( Item.goldNugget, 1, fm ) );
 		}
 
 		
@@ -166,11 +173,12 @@ public class AndMod_LifeCrystal {
 					'b', new ItemStack( Item.appleGold, 1, 1 ) );
 			GameRegistry.addShapelessRecipe( new ItemStack( aitem[id], 1, 0 ),
 					new ItemStack( aitem[id], 1, fm ),
-					new ItemStack( Block.blockGold, 1, 1 ) );
+					new ItemStack( Block.blockGold, 1, fm ) );
 		}
 			
 
-		MinecraftForge.EVENT_BUS.register( e );
+		if ( canResurrect )
+			MinecraftForge.EVENT_BUS.register( e );
 
 	}
 
