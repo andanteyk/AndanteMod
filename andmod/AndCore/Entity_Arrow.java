@@ -467,9 +467,9 @@ public class Entity_Arrow extends EntityArrow implements IProjectile
 			while ( rotationYaw - prevRotationYaw < -180.0F ) prevRotationYaw -= 360.0F;
 			while ( rotationYaw - prevRotationYaw >= 180.0F ) prevRotationYaw += 360.0F;
 
-			rotationPitch = prevRotationPitch + (rotationPitch - prevRotationPitch) * 0.2F;
-			rotationYaw = prevRotationYaw + (rotationYaw - prevRotationYaw) * 0.2F;
-			double resistance = 0.99;		//（空気）抵抗値
+			rotationPitch = prevRotationPitch + ( rotationPitch - prevRotationPitch ) * 0.2F;
+			rotationYaw = prevRotationYaw + ( rotationYaw - prevRotationYaw ) * 0.2F;
+			double resistance = getArrowProperty().resistanceInAir;	 //0.99;		//（空気）抵抗値
 			//f1 = 0.05F;	//gravity
 
 			if ( isInWater() ) {
@@ -478,7 +478,7 @@ public class Entity_Arrow extends EntityArrow implements IProjectile
 					worldObj.spawnParticle( "bubble", posX - motionX * f3, posY - motionY * f3, posZ - motionZ * f3, motionX, motionY, motionZ );
 				}
 
-				resistance = 0.8;	//水中抵抗値
+				resistance = getArrowProperty().resistanceInWater;	 //0.8;	//水中抵抗値
 			}
 
 			motionX *= resistance;
@@ -697,6 +697,10 @@ public class Entity_Arrow extends EntityArrow implements IProjectile
 					entityitem.delayBeforeCanPickup = 10;
 					worldObj.spawnEntityInWorld( entityitem );
 				}
+				
+				else if ( id == Struct_Arrow.EFFECT_EXPLOSIONDAMAGEONLY )
+					worldObj.newExplosion( this, eliv.posX, eliv.posY, eliv.posZ, amp, false, false );
+
 				else continue;
 				
 				ret = true;
@@ -738,6 +742,9 @@ public class Entity_Arrow extends EntityArrow implements IProjectile
 				else if ( id == Struct_Arrow.EFFECT_PLACEBLOCK )
 					if ( placeBlock( xTile, yTile, zTile, side, amp & 0xFFF, amp >> 12 ) ) setDead();
 					else;
+
+				else if ( id == Struct_Arrow.EFFECT_EXPLOSIONDAMAGEONLY )
+					worldObj.newExplosion( this, xTile + 0.5, yTile + 0.5, zTile + 0.5, amp, false, false );
 
 				else continue;
 				

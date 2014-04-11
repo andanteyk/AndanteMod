@@ -37,6 +37,17 @@ public class Item_Arrow extends Item implements IArrow {
 		return this;
 	}
 
+	
+	/**
+	 * 矢の抵抗値を設定します。
+	 * @param inAir		空気中での抵抗値。既定値0.99。
+	 * @param inWater	水中での抵抗値。既定値0.8。
+	 * @return			設定されたアイテムを返します。
+	 */
+	public Item_Arrow setResistance( double inAir, double inWater ) {
+		property.setResistance( inAir, inWater );
+		return this;
+	}
 
 	/**
 	 * 矢に特殊効果を与えます。

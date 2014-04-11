@@ -41,6 +41,8 @@ public class Item_SpecialSword extends Item_Sword {
 	 */
 	public Item_SpecialSword( int itemID, EnumToolMaterial material ) {
 		super( itemID, material );
+		
+		setMaxStackSize( 64 );
 	}
 
 

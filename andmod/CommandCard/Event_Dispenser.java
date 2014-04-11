@@ -15,11 +15,11 @@ import net.minecraft.world.World;
 public class Event_Dispenser extends BehaviorDefaultDispenseItem implements ICommandSender {
 
 	//private Minecraft mc = Minecraft.getMinecraft();
-	
-	
+
+
 	@Override
 	protected ItemStack dispenseStack( IBlockSource ibs, ItemStack items ) {
-		
+
 		if ( !ibs.getWorld().isRemote ) {
  			MinecraftServer minecraftserver = MinecraftServer.getServer();
 
@@ -30,7 +30,7 @@ public class Event_Dispenser extends BehaviorDefaultDispenseItem implements ICom
                 	icommandmanager.executeCommand( this, com );
             }
 		}
-		
+
 		return items;
 	}
 
@@ -42,8 +42,8 @@ public class Event_Dispenser extends BehaviorDefaultDispenseItem implements ICom
 	protected void spawnDispenseParticles( IBlockSource par1iBlockSource, EnumFacing par2EnumFacing ) {
 	}
 
-	
-	
+
+
 	@Override
 	public String getCommandSenderName() {
 		return "@";
@@ -72,6 +72,6 @@ public class Event_Dispenser extends BehaviorDefaultDispenseItem implements ICom
 		return MinecraftServer.getServer().func_130014_f_();
 	}
 
-	
-	
+
+
 }

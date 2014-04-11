@@ -21,7 +21,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 @Mod(
 		modid	= "AndanteMod_AndCore",
 		name	= "AndCore",
-		version	= "1.6.2.10"
+		version	= "1.6.2.11"
 		)
 @NetworkMod(
 		clientSideRequired = true,

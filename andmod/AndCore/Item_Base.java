@@ -5,6 +5,8 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class Item_Base extends Item {
 
@@ -44,6 +46,7 @@ public class Item_Base extends Item {
 	
 	
 	@Override
+	@SideOnly( Side.CLIENT )
 	public void addInformation( ItemStack items, EntityPlayer eplayer, List list, boolean par4 ) {
 		
 		if ( AndMod_AndCore.isJapanese() && !info[1].equals( "" ) ) list.add( info[1] );

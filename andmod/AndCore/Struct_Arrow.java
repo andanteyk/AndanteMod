@@ -17,6 +17,8 @@ public class Struct_Arrow {
 	public double power;
 	public double knockback;
 	public double gravity;
+	public double resistanceInAir;
+	public double resistanceInWater;
 	public ResourceLocation texture;
 
 	public static final int EFFECT_FLAME				= 0x100;	//撃った矢に火が付きます。
@@ -31,6 +33,7 @@ public class Struct_Arrow {
 	public static final int EFFECT_SMITE				= 0x109;	//ゾンビに対して高いダメージを与えます。
 	public static final int EFFECT_BANEOFARTHROPODS		= 0x10a;	//虫に対して高いダメージを与えます。
 	public static final int EFFECT_ASSASSINATION		= 0x10b;	//ダメージを「プレイヤーが与えた」扱いにしません。
+	public static final int EFFECT_EXPLOSIONDAMAGEONLY	= 0x10c;	//爆発を発生させます。炎も地形破壊も発生させません。
 	
 
 	public Struct_Arrow() {
@@ -45,11 +48,18 @@ public class Struct_Arrow {
 		this.power = power;
 		this.knockback = knockback;
 		this.gravity = gravity;
+		this.resistanceInAir = 0.99;
+		this.resistanceInWater = 0.8;
 		this.texture = new ResourceLocation( texture );
 	}
 
-
-
+	
+	public Struct_Arrow setResistance( double inAir, double inWater ) {
+		resistanceInAir = inAir;
+		resistanceInWater = inWater;
+		return this;
+	}
+	
 	/**
 	 * 指定した効果IDが存在しているかを調べます。
 	 * @param effectID	効果ID。

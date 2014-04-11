@@ -57,7 +57,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 @Mod(
 		modid	= "AndanteMod_ExTools",
 		name	= "ExTools",
-		version	= "1.6.2.10",
+		version	= "1.6.2.11",
 		dependencies = "required-after:AndanteMod_AndCore"
 		)
 @NetworkMod(
@@ -71,7 +71,7 @@ public class AndMod_ExTools {
 
 	//point: class
 
-	public static int aitemqty = 26;
+	public static int aitemqty = 28;
 	public static int[] aitemID = new int[aitemqty * 16];
 	public static Item[] aitem = new Item[aitemqty * 16];
 	public static String[][] aitemname = new String[aitemqty * 16][3];
@@ -194,6 +194,12 @@ public class AndMod_ExTools {
 		id ++;
 		atypename[id] = "Wither";
 		aitemIDdefault[id] = 24126;
+		id ++;
+		atypename[id] = "Brick";
+		aitemIDdefault[id] = 24174;
+		id ++;
+		atypename[id] = "NetherBrick";
+		aitemIDdefault[id] = 24190;
 		
 
 		
@@ -1587,6 +1593,106 @@ public class AndMod_ExTools {
 		aitemname[id][1] = "Wither Arrow";
 		aitemname[id][2] = "ウィザーの矢";
 		
+		id = id / 16 * 16 + 15;
+		id++;
+		aitemname[id][0] = "BrickSword";
+		aitemname[id][1] = "Brick Sword";
+		aitemname[id][2] = "レンガの剣";
+		id++;
+		aitemname[id][0] = "BrickShovel";
+		aitemname[id][1] = "Brick Shovel";
+		aitemname[id][2] = "レンガのショベル";
+		id++;
+		aitemname[id][0] = "BrickPickaxe";
+		aitemname[id][1] = "Brick Pickaxe";
+		aitemname[id][2] = "レンガのツルハシ";
+		id++;
+		aitemname[id][0] = "BrickAxe";
+		aitemname[id][1] = "Brick Axe";
+		aitemname[id][2] = "レンガの斧";
+		id++;
+		aitemname[id][0] = "BrickHoe";
+		aitemname[id][1] = "Brick Hoe";
+		aitemname[id][2] = "レンガのクワ";
+		id++;
+		aitemname[id][0] = "BrickHammer";
+		aitemname[id][1] = "Brick Hammer";
+		aitemname[id][2] = "レンガのハンマー";
+		id++;
+		aitemname[id][0] = "BrickHelmet";
+		aitemname[id][1] = "Brick Helmet";
+		aitemname[id][2] = "レンガのヘルメット";
+		id++;
+		aitemname[id][0] = "BrickChestplate";
+		aitemname[id][1] = "Brick Chestplate";
+		aitemname[id][2] = "レンガのチェストプレート";
+		id++;
+		aitemname[id][0] = "BrickLeggings";
+		aitemname[id][1] = "Brick Leggings";
+		aitemname[id][2] = "レンガのレギンス";
+		id++;
+		aitemname[id][0] = "BrickBoots";
+		aitemname[id][1] = "Brick Boots";
+		aitemname[id][2] = "レンガのブーツ";
+		id++;
+		aitemname[id][0] = "BrickBow";
+		aitemname[id][1] = "Brick Bow";
+		aitemname[id][2] = "レンガの弓";
+		id++;
+		aitemname[id][0] = "BrickArrow";
+		aitemname[id][1] = "Brick Arrow";
+		aitemname[id][2] = "レンガの矢";
+		
+		id = id / 16 * 16 + 15;
+		id++;
+		aitemname[id][0] = "NetherBrickSword";
+		aitemname[id][1] = "Nether Brick Sword";
+		aitemname[id][2] = "ネザーレンガの剣";
+		id++;
+		aitemname[id][0] = "NetherBrickShovel";
+		aitemname[id][1] = "Nether Brick Shovel";
+		aitemname[id][2] = "ネザーレンガのショベル";
+		id++;
+		aitemname[id][0] = "NetherBrickPickaxe";
+		aitemname[id][1] = "Nether Brick Pickaxe";
+		aitemname[id][2] = "ネザーレンガのツルハシ";
+		id++;
+		aitemname[id][0] = "NetherBrickAxe";
+		aitemname[id][1] = "Nether Brick Axe";
+		aitemname[id][2] = "ネザーレンガの斧";
+		id++;
+		aitemname[id][0] = "NetherBrickHoe";
+		aitemname[id][1] = "Nether Brick Hoe";
+		aitemname[id][2] = "ネザーレンガのクワ";
+		id++;
+		aitemname[id][0] = "NetherBrickHammer";
+		aitemname[id][1] = "Nether Brick Hammer";
+		aitemname[id][2] = "ネザーレンガのハンマー";
+		id++;
+		aitemname[id][0] = "NetherBrickHelmet";
+		aitemname[id][1] = "Nether Brick Helmet";
+		aitemname[id][2] = "ネザーレンガのヘルメット";
+		id++;
+		aitemname[id][0] = "NetherBrickChestplate";
+		aitemname[id][1] = "Nether Brick Chestplate";
+		aitemname[id][2] = "ネザーレンガのチェストプレート";
+		id++;
+		aitemname[id][0] = "NetherBrickLeggings";
+		aitemname[id][1] = "Nether Brick Leggings";
+		aitemname[id][2] = "ネザーレンガのレギンス";
+		id++;
+		aitemname[id][0] = "NetherBrickBoots";
+		aitemname[id][1] = "Nether Brick Boots";
+		aitemname[id][2] = "ネザーレンガのブーツ";
+		id++;
+		aitemname[id][0] = "NetherBrickBow";
+		aitemname[id][1] = "Nether Brick Bow";
+		aitemname[id][2] = "ネザーレンガの弓";
+		id++;
+		aitemname[id][0] = "NetherBrickArrow";
+		aitemname[id][1] = "Nether Brick Arrow";
+		aitemname[id][2] = "ネザーレンガの矢";
+		
 		//point: add new item name
 
 		
@@ -1703,6 +1809,12 @@ public class AndMod_ExTools {
 		id ++;
 		ArmorTexture[id][0] = header + "wither_1.png";
 		ArmorTexture[id][1] = header + "wither_2.png";
+		id ++;
+		ArmorTexture[id][0] = header + "brick_1.png";
+		ArmorTexture[id][1] = header + "brick_2.png";
+		id ++;
+		ArmorTexture[id][0] = header + "netherbrick_1.png";
+		ArmorTexture[id][1] = header + "netherbrick_2.png";
 
 
 
@@ -2123,8 +2235,19 @@ public class AndMod_ExTools {
 			registerIceTools( id, armorid );
 		id += 16; armorid ++;
 		
+		
 		if ( isEnabled( "Wither" ) )
 			registerWitherTools( id, armorid );
+		id += 16; armorid ++;
+		
+		
+		if ( isEnabled( "Brick" ) )
+			registerBrickTools( id, armorid );
+		id += 16; armorid ++;
+		
+		
+		if ( isEnabled( "NetherBrick" ) )
+			registerNetherBrickTools( id, armorid );
 		id += 16; armorid ++;
 		
 		//point: add new item
@@ -6064,6 +6187,7 @@ public class AndMod_ExTools {
 		id ++;
 		
 		aitem[id] = new Item_Arrow( aitemID[id], 64 ).setParameters( 2.0, 3.2, 0.5, 0.02, ObjectHeader.toLowerCase() + "textures/entity/" + aitemname[id][0].substring( ObjectHeader.length() ) + ".png" )
+		.addEffect( Struct_Arrow.EFFECT_ENDERSTRIKE, 0, 0, 1.0F )
 		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
 
 		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
@@ -9909,6 +10033,529 @@ public class AndMod_ExTools {
 
 	
 	
+	//point: Brick Tools
+	private void registerBrickTools( int id, int armorid ) {
+		
+		
+		EnumToolMaterial TMBrick = EnumHelper.addToolMaterial( "BRICK", 1, 288, 4.8F, 1.0F, 3 );
+		TMBrick.customCraftingMaterial = new ItemStack( Block.brick, 1, fm ).getItem();
+		
+		
+		//Brick Sword
+		id ++;
+	
+		aitem[id] = new Item_Sword( aitemID[id], TMBrick )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+	
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+	
+	
+		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_OVERWORLD & Event_MobEquipment.FLAG_SWORDMAN, 0.15 );
+		//eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_NETHER    & Event_MobEquipment.FLAG_SWORDMAN, 0.004 );
+		
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				"e",
+				"e",
+				"s",
+				'e', new ItemStack( Block.brick, 1, 0 ),
+				's', new ItemStack( Item.stick, 1, 0 ) );
+	
+		
+	
+		//Brick Shovel
+		id ++;
+	
+		aitem[id] = new Item_Spade( aitemID[id], TMBrick )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+	
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+	
+	
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				"e",
+				"s",
+				"s",
+				'e', new ItemStack( Block.brick, 1, 0 ),
+				's', new ItemStack( Item.stick, 1, 0 ) );
+		
+		
+	
+		//Brick Pickaxe
+		id ++;
+	
+		aitem[id] = new Item_Pickaxe( aitemID[id], TMBrick )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+	
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+	
+	
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				"eee",
+				" s ",
+				" s ",
+				'e', new ItemStack( Block.brick, 1, 0 ),
+				's', new ItemStack( Item.stick, 1, 0 ) );
+		
+	
+		//Brick Axe
+		id ++;
+	
+		aitem[id] = new Item_Axe( aitemID[id], TMBrick )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+	
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+	
+	
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				"ee",
+				"es",
+				" s",
+				'e', new ItemStack( Block.brick, 1, 0 ),
+				's', new ItemStack( Item.stick, 1, 0 ) );
+	
+		
+		//Brick Hoe
+		id ++;
+	
+		aitem[id] = new Item_Hoe( aitemID[id], TMBrick )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+	
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+	
+	
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				"ee",
+				"s ",
+				"s ",
+				'e', new ItemStack( Block.brick, 1, 0 ),
+				's', new ItemStack( Item.stick, 1, 0 ) );
+	
+		
+		//Brick Hammer
+		id ++;
+	
+		aitem[id] = new Item_Hammer( aitemID[id], TMBrick ).setMaxDamage( (int)( 64 * 4.5 ) - 1 )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+	
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+	
+	
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				" s ",
+				"eee",
+				" s ",
+				'e', new ItemStack( Block.brick, 1, 0 ),
+				's', new ItemStack( Item.stick, 1, 0 ) );
+	
+	
+	
+		armorid ++;
+		EnumArmorMaterial AMBrick = EnumHelper.addArmorMaterial( "BRICK", 8, new int[] { 2, 5, 4, 1 }, 3 );
+		AMBrick.customCraftingMaterial = new ItemStack( Block.brick, 1, 0 ).getItem();
+		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
+				Event_MobEquipment.FLAG_OVERWORLD, 0.15 );
+		/*
+		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
+				Event_MobEquipment.FLAG_NETHER,    0.004 );
+		*/
+		
+		
+		//Brick Helmet
+		id ++;
+	
+		aitem[id] = new Item_Armor( aitemID[id], ArmorTexture[armorid], AMBrick, 0 )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+	
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+	
+	
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				"sss",
+				"s s",
+				's', new ItemStack( Block.brick, 1, 0 ) );
+	
+	
+	
+		//Brick Chestplate
+		id ++;
+	
+		aitem[id] = new Item_Armor( aitemID[id], ArmorTexture[armorid], AMBrick, 1 )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+	
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+	
+	
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				"s s",
+				"sss",
+				"sss",
+				's', new ItemStack( Block.brick, 1, 0 ) );
+		
+	
+		
+		//Brick Leggings
+		id ++;
+	
+		aitem[id] = new Item_Armor( aitemID[id], ArmorTexture[armorid], AMBrick, 2 )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+	
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+	
+	
+		GameRegistry.addRecipe(new ItemStack( aitem[id], 1 ),
+				"sss",
+				"s s",
+				"s s",
+				's', new ItemStack( Block.brick, 1, 0 ) );
+		
+		
+	
+		//Brick Boots
+		id ++;
+	
+		aitem[id] = new Item_Armor( aitemID[id], ArmorTexture[armorid], AMBrick, 3 )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+	
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+	
+	
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				"s s",
+				"s s",
+				's', new ItemStack( Block.brick, 1, 0 ) );
+		
+	
+		
+	
+		//Brick Bow
+		id ++;
+		
+		aitem[id] = new Item_Bow( aitemID[id], TMBrick ).setParameters( 0.5F, 0.9F, 0.25F, 0.0F ).setCraftingMaterial( Block.brick.blockID )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+	
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+	
+	
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				" st",
+				"s t",
+				" st",
+				's', new ItemStack ( Block.brick, 1, 0 ),
+				't', Item.silk );
+	
+	
+	
+		//Brick Arrow
+		id ++;
+		
+		aitem[id] = new Item_Arrow( aitemID[id], 64 ).setParameters( 0.65, 2.5, 0.0, 0.08, ObjectHeader.toLowerCase() + "textures/entity/" + aitemname[id][0].substring( ObjectHeader.length() ) + ".png" )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+	
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+	
+	
+		BlockDispenser.dispenseBehaviorRegistry.putObject( aitem[id], new Event_DispenserArrow() );
+		
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 4 ),
+				"h",
+				"s",
+				"f",
+				'h', new ItemStack ( Item.brick, 1, 0 ),
+				's', new ItemStack ( Item.stick, 1, 0 ),
+				'f', Item.feather );
+	
+		
+	}
+	
+	
+	//point: Nether Brick Tools
+	private void registerNetherBrickTools( int id, int armorid ) {
+		
+		
+		EnumToolMaterial TMNetherBrick = EnumHelper.addToolMaterial( "NETHERBRICK", 1, 253, 4.5F, 1.2F, 2 );
+		TMNetherBrick.customCraftingMaterial = new ItemStack( Block.netherBrick, 1, fm ).getItem();
+		
+		
+		//Nether Brick Sword
+		id ++;
+	
+		aitem[id] = new Item_Sword( aitemID[id], TMNetherBrick )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+	
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+	
+	
+		//eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_OVERWORLD & Event_MobEquipment.FLAG_SWORDMAN, 0.15 );
+		eequip.addMobWeaponEquipment( new ItemStack( aitem[id] ), Event_MobEquipment.FLAG_NETHER    & Event_MobEquipment.FLAG_SWORDMAN, 0.15 );
+		
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				"e",
+				"e",
+				"s",
+				'e', new ItemStack( Block.netherBrick, 1, 0 ),
+				's', new ItemStack( Item.stick, 1, 0 ) );
+	
+		
+	
+		//Nether Brick Shovel
+		id ++;
+	
+		aitem[id] = new Item_Spade( aitemID[id], TMNetherBrick )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+	
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+	
+	
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				"e",
+				"s",
+				"s",
+				'e', new ItemStack( Block.netherBrick, 1, 0 ),
+				's', new ItemStack( Item.stick, 1, 0 ) );
+		
+		
+	
+		//Nether Brick Pickaxe
+		id ++;
+	
+		aitem[id] = new Item_Pickaxe( aitemID[id], TMNetherBrick )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+	
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+	
+	
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				"eee",
+				" s ",
+				" s ",
+				'e', new ItemStack( Block.netherBrick, 1, 0 ),
+				's', new ItemStack( Item.stick, 1, 0 ) );
+		
+	
+		//Nether Brick Axe
+		id ++;
+	
+		aitem[id] = new Item_Axe( aitemID[id], TMNetherBrick )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+	
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+	
+	
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				"ee",
+				"es",
+				" s",
+				'e', new ItemStack( Block.netherBrick, 1, 0 ),
+				's', new ItemStack( Item.stick, 1, 0 ) );
+	
+		
+		//Nether Brick Hoe
+		id ++;
+	
+		aitem[id] = new Item_Hoe( aitemID[id], TMNetherBrick )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+	
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+	
+	
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				"ee",
+				"s ",
+				"s ",
+				'e', new ItemStack( Block.netherBrick, 1, 0 ),
+				's', new ItemStack( Item.stick, 1, 0 ) );
+	
+		
+		//Nether Brick Hammer
+		id ++;
+	
+		aitem[id] = new Item_Hammer( aitemID[id], TMNetherBrick ).setMaxDamage( (int)( 64 * 4 ) - 1 )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+	
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+	
+	
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				" s ",
+				"eee",
+				" s ",
+				'e', new ItemStack( Block.netherBrick, 1, 0 ),
+				's', new ItemStack( Item.stick, 1, 0 ) );
+	
+	
+	
+		armorid ++;
+		EnumArmorMaterial AMNetherBrick = EnumHelper.addArmorMaterial( "NETHERBRICK", 7, new int[] { 2, 5, 4, 2 }, 2 );
+		AMNetherBrick.customCraftingMaterial = new ItemStack( Block.netherBrick, 1, 0 ).getItem();
+		/*/
+		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
+				Event_MobEquipment.FLAG_OVERWORLD, 0.15 );
+		/*/
+		eequip.addMobArmorEquipment( new ItemStack( aitemID[id + 1] + 256, 1, 0 ), new ItemStack( aitemID[id + 2] + 256, 1, 0 ), new ItemStack( aitemID[id + 3] + 256, 1, 0 ), new ItemStack( aitemID[id + 4] + 256, 1, 0 ), 
+				Event_MobEquipment.FLAG_NETHER,    0.15 );
+		//*/
+		
+		
+		//Nether Brick Helmet
+		id ++;
+	
+		aitem[id] = new Item_SpecialArmor( aitemID[id], ArmorTexture[armorid], AMNetherBrick, 0 )
+		.addEffect( Item_SpecialArmor.EFFECT_RESISTFIRE, 100, Item_SpecialArmor.FLAG_ANYTIME )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+	
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+	
+	
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				"sss",
+				"s s",
+				's', new ItemStack( Block.netherBrick, 1, 0 ) );
+	
+	
+	
+		//Nether Brick Chestplate
+		id ++;
+	
+		aitem[id] = new Item_SpecialArmor( aitemID[id], ArmorTexture[armorid], AMNetherBrick, 1 )
+		.addEffect( Item_SpecialArmor.EFFECT_RESISTFIRE, 100, Item_SpecialArmor.FLAG_ANYTIME )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+	
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+	
+	
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				"s s",
+				"sss",
+				"sss",
+				's', new ItemStack( Block.netherBrick, 1, 0 ) );
+		
+	
+		
+		//Nether Brick Leggings
+		id ++;
+	
+		aitem[id] = new Item_SpecialArmor( aitemID[id], ArmorTexture[armorid], AMNetherBrick, 2 )
+		.addEffect( Item_SpecialArmor.EFFECT_RESISTFIRE, 100, Item_SpecialArmor.FLAG_ANYTIME )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+	
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+	
+	
+		GameRegistry.addRecipe(new ItemStack( aitem[id], 1 ),
+				"sss",
+				"s s",
+				"s s",
+				's', new ItemStack( Block.netherBrick, 1, 0 ) );
+		
+		
+	
+		//Nether Brick Boots
+		id ++;
+	
+		aitem[id] = new Item_SpecialArmor( aitemID[id], ArmorTexture[armorid], AMNetherBrick, 3 )
+		.addEffect( Item_SpecialArmor.EFFECT_RESISTFIRE, 100, Item_SpecialArmor.FLAG_ANYTIME )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+	
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+	
+	
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				"s s",
+				"s s",
+				's', new ItemStack( Block.netherBrick, 1, 0 ) );
+		
+	
+		
+	
+		//Nether Brick Bow
+		id ++;
+		
+		aitem[id] = new Item_Bow( aitemID[id], TMNetherBrick ).setParameters( 0.5F, 0.9F, 0.3F, 0.0F ).setCraftingMaterial( Block.netherBrick.blockID )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+	
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+	
+	
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 1 ),
+				" st",
+				"s t",
+				" st",
+				's', new ItemStack ( Block.netherBrick, 1, 0 ),
+				't', Item.silk );
+	
+	
+	
+		//Nether Brick Arrow
+		id ++;
+		
+		aitem[id] = new Item_Arrow( aitemID[id], 64 ).setParameters( 0.7, 2.5, 0.0, 0.08, ObjectHeader.toLowerCase() + "textures/entity/" + aitemname[id][0].substring( ObjectHeader.length() ) + ".png" )
+		.setUnlocalizedName( aitemname[id][0] ).func_111206_d( aitemname[id][0] );
+	
+		GameRegistry.registerItem( aitem[id], aitemname[id][0] );
+		LanguageRegistry.addName( aitem[id], aitemname[id][1] );
+		LanguageRegistry.instance().addNameForObject( aitem[id], "ja_JP", aitemname[id][2] );
+	
+	
+		BlockDispenser.dispenseBehaviorRegistry.putObject( aitem[id], new Event_DispenserArrow() );
+		
+		GameRegistry.addRecipe( new ItemStack( aitem[id], 4 ),
+				"h",
+				"s",
+				"f",
+				'h', new ItemStack ( Item.netherrackBrick, 1, 0 ),
+				's', new ItemStack ( Item.stick, 1, 0 ),
+				'f', Item.feather );
+	
+		
+	}
+
+	
 	private void registerArrows() {
 		Event_Arrow earrow = new Event_Arrow();
 
@@ -9959,6 +10606,8 @@ public class AndMod_ExTools {
 		if ( isEnabled( "Poison" ) ) earrow.addArrow( getItemIDforCraft( "PoisonArrow" ) );
 		if ( isEnabled( "Ice" ) ) earrow.addArrow( getItemIDforCraft( "IceArrow" ) );
 		if ( isEnabled( "Wither" ) ) earrow.addArrow( getItemIDforCraft( "WitherArrow" ) );
+		if ( isEnabled( "Brick" ) ) earrow.addArrow( getItemIDforCraft( "BrickArrow" ) );
+		if ( isEnabled( "NetherBrick" ) ) earrow.addArrow( getItemIDforCraft( "NetherBrickArrow" ) );
 		MinecraftForge.EVENT_BUS.register( earrow );
 
 		EntityRegistry.registerModEntity( Entity_Arrow.class, ObjectHeader + "ExArrow", 0, instance, 250, 1, true );
@@ -10126,8 +10775,8 @@ public class AndMod_ExTools {
 
 		for ( int i = 0; i < aitemname.length; i ++ )
 			if ( aitemname[i][0] != null && aitemname[i][0].equals( name ) ) return aitemID[i] + 256;
-		int x = 1 / 0;	//debug: for illegal access
-		return 0;
+		
+		throw new IllegalArgumentException( "Item \"" + name + "\" is not found" );
 	}
 
 	public static int getItemArrayID ( String name ) {
@@ -10143,8 +10792,8 @@ public class AndMod_ExTools {
 
 		for ( int i = 0; i < ablockname.length; i ++ )
 			if ( ablockname[i][0] != null && ablockname[i][0].equals( name ) ) return ablockID[i];
-		int x = 1 / 0;	//debug: for illegal access
-		return 0;
+		
+		throw new IllegalArgumentException( "Block \"" + name + "\" is not found" );
 	}
 
 
